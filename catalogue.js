@@ -1,34 +1,20 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-05T22:02:28.092Z",
+  "updated": "2026-08-05T23:11:25.086Z",
   "items": [
     {
-      "id": "msgj0kyvc4ni8",
+      "id": "msgp527nmr7my",
       "brand": "York Wallcoverings",
-      "pattern": "Teste 1",
+      "pattern": "Antonina Vella Deco Speakeasy",
       "colorway": "",
-      "room": "Bathroom",
-      "style": "Padrões",
+      "room": "Office",
+      "style": "Metallic",
       "project": "",
       "city": "San Francisco",
       "year": "2026",
       "panels": "",
       "notes": "",
-      "photo": "photos/york-wallcoverings-teste-1-4ni8.jpg"
-    },
-    {
-      "id": "msgmudlf98br2",
-      "brand": "York Wallcoverings",
-      "pattern": "Teste 2",
-      "colorway": "",
-      "room": "Entry hall",
-      "style": "Chinoiserie",
-      "project": "",
-      "city": "",
-      "year": "",
-      "panels": "",
-      "notes": "",
-      "photo": "photos/york-wallcoverings-teste-2-8br2.jpg"
+      "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my.jpg"
     }
   ]
 };
