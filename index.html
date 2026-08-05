@@ -335,8 +335,8 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .ledger{margin-top:46px}
 .ledger>.eyebrow{display:block;padding-bottom:12px;border-bottom:1px solid var(--sand)}
 .entry{display:flex;gap:15px;align-items:center;padding:13px 0;border-bottom:1px solid var(--rail)}
-.entry .thumb{width:38px;height:52px;flex:none;overflow:hidden;background:var(--card);border:1px solid var(--rail)}
-.entry .thumb img,.entry .thumb svg{width:100%;height:100%;object-fit:cover;display:block}
+.entry .thumb{position:relative;width:38px;height:52px;flex:none;overflow:hidden;background:var(--card);border:1px solid var(--rail)}
+.entry .thumb img,.entry .thumb svg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .entry .txt{min-width:0;flex:1}
 .entry .txt b{display:block;font-family:var(--display);font-size:16px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .entry .txt small{display:block;margin-top:3px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -961,9 +961,14 @@ function render(){
 /* ═══════════ lightbox ═══════════ */
 function openLB(it){
   const src = previews[it.id] || it.photo || '';
-  $('#lbFace').innerHTML = src
-    ? swatch(it.style, it.id) + '<img src="'+esc(src)+'" alt="'+esc(it.pattern)+'">'
+  const face = $('#lbFace');
+  face.innerHTML = src
+    ? '<img src="'+esc(src)+'" alt="'+esc(it.pattern)+'">'
     : swatch(it.style, it.id);
+  if(src){
+    const im = face.querySelector('img');
+    im.onerror = ()=>{ face.innerHTML = swatch(it.style, it.id); };
+  }
   const rows = [
     ['House', it.brand], ['Pattern', it.pattern], ['Colourway', it.colorway],
     ['Room', it.room],
