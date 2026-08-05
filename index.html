@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parfait — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ─────────────────────────────────────────────
+   TOKENS — Parfait brand palette
+   ───────────────────────────────────────────── */
+:root{
+  --paper:#F6F4F5;        /* ground */
+  --card:#FFFFFF;         /* panel face */
+  --ink:#252122;          /* primary text */
+  --navy:#13304E;         /* structure, headings, controls */
+  --navy-soft:rgba(19,48,78,.06);
+  --sand-fill:#EDE2D3;   /* the only fill used for controls */
+  --sand:#D8C4AC;         /* warmth, accents */
+  --sand-soft:#EFE7DC;
+  --muted:#5D6875;        /* captions */
+  --rail:#DBD4CB;         /* hairlines */
+  --gold-ink:#9A7639;     /* gold as flat text where gradient can't apply */
+  --gold-grad:linear-gradient(100deg,#8C6A2F 0%,#C0994F 20%,#EBD7A4 46%,#C0994F 72%,#8C6A2F 100%);
+
+  --display:"Cormorant Garamond","Didot","Hoefler Text",Georgia,serif;
+  --util:"Jost","Futura","Avenir Next","Century Gothic",sans-serif;
+
+  --pad:clamp(18px,4vw,44px);
+  --drop-w:clamp(178px,44vw,268px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* The canvas must be light regardless of the host's theme. A background on
+   <body> alone does not propagate when the host already paints <html>. */
+html{
+  background:var(--paper);
+  color-scheme:light;
+  min-height:100%;
+}
+body{
+  min-height:100%;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--util);
+  font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+body.locked{overflow:hidden}
+
+/* gold, applied as leaf rather than paint */
+.gold{color:var(--gold-ink)}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .gold{
+    background:var(--gold-grad);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent
+  }
+}
+
+.eyebrow{
+  font-family:var(--util);font-size:10px;font-weight:400;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--muted);
+}
+button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1px solid var(--navy);outline-offset:3px}
+
+/* ─────────────────────────────────────────────
+   MASTHEAD
+   ───────────────────────────────────────────── */
+.masthead{
+  position:sticky;top:0;z-index:40;
+  display:grid;grid-template-columns:44px 1fr 44px;align-items:center;
+  padding:16px var(--pad) 14px;
+  background:var(--paper);
+  border-bottom:1px solid var(--rail);
+}
+.burger{width:44px;height:44px;display:grid;place-items:center;margin-left:-11px}
+.burger span{display:block;width:19px;height:1px;background:var(--navy);transition:transform .3s var(--ease),opacity .2s}
+.burger span+span{margin-top:5px}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+.wordmark{text-align:center;line-height:1}
+.wordmark b{
+  display:block;font-family:var(--display);font-weight:400;color:var(--navy);
+  font-size:clamp(21px,5.2vw,27px);letter-spacing:.34em;text-indent:.34em;
+}
+.wordmark i{
+  display:block;margin-top:7px;font-style:normal;
+  font-family:var(--util);font-size:clamp(7.5px,1.9vw,9px);
+  letter-spacing:clamp(.12em,.5vw,.26em);white-space:nowrap;
+  text-transform:uppercase;color:var(--muted);
+}
+.tally{text-align:right;font-size:10px;letter-spacing:.14em;color:var(--muted);white-space:nowrap}
+
+/* ─────────────────────────────────────────────
+   DRAWER
+   ───────────────────────────────────────────── */
+.scrim{
+  position:fixed;inset:0;z-index:45;background:rgba(246,244,245,.74);backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;transition:opacity .32s var(--ease)
+}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{
+  position:fixed;top:0;left:0;bottom:0;z-index:50;width:min(88vw,338px);
+  background:var(--card);border-right:1px solid var(--rail);
+  padding:26px 0 32px;overflow-y:auto;
+  box-shadow:22px 0 44px -34px rgba(19,48,78,.18);
+  transform:translateX(-101%);transition:transform .4s var(--ease);
+}
+.drawer.on{transform:none}
+.drawer-sec{padding:0 26px;margin-bottom:30px}
+.drawer-sec>.eyebrow{display:block;margin-bottom:14px}
+.arrange{display:flex;flex-direction:column}
+.arrange button{
+  display:flex;align-items:baseline;gap:12px;
+  padding:11px 0;border-bottom:1px solid var(--rail);
+  font-family:var(--display);font-size:19px;font-weight:400;
+  letter-spacing:.01em;text-align:left;color:var(--ink);
+  transition:color .2s,padding-left .25s var(--ease)
+}
+@media(hover:hover){.arrange button:hover{padding-left:6px;color:var(--navy)}}
+.arrange button:active{padding-left:6px;color:var(--navy)}
+.arrange button[aria-current="true"]{color:var(--navy)}
+.arrange button[aria-current="true"]::before{
+  content:"";width:14px;height:1px;background:var(--navy);flex:none;transform:translateY(-5px)
+}
+.arrange button small{
+  margin-left:auto;font-family:var(--util);font-size:9px;
+  letter-spacing:.16em;color:var(--muted)
+}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{
+  padding:6px 12px;border:1px solid var(--rail);border-radius:999px;
+  font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);
+  transition:all .2s
+}
+@media(hover:hover){.chip:hover{border-color:var(--sand);color:var(--ink)}}
+.chip[aria-pressed="true"]{border-color:var(--navy);background:var(--navy-soft);color:var(--navy)}
+.drawer-foot{padding:0 26px;border-top:1px solid var(--rail);padding-top:22px}
+.linkish{
+  font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);
+  padding:9px 0;display:block;text-align:left;transition:color .2s
+}
+@media(hover:hover){.linkish:hover{color:var(--navy)}}
+.linkish:active{color:var(--navy)}
+
+/* ─────────────────────────────────────────────
+   GALLERY — the hanging rail
+   ───────────────────────────────────────────── */
+.stage{
+  position:relative;z-index:1;padding:8px 0 90px;min-height:100vh;
+  background:
+    radial-gradient(1100px 640px at 82% -6%, rgba(216,196,172,.34), transparent 62%),
+    radial-gradient(860px 560px at 4% 96%, rgba(216,196,172,.2), transparent 60%),
+    var(--paper);
+}
+.opener{padding:26px var(--pad) 46px;max-width:640px}
+.opener h1{
+  font-family:var(--display);font-weight:400;color:var(--navy);
+  font-size:clamp(29px,7.4vw,52px);line-height:1.1;letter-spacing:-.005em;
+}
+.opener h1 em{font-style:italic}
+.opener p{
+  margin-top:18px;font-size:14px;line-height:1.75;color:var(--ink);
+  max-width:44ch;font-weight:300
+}
+
+.group{margin-bottom:52px}
+.group-head{display:flex;align-items:baseline;gap:14px;padding:0 var(--pad) 13px}
+.group-head h2{
+  font-family:var(--display);font-weight:400;color:var(--navy);
+  font-size:clamp(19px,4.4vw,25px);letter-spacing:.02em;white-space:nowrap
+}
+.group-head .eyebrow{margin-left:auto;white-space:nowrap}
+.group-head .hair{flex:1;height:1px;background:var(--sand);min-width:16px}
+
+/* the rail itself */
+.rail{position:relative;border-top:1px solid var(--sand);margin:0 var(--pad)}
+.row{
+  display:flex;gap:clamp(14px,3vw,26px);
+  overflow-x:auto;overflow-y:visible;
+  padding:0 0 26px;margin:0 calc(var(--pad) * -1);
+  padding-left:var(--pad);padding-right:var(--pad);
+  scroll-snap-type:x proximity;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+}
+.row::-webkit-scrollbar{display:none}
+
+/* a drop = one panel suspended from the rail */
+.drop{
+  flex:none;width:var(--drop-w);scroll-snap-align:start;
+  position:relative;padding-top:22px;text-align:left;
+  transition:transform .38s var(--ease)
+}
+.drop::before{ /* the wire */
+  content:"";position:absolute;top:0;left:50%;width:1px;height:22px;
+  background:var(--sand);transition:background .3s
+}
+.drop::after{ /* the pin head, in gold leaf */
+  content:"";position:absolute;top:-3px;left:50%;transform:translateX(-50%);
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold-grad);transition:box-shadow .3s
+}
+.drop{-webkit-user-select:none;user-select:none}
+.drop:focus-visible{transform:translateY(-7px)}
+.drop:focus-visible::before{background:var(--gold-ink)}
+.drop:focus-visible::after{box-shadow:0 0 0 3px rgba(216,196,172,.5)}
+@media(hover:hover){
+  .drop:hover{transform:translateY(-7px)}
+  .drop:hover::before{background:var(--gold-ink)}
+  .drop:hover::after{box-shadow:0 0 0 3px rgba(216,196,172,.5)}
+}
+.drop:active{transform:translateY(-3px) scale(.986)}
+
+.drop-face{
+  position:relative;aspect-ratio:2/3;overflow:hidden;
+  background:var(--card);border:1px solid var(--rail);
+  box-shadow:0 1px 2px rgba(19,48,78,.04);
+  transition:box-shadow .38s var(--ease),border-color .3s
+}
+.drop:focus-visible .drop-face,.drop:active .drop-face{box-shadow:0 16px 30px -18px rgba(19,48,78,.16);border-color:var(--sand)}
+@media(hover:hover){
+  .drop:hover .drop-face{box-shadow:0 16px 30px -18px rgba(19,48,78,.16);border-color:var(--sand)}
+}
+.drop-face img{width:100%;height:100%;object-fit:cover;display:block}
+.drop-face svg{width:100%;height:100%;display:block}
+.drop-face .priv{
+  position:absolute;top:9px;right:10px;z-index:2;
+  font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--navy);background:var(--sand-fill);padding:3px 7px
+}
+.drop-meta{padding:13px 1px 0}
+.drop-meta .b{font-size:10px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--navy)}
+.drop-meta .p{margin-top:6px;font-family:var(--display);font-size:17px;font-weight:500;line-height:1.25;color:var(--ink)}
+.drop-meta .c{margin-top:5px;font-family:var(--display);font-size:13px;font-style:italic;letter-spacing:.02em;color:var(--muted)}
+
+/* empty state */
+.void{margin:0 var(--pad);padding:56px 0;border-top:1px solid var(--sand);text-align:left;max-width:38ch}
+.void h3{font-family:var(--display);font-weight:400;font-size:23px;margin-bottom:11px;color:var(--navy)}
+.void p{font-size:12.5px;line-height:1.8;color:var(--muted)}
+.void button{
+  margin-top:20px;padding:11px 22px;border:1px solid var(--navy);color:var(--navy);
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;transition:all .25s
+}
+.void button:hover{background:var(--sand-fill)}
+
+/* ─────────────────────────────────────────────
+   LIGHTBOX
+   ───────────────────────────────────────────── */
+.lb{position:fixed;inset:0;z-index:60;background:var(--paper);display:none;overflow-y:auto}
+.lb.on{display:block}
+.lb-inner{
+  min-height:100%;display:grid;gap:clamp(22px,4vw,52px);
+  grid-template-columns:1fr;align-content:start;
+  padding:clamp(56px,8vw,74px) var(--pad) 70px;max-width:1180px;margin:0 auto
+}
+@media(min-width:860px){
+  .lb-inner{grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);align-content:center}
+}
+.lb-shut{
+  position:fixed;top:14px;right:var(--pad);z-index:2;width:42px;height:42px;
+  display:grid;place-items:center;font-size:22px;font-weight:300;color:var(--navy);
+  background:var(--card);border:1px solid var(--rail);border-radius:50%
+}
+.lb-shut:hover{background:var(--sand-fill);border-color:var(--sand)}
+.lb-face{background:var(--card);border:1px solid var(--rail);overflow:hidden;box-shadow:0 18px 38px -28px rgba(19,48,78,.16)}
+.lb-face img,.lb-face svg{width:100%;display:block;max-height:74vh;object-fit:contain}
+.lb-body h3{
+  font-family:var(--display);font-weight:400;color:var(--navy);
+  font-size:clamp(27px,6vw,40px);line-height:1.14;margin:14px 0 6px
+}
+.spec{margin-top:26px;border-top:1px solid var(--sand)}
+.spec div{display:flex;gap:16px;padding:11px 0;border-bottom:1px solid var(--rail);font-size:12.5px;align-items:baseline}
+.spec dt{flex:none;width:104px;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.spec dd{color:var(--ink);letter-spacing:.02em}
+.lb-note{
+  margin-top:24px;padding-left:16px;border-left:1px solid var(--sand);
+  font-family:var(--display);font-size:15.5px;font-style:italic;
+  line-height:1.72;color:var(--ink)
+}
+
+/* ─────────────────────────────────────────────
+   ADMIN
+   ───────────────────────────────────────────── */
+.admin{position:fixed;inset:0;z-index:70;background:var(--paper);color:var(--ink);display:none;overflow-y:auto}
+.admin.on{display:block}
+.admin-wrap{max-width:1080px;margin:0 auto;padding:26px var(--pad) 80px}
+.admin-top{display:flex;align-items:center;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--sand);margin-bottom:30px}
+.admin-top h2{font-family:var(--display);font-weight:400;font-size:26px;color:var(--navy)}
+.admin-top button{margin-left:auto;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.admin-top button:hover{color:var(--navy)}
+
+.gate{max-width:330px;padding:60px 0}
+.gate p{font-size:12.5px;line-height:1.8;color:var(--muted);margin-bottom:20px}
+
+.form{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:700px){.form{grid-template-columns:1fr 1fr}.form .wide{grid-column:1/-1}}
+label{display:block}
+label span{display:block;margin-bottom:7px;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+input[type=text],input[type=number],input[type=password],select,textarea{
+  width:100%;padding:11px 13px;background:var(--card);color:var(--ink);
+  border:1px solid var(--rail);font-family:var(--util);font-size:13px;font-weight:300;
+  border-radius:0;transition:border-color .2s
+}
+textarea{min-height:82px;resize:vertical;line-height:1.6}
+input:focus,select:focus,textarea:focus{border-color:var(--navy);outline:none}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+
+.dropzone{border:1px dashed var(--sand);background:var(--card);padding:26px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.dropzone:hover,.dropzone.hot{border-color:var(--navy);background:var(--sand-soft)}
+.dropzone p{font-size:11.5px;letter-spacing:.06em;color:var(--muted);line-height:1.7}
+.dropzone img{max-height:150px;margin:0 auto 12px;display:block}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.btn{
+  padding:12px 26px;border:1px solid var(--sand);background:var(--sand-fill);color:var(--navy);
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;transition:opacity .2s
+}
+.btn:hover{opacity:.86}
+.btn-ghost{background:none;color:var(--muted);border-color:var(--rail)}
+.btn-ghost:hover{color:var(--navy);border-color:var(--navy);opacity:1}
+.said{font-size:11px;letter-spacing:.1em;color:var(--navy)}
+
+.ledger{margin-top:46px}
+.ledger>.eyebrow{display:block;padding-bottom:12px;border-bottom:1px solid var(--sand)}
+.entry{display:flex;gap:15px;align-items:center;padding:13px 0;border-bottom:1px solid var(--rail)}
+.entry .thumb{width:38px;height:52px;flex:none;overflow:hidden;background:var(--card);border:1px solid var(--rail)}
+.entry .thumb img,.entry .thumb svg{width:100%;height:100%;object-fit:cover;display:block}
+.entry .txt{min-width:0;flex:1}
+.entry .txt b{display:block;font-family:var(--display);font-size:16px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.entry .txt small{display:block;margin-top:3px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.entry .ops{display:flex;gap:5px;flex:none}
+.entry .ops button{padding:7px 11px;border:1px solid var(--rail);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.entry .ops button:hover{color:var(--navy);border-color:var(--navy)}
+.entry .ops .kill:hover{color:#B0564E;border-color:#B0564E}
+
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translate(-50%,140%);z-index:90;
+  padding:13px 24px;background:var(--card);color:var(--navy);border:1px solid var(--sand);
+  font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  transition:transform .4s var(--ease)
+}
+.toast.on{transform:translate(-50%,0)}
+
+/* The palette is fixed. Ignore any dark theme the host frame may impose. */
+@media(prefers-color-scheme:dark){
+  html,body{background:var(--paper);color:var(--ink)}
+  .stage,.masthead,.admin,.lb{background-color:var(--paper)}
+  .drawer,.drop-face,.lb-face,.entry .thumb{background-color:var(--card)}
+}
+
+/* ─────────────────────────────────────────────
+   TELEVISION MODE
+   Read from three metres, driven by a D-pad.
+   Nothing here may depend on a pointer.
+   ───────────────────────────────────────────── */
+body.tv{--pad:clamp(46px,4.5vw,88px);--drop-w:clamp(300px,20vw,430px)}
+body.tv .masthead{padding-top:2.6vh;padding-bottom:2vh}
+body.tv .stage{padding-top:2vh;padding-bottom:7vh}
+body.tv .wordmark b{font-size:clamp(34px,3vw,50px)}
+body.tv .wordmark i{font-size:clamp(12px,1vw,16px);letter-spacing:.28em}
+body.tv .tally{font-size:17px}
+body.tv .eyebrow{font-size:15px;letter-spacing:.22em}
+body.tv .opener{max-width:none;padding-bottom:5vh}
+body.tv .opener h1{font-size:clamp(42px,4.2vw,74px)}
+body.tv .opener p{font-size:clamp(19px,1.5vw,26px);max-width:52ch}
+body.tv .group{margin-bottom:6vh}
+body.tv .group-head h2{font-size:clamp(28px,2.4vw,42px)}
+body.tv .drop-meta{padding-top:20px}
+body.tv .drop-meta .b{font-size:15px}
+body.tv .drop-meta .p{font-size:clamp(24px,1.9vw,33px)}
+body.tv .drop-meta .c{font-size:clamp(17px,1.3vw,23px)}
+body.tv .drawer{width:min(62vw,520px)}
+body.tv .arrange button{font-size:clamp(24px,1.9vw,33px);padding:16px 0}
+body.tv .arrange button small{font-size:14px}
+body.tv .chip{font-size:15px;padding:10px 18px}
+body.tv .linkish{font-size:17px;padding:14px 0}
+body.tv .lb-body h3{font-size:clamp(44px,4vw,74px)}
+body.tv .lb-note{font-size:clamp(20px,1.6vw,28px)}
+body.tv .spec div{font-size:clamp(18px,1.4vw,24px);padding:16px 0}
+body.tv .spec dt{width:190px;font-size:14px}
+body.tv .lb-shut{width:72px;height:72px;font-size:36px}
+body.tv .burger{width:64px;height:64px;margin-left:-16px}
+body.tv .burger span{width:28px}
+body.tv .burger span+span{margin-top:7px}
+body.tv .row{padding-bottom:34px}
+
+/* A remote gives no hover, so the cursor has to be unmistakable. */
+.drop.cursor{transform:translateY(-9px)}
+.drop.cursor .drop-face{
+  outline:3px solid var(--navy);outline-offset:6px;
+  box-shadow:0 22px 40px -18px rgba(19,48,78,.3)
+}
+.drop.cursor::before{background:var(--gold-ink)}
+.burger.cursor,.arrange button.cursor{outline:3px solid var(--navy);outline-offset:4px}
+
+/* Shown when storage is unavailable. Loud on purpose: entering a wall that
+   will not be kept wastes real work. */
+.alarm{
+  margin:0 var(--pad) 30px;padding:20px 22px;
+  border:1px solid #C8A24A;background:#FBF3E2;
+  font-size:13.5px;line-height:1.75;color:var(--ink)
+}
+.alarm b{
+  display:block;margin-bottom:8px;font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:#8A6A22
+}
+.alarm code{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+body.tv .alarm{font-size:20px;padding:28px 30px}
+body.tv .alarm b{font-size:14px}
+
+/* reveal */
+.fade{opacity:0;transform:translateY(9px);animation:rise .62s var(--ease) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .drop:hover{transform:none}
+}
+
+
+/* ─────────────────────────────────────────────
+   PHOTOGRAPH OVER SWATCH
+   The woven swatch sits underneath every photograph.
+   If a photograph has not been uploaded yet, or its
+   path is wrong, the swatch shows through instead of
+   an empty frame.
+   ───────────────────────────────────────────── */
+.drop-face svg{position:absolute;inset:0;width:100%;height:100%}
+.drop-face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lb-face{position:relative;min-height:180px}
+.lb-face svg{width:100%;display:block}
+.lb-face img{width:100%;display:block;max-height:74vh;object-fit:contain}
+
+/* unpublished marker */
+.drop-face .pend{
+  position:absolute;top:9px;left:10px;z-index:3;
+  font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--navy);background:var(--sand-fill);padding:3px 7px
+}
+body.tv .drop-face .pend{font-size:13px;padding:5px 10px}
+
+/* ─────────────────────────────────────────────
+   PUBLISH
+   ───────────────────────────────────────────── */
+.pub-head{
+  display:flex;align-items:baseline;gap:14px;
+  padding-bottom:14px;border-bottom:1px solid var(--sand);margin:44px 0 24px
+}
+.pub-head h3{font-family:var(--display);font-weight:400;font-size:23px;color:var(--navy)}
+.pub-head span{margin-left:auto;white-space:nowrap}
+.step{
+  display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--rail);
+  align-items:flex-start;flex-wrap:wrap
+}
+.step-n{
+  flex:none;width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--navy);color:var(--navy);
+  display:grid;place-items:center;font-size:11px
+}
+.step-b{flex:1;min-width:200px}
+.step-b h4{font-size:13.5px;font-weight:400;color:var(--ink);margin-bottom:5px}
+.step-b p{font-size:12px;line-height:1.7;color:var(--muted)}
+.step-b code{
+  font-family:ui-monospace,Menlo,monospace;font-size:11.5px;
+  background:var(--sand-soft);padding:2px 5px;word-break:break-all
+}
+.pending-list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.pending{
+  display:flex;gap:12px;align-items:center;
+  padding:10px 12px;background:var(--card);border:1px solid var(--rail)
+}
+.pending .nm{
+  flex:1;min-width:0;font-family:ui-monospace,Menlo,monospace;font-size:11px;
+  word-break:break-all;color:var(--ink)
+}
+.pending .warn{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#9A6A22}
+.pending button{
+  flex:none;padding:8px 14px;border:1px solid var(--navy);color:var(--navy);
+  font-size:9.5px;letter-spacing:.16em;text-transform:uppercase
+}
+.pending button:active{background:var(--sand-fill)}
+.savefile{
+  margin-top:14px;padding:14px 18px;background:var(--sand-soft);
+  border:1px solid var(--sand);display:flex;gap:14px;align-items:center;flex-wrap:wrap
+}
+.savefile .nm{
+  flex:1;min-width:180px;font-family:ui-monospace,Menlo,monospace;
+  font-size:11.5px;word-break:break-all;color:var(--ink)
+}
+
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <button class="burger" id="burger" aria-expanded="false" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="wordmark">
+    <b>PARFAIT</b>
+    <i>Wallpaper Services &middot; San Francisco &amp; the Bay Area</i>
+  </div>
+  <div class="tally" id="tally"></div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<nav class="drawer" id="drawer" aria-label="Portfolio navigation">
+  <div class="drawer-sec">
+    <span class="eyebrow">Arrange by</span>
+    <div class="arrange" id="arrange"></div>
+  </div>
+  <div class="drawer-sec" id="filterSec">
+    <span class="eyebrow">Show only</span>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div class="drawer-foot">
+    <button class="linkish" id="openAdmin">Manage catalogue</button>
+    <button class="linkish" id="showAll">Reset view</button>
+    <button class="linkish" id="tvToggle">Television mode</button>
+  </div>
+</nav>
+
+<main class="stage">
+  <div class="alarm" id="check" hidden></div>
+  <section class="opener fade">
+    <h1>Every wall we finish is <em class="gold">a commission</em>, not a purchase.</h1>
+    <p>Hand-painted silks, mica and mother-of-pearl, scenic murals &mdash; installed across San Francisco and the wider Bay Area, from Marin to the Napa Valley. Our showroom is in San Rafael. Browse the work the way you think about it.</p>
+  </section>
+  <div id="gallery"></div>
+</main>
+
+<!-- Lightbox -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Project detail">
+  <button class="lb-shut" id="lbShut" aria-label="Close">&times;</button>
+  <div class="lb-inner">
+    <div class="lb-face" id="lbFace"></div>
+    <div class="lb-body" id="lbBody"></div>
+  </div>
+</div>
+
+<!-- Admin -->
+<div class="admin" id="admin" role="dialog" aria-modal="true" aria-label="Manage catalogue">
+  <div class="admin-wrap">
+    <div class="admin-top">
+      <h2>Manage catalogue</h2>
+      <button id="adminShut">Back to portfolio</button>
+    </div>
+
+    <div class="alarm" id="alarmAdmin" hidden></div>
+
+    <div id="adminGate" class="gate">
+      <p>This area is for showroom staff. Enter the passphrase to continue.</p>
+      <label><span>Passphrase</span><input type="password" id="pin" autocomplete="off"></label>
+      <div class="actions"><button class="btn" id="pinGo">Unlock</button><span class="said" id="pinSaid"></span></div>
+    </div>
+
+    <div id="adminBody" hidden>
+      <div class="form">
+        <div class="wide">
+          <label><span>Photograph</span></label>
+          <div class="dropzone" id="dz">
+            <div id="dzPreview"></div>
+            <p id="dzText">Tap to choose a photograph, or drag one here.<br>Portrait orientation reads best on the rail.</p>
+          </div>
+          <input type="file" id="file" accept="image/*" hidden>
+          <div class="savefile" id="savefile" hidden>
+            <span class="nm" id="fileName"></span>
+            <button class="btn" id="saveFileBtn">Save photo file</button>
+          </div>
+        </div>
+        <div class="wide">
+          <label><span>Photo quality</span>
+            <select id="f_quality">
+              <option value="2200">Presentation &mdash; 2200 px, recommended</option>
+              <option value="3000">Archive &mdash; 3000 px, near-original detail</option>
+              <option value="1600">Showroom &mdash; 1600 px, fastest to load</option>
+              <option value="orig">Original file &mdash; untouched, slowest</option>
+            </select>
+          </label>
+        </div>
+        <label><span>Brand</span><select id="f_brand"></select></label>
+        <label id="otherWrap" hidden><span>Brand name</span>
+          <input type="text" id="f_brand_other" placeholder="Type the house or maker">
+        </label>
+        <label><span>Pattern</span><input type="text" id="f_pattern" placeholder="Askew"></label>
+        <label><span>Colourway / substrate</span><input type="text" id="f_colorway" placeholder="Custom on antiqued gold"></label>
+        <label><span>Room</span><select id="f_room"></select></label>
+        <label id="otherRoomWrap" hidden><span>Room name</span>
+          <input type="text" id="f_room_other" placeholder="Type the room">
+        </label>
+        <label><span>Style</span><select id="f_style"></select></label>
+        <label id="otherStyleWrap" hidden><span>Style name</span>
+          <input type="text" id="f_style_other" placeholder="Type the style">
+        </label>
+        <label><span>Project</span><input type="text" id="f_project" placeholder="Belvedere residence"></label>
+        <label><span>City</span><input type="text" id="f_city" placeholder="Belvedere"></label>
+        <label><span>Year</span><input type="number" id="f_year" min="1990" max="2100" placeholder="2026"></label>
+        <label><span>Panels hung</span><input type="number" id="f_panels" min="1" placeholder="8"></label>
+        <label class="wide"><span>Note for the client</span>
+          <textarea id="f_notes" placeholder="One or two sentences on the commission &mdash; the ground colour chosen, the seam layout, what the room does with the light."></textarea>
+        </label>
+      </div>
+      <div class="actions">
+        <button class="btn" id="save">Save to catalogue</button>
+        <button class="btn btn-ghost" id="clear">Clear form</button>
+        <span class="said" id="said"></span>
+      </div>
+
+      <div class="ledger">
+        <span class="eyebrow">In the catalogue<span id="usage" style="float:right;text-transform:none;letter-spacing:.1em"></span></span>
+        <div id="ledger"></div>
+      </div>
+
+      <div class="pub-head">
+        <h3>Publish</h3>
+        <span class="eyebrow" id="pubCount"></span>
+      </div>
+      <div id="publish"></div>
+
+      <div class="actions" style="margin-top:30px">
+        <button class="btn btn-ghost" id="diagBtn">Storage check</button>
+        <span class="said" id="ioSaid"></span>
+      </div>
+      <pre id="diag" hidden style="margin-top:20px;padding:18px;background:var(--card);border:1px solid var(--rail);font-family:ui-monospace,Menlo,monospace;font-size:11.5px;line-height:1.7;color:var(--ink);white-space:pre-wrap;overflow-x:auto"></pre>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- The catalogue lives in its own file so that walls survive every
+     change to the programme, and so every device reads the same set. -->
+<script src="catalogue.js"></script>
+<script>
+/* ═══════════════════════════════════════════
+   WHERE THE CATALOGUE LIVES
+
+   Published walls come from catalogue.js, which sits
+   in the repository beside this file. Every device
+   that opens the address reads the same catalogue.
+
+   Photographs are ordinary image files in photos/.
+   There is no browser storage limit on them and no
+   forced reduction.
+
+   Browser storage is used only for a working draft —
+   walls entered but not yet published. Publishing
+   means downloading catalogue.js and the photographs,
+   then uploading both to the repository.
+   ═══════════════════════════════════════════ */
+
+const PHOTO_DIR = 'photos/';
+const KEY_DRAFT = 'parfait:draft';
+const KEY_Q     = 'parfait:quality';
+const KEY_TV    = 'parfait:tv';
+const PASS      = 'Access1';
+
+const BRANDS = [
+  'Anna French','Anthology','Arte','Brunschwig & Fils','Calico Wallpaper','Casadeco',
+  'Casamance','Clarence House','Cole & Son','Colefax and Fowler','Coordonné','Cowtan & Tout',
+  'De Gournay','Dedar','Designers Guild','Divine Savages','Eijffinger','Élitis',
+  'Farrow & Ball','Flavor Paper','Fromental','GP & J Baker','Gracie','Graham & Brown',
+  'Harlequin','Hermès','Holland & Sherry','Holly Hunt','House of Hackney','Iksel',
+  'Innovations','Jim Thompson','Kravet','Larsen','Lee Jofa','Lelièvre','Liberty',
+  'Little Greene','Maya Romanoff','Morris & Co.','Mulberry Home','Nina Campbell','Nobilis',
+  'Omexco','Osborne & Little','Phillip Jeffries','Pierre Frey','Porter Teleo',
+  'Ralph Lauren Home','Rebel Walls','Romo','Rubelli','Sandberg','Sanderson','Scalamandré',
+  'Schumacher','Stark','Studio Printworks','Thibaut','Timorous Beasties','Vescom',
+  'Weitzner','York Wallcoverings','Zimmer + Rohde','Zoffany','Zuber'
+];
+const OTHER = 'Other';
+
+const ROOM_GROUPS = [
+  {group:'Entry & stair hall', rooms:['Entry hall','Stair hall','Foyer','Vestibule','Mudroom','Landing']},
+  {group:'Living & sitting',   rooms:['Living room','Sitting room','Family room','Drawing room','Den','Sunroom','Media room']},
+  {group:'Dining & kitchen',   rooms:['Dining room','Breakfast room','Kitchen','Butler\'s pantry','Pantry','Bar']},
+  {group:'Bathrooms',          rooms:['Bathroom','Powder room','Water closet','Primary bathroom','Guest bathroom']},
+  {group:'Bedrooms',           rooms:['Primary bedroom','Guest bedroom','Bedroom']},
+  {group:'Children\'s rooms',  rooms:['Nursery','Kids room','Playroom','Teen room']},
+  {group:'Work & study',       rooms:['Study','Home office','Library']},
+  {group:'Dressing & utility', rooms:['Dressing room','Walk-in closet','Laundry room']},
+  {group:'Halls & corridors',  rooms:['Hallway','Corridor','Gallery wall']},
+  {group:'Ceilings & details', rooms:['Ceiling','Alcove','Niche','Stair risers','Wainscot panel','Door panel','Screen or folding panel']},
+  {group:'Commercial',         rooms:['Office','Reception','Tasting room','Restaurant','Hotel suite','Retail']}
+];
+const ROOMS = ROOM_GROUPS.reduce((a,g)=>a.concat(g.rooms),[]);
+const ROOM_OF = {};
+ROOM_GROUPS.forEach(g=>g.rooms.forEach(r=>{ ROOM_OF[r]=g.group; }));
+const roomGroup = r => ROOM_OF[r] || r || 'Unassigned';
+
+const STYLES = ['Chinoiserie','Floral','Damask','Geometric','Grasscloth & texture','Mural & scenic','Metallic'];
+
+const VIEWS = [
+  {id:'brand', label:'Brand', note:'House',   key:i=>i.brand || 'Unattributed'},
+  {id:'room',  label:'Room',  note:'Setting', key:i=>roomGroup(i.room)},
+  {id:'style', label:'Style', note:'Motif',   key:i=>i.style || 'Unassigned'}
+];
+
+const QUALITY = {
+  '1600': {max:1600, q:0.86}, '2200': {max:2200, q:0.88},
+  '3000': {max:3000, q:0.92}, 'orig': {max:0, q:0}
+};
+
+/* ═══════════ helpers ═══════════ */
+const $  = s => document.querySelector(s);
+const el = (t,c) => { const n=document.createElement(t); if(c) n.className=c; return n; };
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const kb = b => b < 1048576 ? Math.round(b/1024)+' KB' : (b/1048576).toFixed(1)+' MB';
+const weight = d => Math.round((d.length - (d.indexOf(',')+1)) * 0.75);
+
+function slug(s){
+  return String(s||'').toLowerCase()
+    .normalize ? String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,44)
+    : String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-');
+}
+function photoBase(it){
+  const parts = [slug(it.brand), slug(it.pattern), slug(it.project)].filter(Boolean);
+  return (parts.join('-') || 'wall') + '-' + String(it.id).slice(-4) + '.jpg';
+}
+function download(name, content, type){
+  try{
+    const blob = (content instanceof Blob) ? content : new Blob([content], {type:type||'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = el('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 6000);
+    return true;
+  }catch(e){ return false; }
+}
+function dataURLtoBlob(d){
+  const i = d.indexOf(',');
+  const meta = d.slice(0,i), body = d.slice(i+1);
+  const mime = (meta.match(/data:([^;]+)/) || [])[1] || 'application/octet-stream';
+  if(meta.indexOf('base64') === -1) return new Blob([decodeURIComponent(body)], {type:mime});
+  const bin = atob(body), buf = new Uint8Array(bin.length);
+  for(let n=0;n<bin.length;n++) buf[n] = bin.charCodeAt(n);
+  return new Blob([buf], {type:mime});
+}
+const local = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+
+/* ═══════════ swatches ═══════════ */
+function swatch(style, seed){
+  const grounds = {
+    'Chinoiserie':['#E3D6C4','#F1EAE0'],'Floral':['#EBE2E0','#F5EFEE'],
+    'Damask':['#D9E1EA','#EDF1F5'],'Geometric':['#DEE4E9','#EFF2F4'],
+    'Grasscloth & texture':['#E2D7C4','#F2EBE0'],'Mural & scenic':['#D8E1E9','#ECF1F4'],
+    'Metallic':['#E7DAC5','#F4EDE2']
+  };
+  const g = grounds[style] || ['#E4DDD4','#F3EFEA'];
+  const uidp = 'sw' + String(seed).replace(/[^a-z0-9]/gi,'');
+  let motif;
+  if(style === 'Grasscloth & texture'){
+    motif = '<pattern id="'+uidp+'p" width="7" height="7" patternUnits="userSpaceOnUse">'
+      + '<path d="M0 0V7M3.5 0V7" stroke="#13304E" stroke-opacity=".26" stroke-width=".7"/>'
+      + '<path d="M0 3.5H7" stroke="#13304E" stroke-opacity=".14" stroke-width=".7"/></pattern>';
+  } else if(style === 'Geometric'){
+    motif = '<pattern id="'+uidp+'p" width="26" height="30" patternUnits="userSpaceOnUse">'
+      + '<path d="M13 1 25 8v14L13 29 1 22V8Z" fill="none" stroke="#13304E" stroke-opacity=".3" stroke-width=".9"/></pattern>';
+  } else if(style === 'Metallic'){
+    motif = '<pattern id="'+uidp+'p" width="20" height="20" patternUnits="userSpaceOnUse">'
+      + '<circle cx="10" cy="10" r="6.5" fill="none" stroke="#13304E" stroke-opacity=".28" stroke-width=".8"/>'
+      + '<circle cx="0" cy="0" r="6.5" fill="none" stroke="#9A7639" stroke-opacity=".3" stroke-width=".8"/></pattern>';
+  } else if(style === 'Damask'){
+    motif = '<pattern id="'+uidp+'p" width="34" height="46" patternUnits="userSpaceOnUse">'
+      + '<path d="M17 4c7 6 10 12 10 18s-4 12-10 19c-6-7-10-13-10-19S10 10 17 4Z" fill="none" stroke="#13304E" stroke-opacity=".3" stroke-width=".9"/>'
+      + '<circle cx="17" cy="23" r="2.6" fill="#9A7639" fill-opacity=".3"/></pattern>';
+  } else {
+    motif = '<pattern id="'+uidp+'p" width="46" height="62" patternUnits="userSpaceOnUse">'
+      + '<path d="M6 60C14 44 20 34 34 22" fill="none" stroke="#13304E" stroke-opacity=".34" stroke-width=".9"/>'
+      + '<path d="M16 44c-3-5-2-9 1-12M24 33c-2-6 0-9 4-11M12 51c4-1 7 1 8 5" fill="none" stroke="#9A7639" stroke-opacity=".42" stroke-width=".8"/>'
+      + '<ellipse cx="35" cy="20" rx="4" ry="2.6" fill="#9A7639" fill-opacity=".38" transform="rotate(-32 35 20)"/>'
+      + '<ellipse cx="22" cy="35" rx="3.4" ry="2.2" fill="#13304E" fill-opacity=".16" transform="rotate(-25 22 35)"/></pattern>';
+  }
+  return '<svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
+    + '<defs>' + motif
+    + '<linearGradient id="'+uidp+'g" x1="0" y1="0" x2="1" y2="1">'
+    + '<stop offset="0" stop-color="'+g[1]+'"/><stop offset="1" stop-color="'+g[0]+'"/></linearGradient></defs>'
+    + '<rect width="200" height="300" fill="url(#'+uidp+'g)"/>'
+    + '<rect width="200" height="300" fill="url(#'+uidp+'p)"/></svg>';
+}
+
+/* ═══════════ state ═══════════ */
+let published = (window.PARFAIT_CATALOGUE && Array.isArray(window.PARFAIT_CATALOGUE.items))
+  ? window.PARFAIT_CATALOGUE.items.slice() : [];
+const catalogueLoaded = !!(window.PARFAIT_CATALOGUE && Array.isArray(window.PARFAIT_CATALOGUE.items));
+
+let draft = {};        // id -> item, or null to mark a published wall deleted
+let previews = {};     // id -> small dataURL, for unpublished walls
+let files = {};        // id -> full dataURL held in memory, awaiting download
+let savedFiles = {};   // id -> true once the photograph file has been downloaded
+
+let view = 'brand';
+let filters = new Set();
+let editing = null;
+let pending = null;    // staged full-size dataURL
+let pendingName = '';
+let unlocked = false;
+let storageOK = false;
+
+const FIELDS = ['brand','pattern','colorway','room','style','project','city','year','panels','notes','photo'];
+
+function loadDraft(){
+  const raw = local.get(KEY_DRAFT);
+  if(!raw) return;
+  try{
+    const d = JSON.parse(raw);
+    draft = d.draft || {};
+    previews = d.previews || {};
+    savedFiles = d.savedFiles || {};
+  }catch(e){ draft = {}; previews = {}; savedFiles = {}; }
+}
+function saveDraft(){
+  const ok = local.set(KEY_DRAFT, JSON.stringify({draft, previews, savedFiles}));
+  if(!ok) toast('Draft could not be saved locally');
+  return ok;
+}
+/* A draft entry identical to what is already published has served its purpose. */
+function pruneDraft(){
+  let changed = false;
+  for(const id in draft){
+    const p = published.filter(x=>x.id===id)[0];
+    if(draft[id] === null){
+      if(!p){ delete draft[id]; changed = true; }
+    } else if(p && sameItem(p, draft[id])){
+      delete draft[id]; delete previews[id]; delete savedFiles[id]; changed = true;
+    }
+  }
+  if(changed) saveDraft();
+}
+function sameItem(a,b){
+  for(const f of FIELDS){ if(String(a[f]==null?'':a[f]) !== String(b[f]==null?'':b[f])) return false; }
+  return true;
+}
+function merged(){
+  const out = [], seen = {};
+  published.forEach(p=>{
+    seen[p.id] = true;
+    if(Object.prototype.hasOwnProperty.call(draft, p.id)){
+      if(draft[p.id]) out.push(draft[p.id]);
+    } else out.push(p);
+  });
+  for(const id in draft){ if(!seen[id] && draft[id]) out.push(draft[id]); }
+  return out;
+}
+const isPending = id => Object.prototype.hasOwnProperty.call(draft, id);
+
+function raiseAlarm(){
+  const n = $('#alarmAdmin');
+  n.innerHTML = '<b>Nothing entered here will be kept</b>'
+    + 'This browser is not allowing a local draft to be saved, so walls entered here would be '
+    + 'lost on reload. Published walls still display normally.';
+  n.hidden = false;
+  const s = $('#save');
+  s.disabled = true; s.style.opacity = '.45'; s.style.cursor = 'not-allowed';
+  s.textContent = 'Saving unavailable here';
+}
+
+/* ═══════════ drawer ═══════════ */
+const currentView = () => VIEWS.filter(v=>v.id===view)[0];
+function buildDrawer(){
+  const box = $('#arrange'); box.innerHTML = '';
+  VIEWS.forEach(v=>{
+    const b = el('button');
+    b.innerHTML = v.label + '<small>' + v.note + '</small>';
+    b.setAttribute('aria-current', v.id===view);
+    b.onclick = ()=>{ view=v.id; filters.clear(); buildDrawer(); render(); closeDrawer(); };
+    box.appendChild(b);
+  });
+  const box2 = $('#chips'); box2.innerHTML = '';
+  const all = merged(), k = currentView().key;
+  const groups = [];
+  all.forEach(i=>{ const g=k(i); if(groups.indexOf(g)===-1) groups.push(g); });
+  groups.sort((a,b)=>a.localeCompare(b));
+  groups.forEach(g=>{
+    const c = el('button','chip');
+    c.textContent = g;
+    c.setAttribute('aria-pressed', filters.has(g));
+    c.onclick = ()=>{ filters.has(g)?filters.delete(g):filters.add(g); buildDrawer(); render(); };
+    box2.appendChild(c);
+  });
+  $('#filterSec').hidden = !groups.length;
+}
+function openDrawer(){ $('#drawer').classList.add('on'); $('#scrim').classList.add('on'); $('#burger').setAttribute('aria-expanded','true'); document.body.classList.add('locked'); }
+function closeDrawer(){ $('#drawer').classList.remove('on'); $('#scrim').classList.remove('on'); $('#burger').setAttribute('aria-expanded','false'); document.body.classList.remove('locked'); }
+$('#burger').onclick = ()=> $('#drawer').classList.contains('on') ? closeDrawer() : openDrawer();
+$('#scrim').onclick = closeDrawer;
+$('#showAll').onclick = ()=>{ filters.clear(); buildDrawer(); render(); closeDrawer(); };
+
+/* ═══════════ gallery ═══════════ */
+function faceHTML(it){
+  const src = previews[it.id] || it.photo || '';
+  return swatch(it.style, it.id)
+    + (src ? '<img src="'+esc(src)+'" alt="'+esc(it.pattern)+', '+esc(String(it.room||'').toLowerCase())+'" loading="lazy">' : '');
+}
+function drop(it){
+  const b = el('button','drop');
+  b.setAttribute('aria-label', (it.pattern||'Wall') + (it.brand ? ' by ' + it.brand : ''));
+  b.innerHTML =
+    '<div class="drop-face">' + faceHTML(it)
+      + (isPending(it.id) ? '<span class="pend">Not published</span>' : '')
+      + '</div>'
+    + '<div class="drop-meta">'
+      + '<div class="b">' + esc(it.brand) + '</div>'
+      + '<div class="p">' + esc(it.pattern) + '</div>'
+      + '<div class="c">' + esc(it.room) + (it.city ? ' &middot; ' + esc(it.city) : '') + '</div>'
+    + '</div>';
+  b.onclick = ()=>openLB(it);
+  return b;
+}
+function render(){
+  const v = currentView();
+  const all = merged();
+  const shown = all.filter(i=> !filters.size || filters.has(v.key(i)) );
+  $('#tally').textContent = shown.length + (shown.length===1 ? ' wall' : ' walls');
+
+  const g = $('#gallery'); g.innerHTML = '';
+  if(!shown.length){
+    const z = el('div','void');
+    z.innerHTML = catalogueLoaded
+      ? '<h3>The catalogue is empty.</h3><p>Add a wall from the manage screen, then publish it so every device shows the same work.</p>'
+      : '<h3>No catalogue file found.</h3><p>This portfolio reads its walls from <code>catalogue.js</code> in the same folder. Add a wall from the manage screen and the publish step will create that file for you.</p>';
+    const b = el('button'); b.textContent = 'Manage catalogue'; b.onclick = openAdmin;
+    z.appendChild(b); g.appendChild(z); cur = -1; return;
+  }
+  const buckets = {};
+  shown.forEach(i=>{ const k=v.key(i); (buckets[k]=buckets[k]||[]).push(i); });
+  Object.keys(buckets).sort((a,b)=>a.localeCompare(b)).forEach((k,gi)=>{
+    const list = buckets[k].sort((a,b)=>(Number(b.year)||0)-(Number(a.year)||0));
+    const sec = el('section','group fade');
+    sec.style.animationDelay = Math.min(gi*70,420) + 'ms';
+    const head = el('div','group-head');
+    head.innerHTML = '<h2>'+esc(k)+'</h2><div class="hair"></div><span class="eyebrow">'
+      + list.length + (list.length===1?' wall':' walls') + '</span>';
+    sec.appendChild(head);
+    const rail = el('div','rail'), row = el('div','row');
+    list.forEach(it=>row.appendChild(drop(it)));
+    rail.appendChild(row); sec.appendChild(rail); g.appendChild(sec);
+  });
+  cur = -1;
+}
+
+/* ═══════════ lightbox ═══════════ */
+function openLB(it){
+  const src = previews[it.id] || it.photo || '';
+  $('#lbFace').innerHTML = src
+    ? swatch(it.style, it.id) + '<img src="'+esc(src)+'" alt="'+esc(it.pattern)+'">'
+    : swatch(it.style, it.id);
+  const rows = [
+    ['House', it.brand], ['Pattern', it.pattern], ['Colourway', it.colorway],
+    ['Room', it.room],
+    ['Grouped as', roomGroup(it.room) !== it.room ? roomGroup(it.room) : ''],
+    ['Style', it.style], ['Project', it.project], ['Location', it.city],
+    ['Installed', it.year], ['Panels hung', it.panels]
+  ].filter(r=>r[1]);
+  $('#lbBody').innerHTML =
+    '<span class="eyebrow">' + esc(it.brand) + '</span>'
+    + '<h3>' + esc(it.pattern) + '</h3>'
+    + (it.notes ? '<p class="lb-note">' + esc(it.notes) + '</p>' : '')
+    + '<dl class="spec">' + rows.map(r=>'<div><dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd></div>').join('') + '</dl>';
+  $('#lb').classList.add('on'); document.body.classList.add('locked');
+  $('#lbShut').focus();
+}
+function closeLB(){
+  $('#lb').classList.remove('on');
+  if(!$('#admin').classList.contains('on')) document.body.classList.remove('locked');
+}
+$('#lbShut').onclick = closeLB;
+$('#lb').onclick = e => { if(e.target.id === 'lb') closeLB(); };
+
+/* ═══════════ television mode ═══════════ */
+let tvOn = false, cur = -1;
+function setTV(on, remember){
+  tvOn = !!on;
+  document.body.classList.toggle('tv', tvOn);
+  $('#tvToggle').textContent = tvOn ? 'Television mode · on' : 'Television mode';
+  if(remember) local.set(KEY_TV, tvOn ? '1' : '0');
+  if(!tvOn) clearCursor();
+}
+$('#tvToggle').onclick = ()=>{ setTV(!tvOn, true); closeDrawer(); };
+const panels = () => Array.prototype.slice.call(document.querySelectorAll('.drop'));
+function clearCursor(){
+  Array.prototype.forEach.call(document.querySelectorAll('.cursor'), n=>n.classList.remove('cursor'));
+  cur = -1;
+}
+function moveTo(i){
+  const all = panels();
+  if(!all.length) return;
+  i = Math.max(0, Math.min(all.length-1, i));
+  clearCursor();
+  all[i].classList.add('cursor'); cur = i;
+  try{ all[i].scrollIntoView({behavior:'smooth',block:'center',inline:'center'}); }
+  catch(e){ all[i].scrollIntoView(); }
+}
+function moveRail(dir){
+  const all = panels();
+  if(!all.length) return;
+  const groups = [];
+  all.forEach((d,i)=>{
+    const g = d.parentNode.parentNode.parentNode;
+    if(!groups.length || groups[groups.length-1].g !== g) groups.push({g:g, first:i});
+  });
+  let here = 0;
+  groups.forEach((gr,n)=>{ if(gr.first <= (cur<0?0:cur)) here = n; });
+  const next = Math.max(0, Math.min(groups.length-1, here + dir));
+  moveTo(groups[next].first);
+}
+document.addEventListener('keydown', e=>{
+  const t = e.target;
+  if(t && /^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName)) return;
+  if($('#admin').classList.contains('on')) return;
+  if(e.key === 'Escape' || e.key === 'Backspace'){
+    if($('#lb').classList.contains('on')){ e.preventDefault(); return closeLB(); }
+    if($('#drawer').classList.contains('on')){ e.preventDefault(); return closeDrawer(); }
+    return;
+  }
+  if($('#lb').classList.contains('on')){
+    if(e.key === 'Enter'){ e.preventDefault(); closeLB(); }
+    return;
+  }
+  if($('#drawer').classList.contains('on')) return;
+  switch(e.key){
+    case 'ArrowRight': e.preventDefault(); moveTo(cur<0?0:cur+1); break;
+    case 'ArrowLeft':  e.preventDefault(); moveTo(cur<0?0:cur-1); break;
+    case 'ArrowDown':  e.preventDefault(); moveRail(cur<0?0:1); break;
+    case 'ArrowUp':
+      e.preventDefault();
+      if(cur <= 0){ clearCursor(); openDrawer(); } else moveRail(-1);
+      break;
+    case 'Enter': case ' ':
+      if(cur >= 0){ e.preventDefault(); panels()[cur].click(); }
+      break;
+  }
+});
+
+/* ═══════════ admin ═══════════ */
+function fill(sel, arr){ sel.innerHTML = arr.map(a=>'<option>'+esc(a)+'</option>').join(''); }
+function setSelect(sel, val){
+  if(!val){ sel.selectedIndex = 0; return; }
+  let has = false;
+  Array.prototype.forEach.call(sel.querySelectorAll('option'), o=>{ if(o.value===val) has=true; });
+  if(!has){ const o = el('option'); o.value=val; o.textContent=val; sel.appendChild(o); }
+  sel.value = val;
+}
+function buildSelects(){
+  fill($('#f_brand'), BRANDS.concat([OTHER]));
+  fill($('#f_style'), STYLES.concat([OTHER]));
+  $('#f_room').innerHTML = ROOM_GROUPS.map(g =>
+    '<optgroup label="'+esc(g.group)+'">' + g.rooms.map(r=>'<option>'+esc(r)+'</option>').join('') + '</optgroup>'
+  ).join('') + '<option>'+OTHER+'</option>';
+  $('#f_brand').onchange = toggleOtherBrand;
+  $('#f_room').onchange  = toggleOtherRoom;
+  $('#f_style').onchange = toggleOtherStyle;
+  $('#f_quality').onchange = ()=> local.set(KEY_Q, $('#f_quality').value);
+}
+function toggleOtherBrand(){ const on = $('#f_brand').value===OTHER; $('#otherWrap').hidden = !on; if(on) $('#f_brand_other').focus(); }
+function toggleOtherRoom(){  const on = $('#f_room').value===OTHER;  $('#otherRoomWrap').hidden = !on; if(on) $('#f_room_other').focus(); }
+function toggleOtherStyle(){ const on = $('#f_style').value===OTHER; $('#otherStyleWrap').hidden = !on; if(on) $('#f_style_other').focus(); }
+
+function openAdmin(){
+  $('#admin').classList.add('on'); document.body.classList.add('locked'); closeDrawer();
+  if(unlocked){ ledger(); publishPanel(); }
+}
+$('#openAdmin').onclick = openAdmin;
+$('#adminShut').onclick = ()=>{
+  $('#admin').classList.remove('on'); document.body.classList.remove('locked');
+  buildDrawer(); render();
+};
+$('#pinGo').onclick = ()=>{
+  if($('#pin').value.trim() === PASS){
+    unlocked = true; $('#adminGate').hidden = true; $('#adminBody').hidden = false;
+    ledger(); publishPanel();
+  } else $('#pinSaid').textContent = 'That passphrase does not match.';
+};
+$('#pin').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#pinGo').click(); });
+
+/* ── photograph intake ── */
+function fileToDataURL(f){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = ()=>res(r.result); r.onerror = ()=>rej(new Error('read'));
+    r.readAsDataURL(f);
+  });
+}
+function loadImage(src){
+  return new Promise((res,rej)=>{
+    const im = new Image();
+    im.onload = ()=>res(im); im.onerror = ()=>rej(new Error('decode'));
+    im.src = src;
+  });
+}
+function scaleStepped(src, w, hh, tw, th){
+  let cur2 = el('canvas'); cur2.width=w; cur2.height=hh;
+  let cx = cur2.getContext('2d');
+  cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = 'high';
+  cx.drawImage(src,0,0,w,hh);
+  let cw=w, ch=hh;
+  while(cw/2 >= tw && ch/2 >= th){
+    const n = el('canvas'); n.width=Math.round(cw/2); n.height=Math.round(ch/2);
+    const nc = n.getContext('2d');
+    nc.imageSmoothingEnabled = true; nc.imageSmoothingQuality = 'high';
+    nc.drawImage(cur2,0,0,n.width,n.height);
+    cur2 = n; cw = n.width; ch = n.height;
+  }
+  const out = el('canvas'); out.width=tw; out.height=th;
+  const oc = out.getContext('2d');
+  oc.imageSmoothingEnabled = true; oc.imageSmoothingQuality = 'high';
+  oc.drawImage(cur2,0,0,tw,th);
+  return out;
+}
+async function shrink(dataURL, maxEdge, q){
+  const im = await loadImage(dataURL);
+  const w = im.naturalWidth, hh = im.naturalHeight;
+  const s = Math.min(1, maxEdge/Math.max(w,hh));
+  const tw = Math.max(1,Math.round(w*s)), th = Math.max(1,Math.round(hh*s));
+  return scaleStepped(im, w, hh, tw, th).toDataURL('image/jpeg', q);
+}
+$('#dz').onclick = ()=> $('#file').click();
+$('#dz').addEventListener('dragover', e=>{ e.preventDefault(); $('#dz').classList.add('hot'); });
+$('#dz').addEventListener('dragleave', ()=> $('#dz').classList.remove('hot'));
+$('#dz').addEventListener('drop', e=>{ e.preventDefault(); $('#dz').classList.remove('hot'); if(e.dataTransfer.files[0]) intake(e.dataTransfer.files[0]); });
+$('#file').onchange = e=>{ if(e.target.files[0]) intake(e.target.files[0]); };
+
+async function intake(file){
+  if(!file.type || file.type.indexOf('image/') !== 0){ toast('That file is not an image'); return; }
+  const pick = $('#f_quality').value, cfg = QUALITY[pick] || QUALITY['2200'];
+  $('#dzText').textContent = 'Processing…';
+  try{
+    if(pick === 'orig'){
+      pending = await fileToDataURL(file);
+      let dim = '';
+      try{ const im = await loadImage(pending); dim = im.naturalWidth+' × '+im.naturalHeight+' px · '; }catch(e){}
+      showPending(dim + kb(weight(pending)) + ' · unmodified');
+    } else {
+      let src, w, hh, bmp = null;
+      try{
+        bmp = await createImageBitmap(file, {imageOrientation:'from-image'});
+        src = bmp; w = bmp.width; hh = bmp.height;
+      }catch(e){
+        const im = await loadImage(await fileToDataURL(file));
+        src = im; w = im.naturalWidth; hh = im.naturalHeight;
+      }
+      const s = Math.min(1, cfg.max/Math.max(w,hh));
+      const tw = Math.max(1,Math.round(w*s)), th = Math.max(1,Math.round(hh*s));
+      pending = scaleStepped(src, w, hh, tw, th).toDataURL('image/jpeg', cfg.q);
+      if(bmp && bmp.close) bmp.close();
+      showPending(tw+' × '+th+' px · '+kb(weight(pending)) + (s===1 ? ' · no reduction needed' : ' · from '+w+' × '+hh));
+    }
+    refreshFileName();
+  }catch(err){
+    pending = null;
+    $('#dzText').textContent = 'That image could not be read. Try another file.';
+  }
+}
+function showPending(line){
+  $('#dzPreview').innerHTML = '<img src="'+pending+'" alt="Selected photograph">';
+  $('#dzText').innerHTML = line + '<br>Tap to choose a different photograph.';
+}
+function refreshFileName(){
+  if(!pending){ $('#savefile').hidden = true; return; }
+  const provisional = {
+    id: editing || 'new0',
+    brand: readForm().brand, pattern: readForm().pattern, project: readForm().project
+  };
+  pendingName = photoBase(provisional);
+  $('#fileName').textContent = PHOTO_DIR + pendingName;
+  $('#savefile').hidden = false;
+}
+['#f_brand','#f_pattern','#f_project'].forEach(sel=>{
+  const n = $(sel);
+  n.addEventListener('change', ()=>{ if(pending) refreshFileName(); });
+  n.addEventListener('blur',   ()=>{ if(pending) refreshFileName(); });
+});
+$('#saveFileBtn').onclick = ()=>{
+  if(!pending) return;
+  if(download(pendingName, dataURLtoBlob(pending))) toast('Photo file saved');
+  else toast('This browser blocked the download');
+};
+
+/* ── form ── */
+function readForm(){
+  const bs = $('#f_brand').value, bt = $('#f_brand_other').value.trim();
+  const rs = $('#f_room').value,  rt = $('#f_room_other').value.trim();
+  const ss = $('#f_style').value, st = $('#f_style_other').value.trim();
+  return {
+    brand:  (bs===OTHER && bt) ? bt : bs,
+    pattern:$('#f_pattern').value.trim(),
+    colorway:$('#f_colorway').value.trim(),
+    room:   (rs===OTHER && rt) ? rt : rs,
+    style:  (ss===OTHER && st) ? st : ss,
+    project:$('#f_project').value.trim(),
+    city:   $('#f_city').value.trim(),
+    year:   $('#f_year').value,
+    panels: $('#f_panels').value,
+    notes:  $('#f_notes').value.trim()
+  };
+}
+function writeForm(it){
+  const known = !it.brand || BRANDS.indexOf(it.brand) !== -1;
+  $('#f_brand').value = known ? (it.brand || BRANDS[0]) : OTHER;
+  $('#f_brand_other').value = known ? '' : (it.brand || '');
+  toggleOtherBrand();
+  $('#f_pattern').value = it.pattern || '';
+  $('#f_colorway').value = it.colorway || '';
+  setSelect($('#f_room'), it.room); $('#f_room_other').value=''; toggleOtherRoom();
+  setSelect($('#f_style'), it.style); $('#f_style_other').value=''; toggleOtherStyle();
+  $('#f_project').value = it.project || '';
+  $('#f_city').value = it.city || '';
+  $('#f_year').value = it.year || '';
+  $('#f_panels').value = it.panels || '';
+  $('#f_notes').value = it.notes || '';
+}
+function clearForm(){
+  editing = null; pending = null; pendingName = '';
+  writeForm({});
+  $('#dzPreview').innerHTML = '';
+  $('#dzText').innerHTML = 'Tap to choose a photograph, or drag one here.<br>Portrait orientation reads best on the rail.';
+  $('#savefile').hidden = true;
+  $('#save').textContent = 'Save to catalogue';
+  $('#said').textContent = '';
+}
+$('#clear').onclick = clearForm;
+
+$('#save').onclick = async ()=>{
+  const d = readForm();
+  if(!d.pattern){ $('#said').textContent='A pattern name is required.'; $('#f_pattern').focus(); return; }
+  if(d.brand === OTHER){ $('#said').textContent='Type the brand name, or pick a house from the list.'; $('#f_brand_other').focus(); return; }
+  if(d.room  === OTHER){ $('#said').textContent='Type the room name, or pick one from the list.'; $('#f_room_other').focus(); return; }
+  if(d.style === OTHER){ $('#said').textContent='Type the style name, or pick one from the list.'; $('#f_style_other').focus(); return; }
+
+  const id = editing || uid();
+  const before = editing ? (draft[editing] || published.filter(x=>x.id===editing)[0] || {}) : {};
+  const it = {id:id};
+  FIELDS.forEach(f=>{ if(f !== 'photo') it[f] = d[f]; });
+  it.photo = before.photo || '';
+
+  if(pending){
+    const name = photoBase(it);
+    it.photo = PHOTO_DIR + name;
+    files[id] = pending;
+    savedFiles[id] = (pendingName === name && savedFiles[id]) ? true : false;
+    try{ previews[id] = await shrink(pending, 620, 0.6); }catch(e){ previews[id] = pending; }
+  }
+
+  draft[id] = it;
+  if(!saveDraft()){ $('#said').textContent = 'The draft is too large for this browser. Publish what you have, then continue.'; return; }
+  toast(editing ? 'Updated — not published yet' : 'Added — not published yet');
+  clearForm(); ledger(); publishPanel(); buildDrawer(); render();
+};
+
+function ledger(){
+  const all = merged();
+  const L = $('#ledger'); L.innerHTML = '';
+  const nPend = Object.keys(draft).length;
+  $('#usage').textContent = all.length + (all.length===1?' wall':' walls')
+    + (nPend ? ' · ' + nPend + ' unpublished' : ' · all published');
+  if(!all.length){
+    L.innerHTML = '<p style="padding:22px 0;font-size:12px;color:var(--muted)">Nothing in the catalogue yet. Fill the form above to add your first wall.</p>';
+    return;
+  }
+  all.slice().reverse().forEach(it=>{
+    const row = el('div','entry');
+    row.innerHTML = '<div class="thumb">' + faceHTML(it) + '</div>'
+      + '<div class="txt"><b>' + esc(it.pattern) + '</b><small>'
+      + esc(it.brand) + ' &middot; ' + esc(it.room)
+      + (it.project ? ' &middot; ' + esc(it.project) : '')
+      + (isPending(it.id) ? ' &middot; not published' : '')
+      + '</small></div>';
+    const ops = el('div','ops');
+    const e1 = el('button'); e1.textContent = 'Edit';
+    e1.onclick = ()=>{
+      editing = it.id; pending = null;
+      writeForm(it);
+      const src = previews[it.id] || it.photo || '';
+      $('#dzPreview').innerHTML = src ? '<img src="'+esc(src)+'" alt="Current photograph">' : '';
+      $('#dzText').innerHTML = src ? 'Tap to replace this photograph.' : 'Tap to choose a photograph, or drag one here.';
+      $('#savefile').hidden = true;
+      $('#save').textContent = 'Save changes';
+      $('#said').textContent = 'Editing ' + it.pattern;
+      $('#admin').scrollTop = 0; window.scrollTo(0,0);
+    };
+    const e2 = el('button','kill'); e2.textContent = 'Remove';
+    e2.onclick = ()=>{
+      if(!confirm('Remove ' + it.pattern + ' from the catalogue?')) return;
+      const wasPublished = published.filter(x=>x.id===it.id).length > 0;
+      if(wasPublished) draft[it.id] = null;
+      else { delete draft[it.id]; delete previews[it.id]; delete files[it.id]; delete savedFiles[it.id]; }
+      saveDraft(); ledger(); publishPanel(); buildDrawer();
+      toast('Removed — publish to make it final');
+      if(editing === it.id) clearForm();
+    };
+    ops.appendChild(e1); ops.appendChild(e2); row.appendChild(ops);
+    L.appendChild(row);
+  });
+}
+
+/* ═══════════ publish ═══════════ */
+function catalogueJS(){
+  const items = merged().map(it=>{
+    const o = {id:it.id};
+    FIELDS.forEach(f=>{ o[f] = it[f] == null ? '' : it[f]; });
+    return o;
+  });
+  return 'window.PARFAIT_CATALOGUE = '
+    + JSON.stringify({version:1, updated:new Date().toISOString(), items:items}, null, 2)
+    + ';\n';
+}
+function publishPanel(){
+  const ids = Object.keys(draft);
+  const box = $('#publish'); box.innerHTML = '';
+  $('#pubCount').textContent = ids.length
+    ? ids.length + (ids.length===1 ? ' change waiting' : ' changes waiting')
+    : 'nothing waiting';
+
+  if(!ids.length){
+    box.innerHTML = '<p style="padding:6px 0 4px;font-size:12.5px;line-height:1.8;color:var(--muted)">'
+      + 'Everything in the catalogue is published. Any wall you add or edit will appear here with the steps to publish it.</p>';
+    return;
+  }
+
+  const photos = [];
+  ids.forEach(id=>{
+    const it = draft[id];
+    if(it && it.photo) photos.push({id:id, name:it.photo.replace(PHOTO_DIR,''), have:!!files[id], done:!!savedFiles[id]});
+  });
+
+  const steps = [
+    {n:'1', h:'Save the catalogue file',
+     p:'Downloads <code>catalogue.js</code> with all ' + merged().length + ' walls. This file replaces the one in the repository.',
+     btn:'Download catalogue.js', fn:()=>{
+        if(download('catalogue.js', catalogueJS(), 'text/javascript;charset=utf-8')) toast('catalogue.js saved');
+        else toast('This browser blocked the download');
+     }},
+    {n:'2', h:'Save the photograph files',
+     p: photos.length
+        ? 'Each new photograph needs its own file, named exactly as listed. Save any that are still missing.'
+        : 'No new photographs in this batch.',
+     list: photos},
+    {n:'3', h:'Upload both to the repository',
+     p:'Open <code>github.com/Parfaitws/parfaitws.github.io/upload/main</code>, choose <code>catalogue.js</code>, and commit. '
+       + 'Then open <code>github.com/Parfaitws/parfaitws.github.io/upload/main/photos</code> and upload the photograph files there.'},
+    {n:'4', h:'Reload this page',
+     p:'Once the upload is committed, reload. The walls become published and this list empties on its own.'}
+  ];
+
+  steps.forEach(s=>{
+    const d = el('div','step');
+    const bd = el('div','step-b');
+    bd.innerHTML = '<h4>' + s.h + '</h4><p>' + s.p + '</p>';
+    if(s.btn){
+      const b = el('button','btn'); b.textContent = s.btn; b.style.marginTop = '12px';
+      b.onclick = s.fn; bd.appendChild(b);
+    }
+    if(s.list && s.list.length){
+      const wrap = el('div','pending-list');
+      s.list.forEach(p=>{
+        const r = el('div','pending');
+        r.innerHTML = '<span class="nm">' + esc(PHOTO_DIR + p.name) + '</span>';
+        if(!p.have){
+          const w = el('span','warn'); w.textContent = 'file lost — re-add photo';
+          r.appendChild(w);
+        } else {
+          const b = el('button'); b.textContent = p.done ? 'Save again' : 'Save file';
+          b.onclick = ()=>{
+            if(download(p.name, dataURLtoBlob(files[p.id]))){
+              savedFiles[p.id] = true; saveDraft(); publishPanel(); toast('Saved ' + p.name);
+            } else toast('This browser blocked the download');
+          };
+          r.appendChild(b);
+        }
+        wrap.appendChild(r);
+      });
+      bd.appendChild(wrap);
+    }
+    const n = el('div','step-n'); n.textContent = s.n;
+    d.appendChild(n); d.appendChild(bd);
+    box.appendChild(d);
+  });
+
+  const act = el('div','actions'); act.style.marginTop = '20px';
+  const dis = el('button','btn btn-ghost'); dis.textContent = 'Discard unpublished changes';
+  dis.onclick = ()=>{
+    if(!confirm('Discard all ' + ids.length + ' unpublished changes? Published walls are not affected.')) return;
+    draft = {}; previews = {}; files = {}; savedFiles = {};
+    saveDraft(); clearForm(); ledger(); publishPanel(); buildDrawer(); render();
+    toast('Draft discarded');
+  };
+  act.appendChild(dis); box.appendChild(act);
+}
+
+/* ═══════════ diagnostics ═══════════ */
+$('#diagBtn').onclick = ()=>{
+  const out = [];
+  out.push('CATALOGUE FILE... ' + (catalogueLoaded ? 'loaded, ' + published.length + ' walls' : 'not found'));
+  out.push('LOCAL DRAFT...... ' + Object.keys(draft).length + ' changes');
+  out.push('DRAFT STORAGE.... ' + (storageOK ? 'working' : 'BLOCKED'));
+  const raw = local.get(KEY_DRAFT);
+  out.push('DRAFT SIZE....... ' + (raw ? kb(raw.length) : '0 KB'));
+  out.push('PHOTO FILES HELD. ' + Object.keys(files).length + ' in memory this session');
+  out.push('');
+  out.push('WALLS:');
+  const all = merged();
+  if(!all.length) out.push('  none');
+  all.forEach(it=>{
+    out.push('  ' + (it.brand||'?') + ' · ' + (it.pattern||'?')
+      + (it.photo ? '  [' + it.photo + ']' : '  [no photo]')
+      + (isPending(it.id) ? '  UNPUBLISHED' : ''));
+  });
+  const d = $('#diag'); d.hidden = false; d.textContent = out.join('\n');
+};
+function renderCheck(){
+  const S = p => { try{ return (window.CSS && CSS.supports && CSS.supports(p)) ? 'YES' : 'no'; }catch(e){ return '?'; } };
+  const rows = [
+    ['screen', window.innerWidth+' x '+window.innerHeight+' css px, dpr '+(window.devicePixelRatio||1)],
+    ['pointer', (window.matchMedia && window.matchMedia('(hover:none)').matches) ? 'touch, no hover' : 'has hover'],
+    ['television mode', tvOn ? 'ON' : 'off'],
+    ['catalogue file', catalogueLoaded ? 'loaded, '+published.length+' walls' : 'NOT FOUND'],
+    ['aspect-ratio', S('aspect-ratio:2/3')], ['clamp()', S('width:clamp(10px,5vw,20px)')],
+    ['flex gap', S('gap:10px')], ['position sticky', S('position:sticky')],
+    ['scroll-snap', S('scroll-snap-type:x proximity')], ['object-fit', S('object-fit:cover')],
+    ['background-clip', S('-webkit-background-clip:text')],
+    ['localStorage', storageOK ? 'YES' : 'no'],
+    ['browser', navigator.userAgent]
+  ];
+  const n = $('#check'); n.hidden = false;
+  let pad = '';
+  n.innerHTML = '<b>Compatibility report</b>'
+    + '<pre style="margin:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.85;white-space:pre-wrap;overflow-x:auto">'
+    + rows.map(r=>{ pad = r[0].toUpperCase(); while(pad.length<18) pad += '.'; return pad + ' ' + r[1]; }).join('\n')
+    + '</pre><div style="margin-top:12px;font-size:12px">Remove <code>?check</code> from the address to hide this.</div>';
+}
+
+let tid;
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(tid); tid = setTimeout(()=>t.classList.remove('on'), 2600);
+}
+
+
+/* ═══════════ boot ═══════════ */
+(function boot(){
+  storageOK = local.set('parfait:probe','x');
+  if(storageOK) local.del('parfait:probe');
+  loadDraft();
+  pruneDraft();
+  buildSelects();
+  const q = local.get(KEY_Q);
+  if(q && QUALITY[q]) $('#f_quality').value = q;
+  const tvSaved = local.get(KEY_TV);
+  const looksLikeTV = window.matchMedia && window.matchMedia('(hover:none) and (min-width:1200px)').matches;
+  setTV(tvSaved === null ? !!looksLikeTV : tvSaved === '1', false);
+  buildDrawer(); render();
+  if(!storageOK) raiseAlarm();
+  if(String(location.search||'').indexOf('check') !== -1) renderCheck();
+})();
+
+</script>
+</body>
+</html>
