@@ -453,6 +453,22 @@ body.tv .drop-face .pend{font-size:13px;padding:5px 10px}
 /* ─────────────────────────────────────────────
    PUBLISH
    ───────────────────────────────────────────── */
+.chk{display:flex;align-items:center;gap:9px;margin-top:12px}
+.chk input{width:auto;margin:0}
+.chk span{margin:0;font-size:11px;letter-spacing:.1em;text-transform:none;color:var(--muted)}
+details summary{
+  cursor:pointer;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);padding:12px 0;list-style:none
+}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+ ";color:var(--navy)}
+details[open] summary::before{content:"– "}
+details summary:active{color:var(--navy)}
+.log{
+  margin-top:14px;padding:14px 16px;background:var(--card);border:1px solid var(--rail);
+  font-family:ui-monospace,Menlo,monospace;font-size:11.5px;line-height:1.8;
+  color:var(--ink);white-space:pre-wrap;max-height:240px;overflow-y:auto
+}
 .pub-head{
   display:flex;align-items:baseline;gap:14px;
   padding-bottom:14px;border-bottom:1px solid var(--sand);margin:44px 0 24px
@@ -627,7 +643,35 @@ body.tv .drop-face .pend{font-size:13px;padding:5px 10px}
         <h3>Publish</h3>
         <span class="eyebrow" id="pubCount"></span>
       </div>
-      <div id="publish"></div>
+      <div class="step">
+        <div class="step-n">&#9679;</div>
+        <div class="step-b">
+          <h4>Publish in one step</h4>
+          <p>Commits <code>catalogue.js</code> and every new photograph together, in a single commit. The token stays on this device and never becomes part of the published site.</p>
+          <label style="margin-top:14px"><span>Personal access token</span>
+            <input type="password" id="tok" autocomplete="off" placeholder="github_pat_…">
+          </label>
+          <label class="chk"><input type="checkbox" id="tokRemember"><span>Remember on this device — leave off on shared screens</span></label>
+          <details>
+            <summary>Repository settings</summary>
+            <div class="form" style="margin-top:6px">
+              <label><span>Owner</span><input type="text" id="r_owner"></label>
+              <label><span>Repository</span><input type="text" id="r_repo"></label>
+              <label><span>Branch</span><input type="text" id="r_branch"></label>
+            </div>
+          </details>
+          <div class="actions">
+            <button class="btn" id="pubGo">Publish now</button>
+            <button class="btn btn-ghost" id="tokForget">Forget token</button>
+            <span class="said" id="pubSaid"></span>
+          </div>
+          <pre class="log" id="pubLog" hidden></pre>
+        </div>
+      </div>
+      <details id="manualWrap">
+        <summary>Publish by hand instead</summary>
+        <div id="publish"></div>
+      </details>
 
       <div class="actions" style="margin-top:30px">
         <button class="btn btn-ghost" id="diagBtn">Storage check</button>
@@ -1335,6 +1379,9 @@ function publishPanel(){
     ? ids.length + (ids.length===1 ? ' change waiting' : ' changes waiting')
     : 'nothing waiting';
 
+  const go = $('#pubGo');
+  if(go){ go.disabled = !ids.length; go.style.opacity = ids.length ? '' : '.5'; }
+
   if(!ids.length){
     box.innerHTML = '<p style="padding:6px 0 4px;font-size:12.5px;line-height:1.8;color:var(--muted)">'
       + 'Everything in the catalogue is published. Any wall you add or edit will appear here with the steps to publish it.</p>';
@@ -1411,6 +1458,184 @@ function publishPanel(){
   act.appendChild(dis); box.appendChild(act);
 }
 
+/* ═══════════════════════════════════════════
+   ONE-STEP PUBLISH
+
+   Writes catalogue.js and every new photograph in a
+   single commit through the GitHub API. The token is
+   never written into any published file — it is typed
+   here, and only kept on this device if asked for.
+   ═══════════════════════════════════════════ */
+const KEY_TOKEN = 'parfait:token';
+const KEY_REPO  = 'parfait:repo';
+const REPO_DEFAULT = {owner:'Parfaitws', repo:'parfaitws.github.io', branch:'main'};
+
+function repoCfg(){
+  const c = {owner:REPO_DEFAULT.owner, repo:REPO_DEFAULT.repo, branch:REPO_DEFAULT.branch};
+  try{
+    const s = local.get(KEY_REPO);
+    if(s){ const j = JSON.parse(s); ['owner','repo','branch'].forEach(k=>{ if(j[k]) c[k]=j[k]; }); }
+  }catch(e){}
+  return c;
+}
+function saveRepoCfg(){
+  const c = {
+    owner: $('#r_owner').value.trim() || REPO_DEFAULT.owner,
+    repo:  $('#r_repo').value.trim()  || REPO_DEFAULT.repo,
+    branch:$('#r_branch').value.trim()|| REPO_DEFAULT.branch
+  };
+  local.set(KEY_REPO, JSON.stringify(c));
+  return c;
+}
+['#r_owner','#r_repo','#r_branch'].forEach(s=>{ $(s).addEventListener('change', saveRepoCfg); });
+
+/* base64 that survives accented characters — Élitis, Scalamandré, and any
+   Portuguese note would corrupt with a naive btoa. */
+function b64utf8(str){
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  const CH = 0x8000;
+  for(let i=0;i<bytes.length;i+=CH){
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i+CH));
+  }
+  return btoa(bin);
+}
+
+function pubLog(line){
+  const n = $('#pubLog');
+  n.hidden = false;
+  n.textContent += (n.textContent ? '\n' : '') + line;
+  n.scrollTop = n.scrollHeight;
+}
+
+async function gh(token, path, opts){
+  const c = repoCfg();
+  const o = opts || {};
+  const r = await fetch('https://api.github.com/repos/'+c.owner+'/'+c.repo+path, {
+    method: o.method || 'GET',
+    body: o.body,
+    headers: {
+      'Authorization':'Bearer ' + token,
+      'Accept':'application/vnd.github+json',
+      'X-GitHub-Api-Version':'2022-11-28',
+      'Content-Type':'application/json'
+    }
+  });
+  if(!r.ok){
+    let detail = '';
+    try{ const j = await r.json(); if(j && j.message) detail = j.message; }catch(e){}
+    const err = new Error(detail || (r.status + ' ' + r.statusText));
+    err.status = r.status;
+    throw err;
+  }
+  return r.json();
+}
+
+function ghExplain(err){
+  switch(err.status){
+    case 401: return 'The token was not accepted. Check that it was pasted whole, and that it has not expired.';
+    case 403: return 'The token was accepted but lacks permission. It needs Contents: read and write on this repository.';
+    case 404: return 'Repository not found for this token. Check the owner and repository names under Repository settings, and that the token was given access to this repository.';
+    case 409: return 'The repository changed while publishing. Reload the page and publish again.';
+    case 422: return 'GitHub rejected the contents: ' + err.message;
+    default:  return err.message || 'The request failed.';
+  }
+}
+
+let publishing = false;
+$('#pubGo').onclick = async ()=>{
+  if(publishing) return;
+  const ids = Object.keys(draft);
+  if(!ids.length){ $('#pubSaid').textContent = 'Nothing waiting to publish.'; return; }
+  const token = $('#tok').value.trim();
+  if(!token){ $('#pubSaid').textContent = 'Paste the token first.'; $('#tok').focus(); return; }
+
+  const c = saveRepoCfg();
+  publishing = true;
+  $('#pubGo').disabled = true; $('#pubGo').style.opacity = '.5';
+  $('#pubSaid').textContent = '';
+  $('#pubLog').textContent = '';
+  pubLog('Repository: ' + c.owner + '/' + c.repo + ' (' + c.branch + ')');
+
+  try{
+    const ref = await gh(token, '/git/ref/heads/' + encodeURIComponent(c.branch));
+    const headSha = ref.object.sha;
+    const head = await gh(token, '/git/commits/' + headSha);
+    pubLog('Current commit ' + headSha.slice(0,7));
+
+    const entries = [];
+
+    pubLog('Preparing catalogue.js …');
+    const cat = await gh(token, '/git/blobs', {method:'POST', body: JSON.stringify({
+      content: b64utf8(catalogueJS()), encoding:'base64'
+    })});
+    entries.push({path:'catalogue.js', mode:'100644', type:'blob', sha:cat.sha});
+
+    let sent = 0;
+    const missing = [];
+    for(const id of ids){
+      const it = draft[id];
+      if(!it || !it.photo) continue;
+      if(!files[id]){ missing.push(it.photo); continue; }
+      pubLog('Preparing ' + it.photo + ' …');
+      const d = files[id];
+      const blob = await gh(token, '/git/blobs', {method:'POST', body: JSON.stringify({
+        content: d.slice(d.indexOf(',')+1), encoding:'base64'
+      })});
+      entries.push({path:it.photo, mode:'100644', type:'blob', sha:blob.sha});
+      sent++;
+    }
+
+    pubLog('Building the commit …');
+    const tree = await gh(token, '/git/trees', {method:'POST', body: JSON.stringify({
+      base_tree: head.tree.sha, tree: entries
+    })});
+    const message = 'Publish catalogue — ' + merged().length + ' walls'
+      + (sent ? ', ' + sent + ' new photograph' + (sent>1 ? 's' : '') : '');
+    const made = await gh(token, '/git/commits', {method:'POST', body: JSON.stringify({
+      message: message, tree: tree.sha, parents: [headSha]
+    })});
+    await gh(token, '/git/refs/heads/' + encodeURIComponent(c.branch), {method:'PATCH', body: JSON.stringify({
+      sha: made.sha
+    })});
+    pubLog('Committed ' + made.sha.slice(0,7));
+
+    if($('#tokRemember').checked) local.set(KEY_TOKEN, token);
+    else local.del(KEY_TOKEN);
+
+    /* what was waiting is now published */
+    published = merged();
+    draft = {}; previews = {}; files = {}; savedFiles = {};
+    saveDraft(); clearForm(); ledger(); publishPanel(); buildDrawer(); render();
+
+    $('#pubSaid').textContent = 'Published. The live site updates in a minute or two.';
+    pubLog('Done.');
+    if(missing.length){
+      pubLog('');
+      pubLog('These photographs were not in memory and were skipped:');
+      missing.forEach(m=>pubLog('  ' + m));
+      pubLog('Re-add each photograph and publish again — those walls show the woven');
+      pubLog('swatch until the file arrives.');
+    }
+    toast('Published');
+  }catch(err){
+    $('#pubSaid').textContent = 'Not published.';
+    pubLog('');
+    pubLog('FAILED: ' + ghExplain(err));
+    pubLog('Nothing was changed in the repository. Your draft is untouched — you can');
+    pubLog('fix the problem and try again, or use "Publish by hand instead" below.');
+  }finally{
+    publishing = false;
+    $('#pubGo').disabled = false; $('#pubGo').style.opacity = '';
+  }
+};
+
+$('#tokForget').onclick = ()=>{
+  local.del(KEY_TOKEN);
+  $('#tok').value = ''; $('#tokRemember').checked = false;
+  $('#pubSaid').textContent = 'Token forgotten on this device.';
+};
+
 /* ═══════════ diagnostics ═══════════ */
 $('#diagBtn').onclick = ()=>{
   const out = [];
@@ -1472,6 +1697,10 @@ function toast(msg){
   const tvSaved = local.get(KEY_TV);
   const looksLikeTV = window.matchMedia && window.matchMedia('(hover:none) and (min-width:1200px)').matches;
   setTV(tvSaved === null ? !!looksLikeTV : tvSaved === '1', false);
+  const rc = repoCfg();
+  $('#r_owner').value = rc.owner; $('#r_repo').value = rc.repo; $('#r_branch').value = rc.branch;
+  const savedTok = local.get(KEY_TOKEN);
+  if(savedTok){ $('#tok').value = savedTok; $('#tokRemember').checked = true; }
   buildDrawer(); render();
   if(!storageOK) raiseAlarm();
   if(String(location.search||'').indexOf('check') !== -1) renderCheck();
