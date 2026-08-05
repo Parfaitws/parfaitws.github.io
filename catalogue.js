@@ -1,37 +1,9 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-05T23:33:21.625Z",
+  "updated": "2026-08-05T23:53:22.509Z",
   "items": [
     {
-      "id": "msgj0kyvc4ni8",
-      "brand": "York Wallcoverings",
-      "pattern": "Teste 1",
-      "colorway": "",
-      "room": "Bathroom",
-      "style": "Padrões",
-      "project": "",
-      "city": "San Francisco",
-      "year": "2026",
-      "panels": "",
-      "notes": "",
-      "photo": "photos/york-wallcoverings-teste-1-4ni8.jpg"
-    },
-    {
-      "id": "msgmudlf98br2",
-      "brand": "York Wallcoverings",
-      "pattern": "Teste 2",
-      "colorway": "",
-      "room": "Entry hall",
-      "style": "Chinoiserie",
-      "project": "",
-      "city": "",
-      "year": "",
-      "panels": "",
-      "notes": "",
-      "photo": "photos/york-wallcoverings-teste-2-8br2.jpg"
-    },
-    {
-      "id": "msgpw1k4d8nte",
+      "id": "msgp527nmr7my",
       "brand": "York Wallcoverings",
       "pattern": "Antonina Vella Deco Speakeasy",
       "colorway": "",
@@ -42,7 +14,21 @@ window.PARFAIT_CATALOGUE = {
       "year": "2026",
       "panels": "",
       "notes": "",
-      "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-8nte.jpg"
+      "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my.jpg"
+    },
+    {
+      "id": "msgqt1vq5xyi2",
+      "brand": "Wallism",
+      "pattern": "Ukiyo-e Clouds, Blues wallpaper mural",
+      "colorway": "",
+      "room": "Living room",
+      "style": "Chinoiserie",
+      "project": "",
+      "city": "",
+      "year": "",
+      "panels": "",
+      "notes": "",
+      "photo": "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2.jpg"
     }
   ]
 };
