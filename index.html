@@ -451,6 +451,54 @@ body.tv .alarm b{font-size:14px}
 body.tv .drop-face .pend{font-size:13px;padding:5px 10px}
 
 /* ─────────────────────────────────────────────
+   MORE THAN ONE PHOTOGRAPH
+   ───────────────────────────────────────────── */
+.lb-col{min-width:0}
+.lb-strip{
+  display:flex;gap:10px;margin-top:16px;padding-bottom:6px;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch
+}
+.lb-strip::-webkit-scrollbar{display:none}
+.lb-strip button{
+  position:relative;flex:none;width:74px;height:74px;overflow:hidden;
+  background:var(--card);border:1px solid var(--rail);padding:0;
+  transition:border-color .2s,transform .2s var(--ease)
+}
+.lb-strip button img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lb-strip button:active{transform:translateY(-2px)}
+.lb-strip button.on{border-color:var(--navy);box-shadow:0 0 0 2px var(--sand)}
+@media(hover:hover){.lb-strip button:hover{border-color:var(--sand)}}
+body.tv .lb-strip{gap:16px;margin-top:24px}
+body.tv .lb-strip button{width:118px;height:118px}
+body.tv .lb-strip button.on{box-shadow:0 0 0 3px var(--sand)}
+
+/* the grid of photographs on the form, where the cover is chosen */
+.pgrid{
+  display:grid;gap:12px;margin-top:14px;
+  grid-template-columns:repeat(auto-fill,minmax(118px,1fr))
+}
+.pcell{
+  position:relative;border:1px solid var(--rail);background:var(--card);
+  overflow:hidden
+}
+.pcell.is-cover{border-color:var(--navy);box-shadow:0 0 0 2px var(--sand)}
+.pcell .shot{position:relative;aspect-ratio:1/1}
+.pcell .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pcell .flag{
+  position:absolute;top:6px;left:6px;z-index:2;
+  font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;
+  background:var(--navy);color:var(--paper);padding:3px 6px
+}
+.pbar{display:flex;border-top:1px solid var(--rail)}
+.pbar button{
+  flex:1;padding:9px 4px;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)
+}
+.pbar button:active{background:var(--sand-fill);color:var(--navy)}
+.pbar .rm{flex:0 0 38px;border-left:1px solid var(--rail);font-size:15px;letter-spacing:0}
+.pbar .rm:active{color:#B0564E}
+
+/* ─────────────────────────────────────────────
    PUBLISH
    ───────────────────────────────────────────── */
 .chk{display:flex;align-items:center;gap:9px;margin-top:12px}
@@ -506,15 +554,6 @@ details summary:active{color:var(--navy)}
   font-size:9.5px;letter-spacing:.16em;text-transform:uppercase
 }
 .pending button:active{background:var(--sand-fill)}
-.savefile{
-  margin-top:14px;padding:14px 18px;background:var(--sand-soft);
-  border:1px solid var(--sand);display:flex;gap:14px;align-items:center;flex-wrap:wrap
-}
-.savefile .nm{
-  flex:1;min-width:180px;font-family:ui-monospace,Menlo,monospace;
-  font-size:11.5px;word-break:break-all;color:var(--ink)
-}
-
 </style>
 </head>
 <body>
@@ -561,7 +600,10 @@ details summary:active{color:var(--navy)}
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Project detail">
   <button class="lb-shut" id="lbShut" aria-label="Close">&times;</button>
   <div class="lb-inner">
-    <div class="lb-face" id="lbFace"></div>
+    <div class="lb-col">
+      <div class="lb-face" id="lbFace"></div>
+      <div class="lb-strip" id="lbStrip" hidden></div>
+    </div>
     <div class="lb-body" id="lbBody"></div>
   </div>
 </div>
@@ -590,11 +632,8 @@ details summary:active{color:var(--navy)}
             <div id="dzPreview"></div>
             <p id="dzText">Tap to choose a photograph, or drag one here.<br>Portrait orientation reads best on the rail.</p>
           </div>
-          <input type="file" id="file" accept="image/*" hidden>
-          <div class="savefile" id="savefile" hidden>
-            <span class="nm" id="fileName"></span>
-            <button class="btn" id="saveFileBtn">Save photo file</button>
-          </div>
+          <input type="file" id="file" accept="image/*" multiple hidden>
+          <div class="pgrid" id="photoGrid" hidden></div>
         </div>
         <div class="wide">
           <label><span>Photo quality</span>
@@ -771,9 +810,9 @@ function slug(s){
       .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,44)
     : String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-');
 }
-function photoBase(it){
+function photoBase(it, tag){
   const parts = [slug(it.brand), slug(it.pattern), slug(it.project)].filter(Boolean);
-  return (parts.join('-') || 'wall') + '-' + String(it.id).slice(-4) + '.jpg';
+  return (parts.join('-') || 'wall') + '-' + String(it.id).slice(-4) + '-' + tag + '.jpg';
 }
 function download(name, content, type){
   try{
@@ -848,19 +887,41 @@ let published = (window.PARFAIT_CATALOGUE && Array.isArray(window.PARFAIT_CATALO
 const catalogueLoaded = !!(window.PARFAIT_CATALOGUE && Array.isArray(window.PARFAIT_CATALOGUE.items));
 
 let draft = {};        // id -> item, or null to mark a published wall deleted
-let previews = {};     // id -> small dataURL, for unpublished walls
-let files = {};        // id -> full dataURL held in memory, awaiting download
-let savedFiles = {};   // id -> true once the photograph file has been downloaded
+let previews = {};     // path -> small dataURL, kept in the draft
+let files = {};        // path -> full dataURL held in memory this session
+let savedFiles = {};   // path -> true once saved by hand
 
 let view = 'brand';
 let filters = new Set();
 let editing = null;
-let pending = null;    // staged full-size dataURL
-let pendingName = '';
 let unlocked = false;
 let storageOK = false;
 
-const FIELDS = ['brand','pattern','colorway','room','style','project','city','year','panels','notes','photo'];
+const FIELDS = ['brand','pattern','colorway','room','style','project','city','year','panels','notes'];
+
+/* A wall holds a list of photographs and an explicit cover. The cover is only
+   ever what was chosen on the form — it never shifts on its own. */
+function photosOf(it){
+  if(Array.isArray(it.photos) && it.photos.length) return it.photos;
+  return it.photo ? [it.photo] : [];
+}
+function coverOf(it){
+  const list = photosOf(it);
+  if(!list.length) return '';
+  const n = Number(it.cover);
+  return list[(n >= 0 && n < list.length) ? n : 0];
+}
+/* full file in memory first, then the small stored preview, then the
+   published path on the network */
+function srcFor(path){ return files[path] || previews[path] || path; }
+
+/* older catalogues carried a single photo field */
+function normalise(it){
+  if(!Array.isArray(it.photos)) it.photos = it.photo ? [it.photo] : [];
+  const n = Number(it.cover);
+  it.cover = (n >= 0 && n < it.photos.length) ? n : 0;
+  return it;
+}
 
 function loadDraft(){
   const raw = local.get(KEY_DRAFT);
@@ -892,7 +953,24 @@ function pruneDraft(){
 }
 function sameItem(a,b){
   for(const f of FIELDS){ if(String(a[f]==null?'':a[f]) !== String(b[f]==null?'':b[f])) return false; }
+  if(photosOf(a).join('|') !== photosOf(b).join('|')) return false;
+  if(coverOf(a) !== coverOf(b)) return false;
   return true;
+}
+
+/* every photograph a draft wall points at that the published copy does not */
+function pendingPhotoPaths(){
+  const out = [];
+  Object.keys(draft).forEach(id=>{
+    const it = draft[id];
+    if(!it) return;
+    const was = published.filter(x=>x.id===id)[0];
+    const already = was ? photosOf(was) : [];
+    photosOf(it).forEach(p=>{
+      if(already.indexOf(p) === -1 && out.indexOf(p) === -1) out.push(p);
+    });
+  });
+  return out;
 }
 function merged(){
   const out = [], seen = {};
@@ -951,10 +1029,23 @@ $('#showAll').onclick = ()=>{ filters.clear(); buildDrawer(); render(); closeDra
 
 /* ═══════════ gallery ═══════════ */
 function faceHTML(it){
-  const src = previews[it.id] || it.photo || '';
+  const cover = coverOf(it);
+  const src = cover ? srcFor(cover) : '';
   return swatch(it.style, it.id)
     + (src ? '<img src="'+esc(src)+'" alt="'+esc(it.pattern)+', '+esc(String(it.room||'').toLowerCase())+'" loading="lazy">' : '');
 }
+/* A photograph that fails to load is not invisible — Safari draws a broken-image
+   icon and prints the alt text over the swatch. So a failed image is removed,
+   which leaves the woven swatch showing on its own. */
+function wireImages(root){
+  Array.prototype.forEach.call(root.querySelectorAll('img'), im=>{
+    if(im.dataset.wired) return;
+    im.dataset.wired = '1';
+    im.onerror = function(){ if(this.parentNode) this.parentNode.removeChild(this); };
+    if(im.complete && im.naturalWidth === 0 && im.parentNode) im.parentNode.removeChild(im);
+  });
+}
+
 function drop(it){
   const b = el('button','drop');
   b.setAttribute('aria-label', (it.pattern||'Wall') + (it.brand ? ' by ' + it.brand : ''));
@@ -999,13 +1090,19 @@ function render(){
     list.forEach(it=>row.appendChild(drop(it)));
     rail.appendChild(row); sec.appendChild(rail); g.appendChild(sec);
   });
+  wireImages(g);
   cur = -1;
 }
 
 /* ═══════════ lightbox ═══════════ */
-function openLB(it){
-  const src = previews[it.id] || it.photo || '';
+let lbItem = null, lbIndex = 0;
+
+function paintLB(){
+  const it = lbItem;
+  if(!it) return;
+  const list = photosOf(it);
   const face = $('#lbFace');
+  const src = list.length ? srcFor(list[lbIndex]) : '';
   face.innerHTML = src
     ? '<img src="'+esc(src)+'" alt="'+esc(it.pattern)+'">'
     : swatch(it.style, it.id);
@@ -1013,12 +1110,33 @@ function openLB(it){
     const im = face.querySelector('img');
     im.onerror = ()=>{ face.innerHTML = swatch(it.style, it.id); };
   }
+  const strip = $('#lbStrip');
+  if(list.length < 2){ strip.hidden = true; strip.innerHTML = ''; return; }
+  strip.hidden = false;
+  strip.innerHTML = '';
+  list.forEach((p,i)=>{
+    const b = el('button', i === lbIndex ? 'on' : '');
+    b.setAttribute('aria-label', 'Photograph ' + (i+1) + ' of ' + list.length);
+    b.innerHTML = '<img src="'+esc(srcFor(p))+'" alt="">';
+    b.onclick = ()=>{ lbIndex = i; paintLB(); };
+    strip.appendChild(b);
+  });
+  wireImages(strip);
+}
+
+function openLB(it){
+  lbItem = it;
+  const list = photosOf(it);
+  const n = Number(it.cover);
+  lbIndex = (n >= 0 && n < list.length) ? n : 0;
+  paintLB();
   const rows = [
     ['House', it.brand], ['Pattern', it.pattern], ['Colourway', it.colorway],
     ['Room', it.room],
     ['Grouped as', roomGroup(it.room) !== it.room ? roomGroup(it.room) : ''],
     ['Style', it.style], ['Project', it.project], ['Location', it.city],
-    ['Installed', it.year], ['Panels hung', it.panels]
+    ['Installed', it.year], ['Panels hung', it.panels],
+    ['Photographs', list.length > 1 ? list.length : '']
   ].filter(r=>r[1]);
   $('#lbBody').innerHTML =
     '<span class="eyebrow">' + esc(it.brand) + '</span>'
@@ -1028,6 +1146,7 @@ function openLB(it){
   $('#lb').classList.add('on'); document.body.classList.add('locked');
   $('#lbShut').focus();
 }
+
 function closeLB(){
   $('#lb').classList.remove('on');
   if(!$('#admin').classList.contains('on')) document.body.classList.remove('locked');
@@ -1082,6 +1201,13 @@ document.addEventListener('keydown', e=>{
     return;
   }
   if($('#lb').classList.contains('on')){
+    const list = lbItem ? photosOf(lbItem) : [];
+    if(list.length > 1 && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')){
+      e.preventDefault();
+      lbIndex = (lbIndex + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+      paintLB();
+      return;
+    }
     if(e.key === 'Enter'){ e.preventDefault(); closeLB(); }
     return;
   }
@@ -1185,64 +1311,90 @@ async function shrink(dataURL, maxEdge, q){
 $('#dz').onclick = ()=> $('#file').click();
 $('#dz').addEventListener('dragover', e=>{ e.preventDefault(); $('#dz').classList.add('hot'); });
 $('#dz').addEventListener('dragleave', ()=> $('#dz').classList.remove('hot'));
-$('#dz').addEventListener('drop', e=>{ e.preventDefault(); $('#dz').classList.remove('hot'); if(e.dataTransfer.files[0]) intake(e.dataTransfer.files[0]); });
-$('#file').onchange = e=>{ if(e.target.files[0]) intake(e.target.files[0]); };
+$('#dz').addEventListener('drop', e=>{ e.preventDefault(); $('#dz').classList.remove('hot'); intakeMany(e.dataTransfer.files); });
+$('#file').onchange = e=>{ intakeMany(e.target.files); e.target.value=''; };
 
-async function intake(file){
-  if(!file.type || file.type.indexOf('image/') !== 0){ toast('That file is not an image'); return; }
+/* pendingPhotos: what the form is holding right now.
+   {tag, full, preview, path, existing} — existing ones are already in the
+   repository, new ones are named when the wall is saved. */
+let pendingPhotos = [], pendingCover = 0;
+
+async function intakeMany(list){
+  const arr = Array.prototype.slice.call(list || []);
+  if(!arr.length) return;
   const pick = $('#f_quality').value, cfg = QUALITY[pick] || QUALITY['2200'];
-  $('#dzText').textContent = 'Processing…';
-  try{
-    if(pick === 'orig'){
-      pending = await fileToDataURL(file);
-      let dim = '';
-      try{ const im = await loadImage(pending); dim = im.naturalWidth+' × '+im.naturalHeight+' px · '; }catch(e){}
-      showPending(dim + kb(weight(pending)) + ' · unmodified');
-    } else {
-      let src, w, hh, bmp = null;
-      try{
-        bmp = await createImageBitmap(file, {imageOrientation:'from-image'});
-        src = bmp; w = bmp.width; hh = bmp.height;
-      }catch(e){
-        const im = await loadImage(await fileToDataURL(file));
-        src = im; w = im.naturalWidth; hh = im.naturalHeight;
+  let done = 0, failed = 0;
+  $('#dzText').textContent = 'Processing ' + arr.length + (arr.length===1?' photograph…':' photographs…');
+  for(const file of arr){
+    if(!file.type || file.type.indexOf('image/') !== 0){ failed++; continue; }
+    try{
+      let full;
+      if(pick === 'orig'){
+        full = await fileToDataURL(file);
+      } else {
+        let src, w, hh, bmp = null;
+        try{
+          bmp = await createImageBitmap(file, {imageOrientation:'from-image'});
+          src = bmp; w = bmp.width; hh = bmp.height;
+        }catch(e){
+          const im = await loadImage(await fileToDataURL(file));
+          src = im; w = im.naturalWidth; hh = im.naturalHeight;
+        }
+        const s = Math.min(1, cfg.max/Math.max(w,hh));
+        const tw = Math.max(1,Math.round(w*s)), th = Math.max(1,Math.round(hh*s));
+        full = scaleStepped(src, w, hh, tw, th).toDataURL('image/jpeg', cfg.q);
+        if(bmp && bmp.close) bmp.close();
       }
-      const s = Math.min(1, cfg.max/Math.max(w,hh));
-      const tw = Math.max(1,Math.round(w*s)), th = Math.max(1,Math.round(hh*s));
-      pending = scaleStepped(src, w, hh, tw, th).toDataURL('image/jpeg', cfg.q);
-      if(bmp && bmp.close) bmp.close();
-      showPending(tw+' × '+th+' px · '+kb(weight(pending)) + (s===1 ? ' · no reduction needed' : ' · from '+w+' × '+hh));
-    }
-    refreshFileName();
-  }catch(err){
-    pending = null;
-    $('#dzText').textContent = 'That image could not be read. Try another file.';
+      let prev;
+      try{ prev = await shrink(full, 620, 0.6); }catch(e){ prev = full; }
+      pendingPhotos.push({
+        tag: Math.random().toString(36).slice(2,5),
+        full: full, preview: prev, path: '', existing: false
+      });
+      done++;
+    }catch(err){ failed++; }
   }
+  pendingCover = Math.max(0, Math.min(pendingCover, pendingPhotos.length-1));
+  renderPhotoGrid();
+  const total = pendingPhotos.length;
+  $('#dzText').innerHTML = total + (total===1 ? ' photograph' : ' photographs')
+    + ' on this wall' + (failed ? ' · ' + failed + ' could not be read' : '')
+    + '<br>Tap to add more. The one marked Cover is what shows on the rail.';
 }
-function showPending(line){
-  $('#dzPreview').innerHTML = '<img src="'+pending+'" alt="Selected photograph">';
-  $('#dzText').innerHTML = line + '<br>Tap to choose a different photograph.';
+
+function renderPhotoGrid(){
+  const g = $('#photoGrid');
+  g.innerHTML = '';
+  if(!pendingPhotos.length){ g.hidden = true; return; }
+  g.hidden = false;
+  pendingPhotos.forEach((p,i)=>{
+    const cell = el('div','pcell' + (i === pendingCover ? ' is-cover' : ''));
+    const shot = el('div','shot');
+    shot.innerHTML = (i === pendingCover ? '<span class="flag">Cover</span>' : '')
+      + '<img src="'+esc(p.preview || p.path)+'" alt="">';
+    const bar = el('div','pbar');
+    const cov = el('button');
+    cov.textContent = (i === pendingCover) ? 'Cover' : 'Make cover';
+    cov.disabled = (i === pendingCover);
+    cov.onclick = ()=>{ pendingCover = i; renderPhotoGrid(); };
+    const rm = el('button','rm');
+    rm.textContent = '×';
+    rm.setAttribute('aria-label','Remove this photograph');
+    rm.onclick = ()=>{
+      pendingPhotos.splice(i,1);
+      if(pendingCover >= pendingPhotos.length) pendingCover = Math.max(0, pendingPhotos.length-1);
+      renderPhotoGrid();
+      const t = pendingPhotos.length;
+      $('#dzText').innerHTML = t
+        ? t + (t===1?' photograph':' photographs') + ' on this wall<br>Tap to add more.'
+        : 'Tap to choose photographs, or drag them here.<br>The first becomes the cover unless you say otherwise.';
+    };
+    bar.appendChild(cov); bar.appendChild(rm);
+    cell.appendChild(shot); cell.appendChild(bar);
+    g.appendChild(cell);
+  });
+  wireImages(g);
 }
-function refreshFileName(){
-  if(!pending){ $('#savefile').hidden = true; return; }
-  const provisional = {
-    id: editing || 'new0',
-    brand: readForm().brand, pattern: readForm().pattern, project: readForm().project
-  };
-  pendingName = photoBase(provisional);
-  $('#fileName').textContent = PHOTO_DIR + pendingName;
-  $('#savefile').hidden = false;
-}
-['#f_brand','#f_pattern','#f_project'].forEach(sel=>{
-  const n = $(sel);
-  n.addEventListener('change', ()=>{ if(pending) refreshFileName(); });
-  n.addEventListener('blur',   ()=>{ if(pending) refreshFileName(); });
-});
-$('#saveFileBtn').onclick = ()=>{
-  if(!pending) return;
-  if(download(pendingName, dataURLtoBlob(pending))) toast('Photo file saved');
-  else toast('This browser blocked the download');
-};
 
 /* ── form ── */
 function readForm(){
@@ -1278,11 +1430,12 @@ function writeForm(it){
   $('#f_notes').value = it.notes || '';
 }
 function clearForm(){
-  editing = null; pending = null; pendingName = '';
+  editing = null;
+  pendingPhotos = []; pendingCover = 0;
   writeForm({});
   $('#dzPreview').innerHTML = '';
-  $('#dzText').innerHTML = 'Tap to choose a photograph, or drag one here.<br>Portrait orientation reads best on the rail.';
-  $('#savefile').hidden = true;
+  $('#dzText').innerHTML = 'Tap to choose photographs, or drag them here.<br>The first becomes the cover unless you say otherwise.';
+  renderPhotoGrid();
   $('#save').textContent = 'Save to catalogue';
   $('#said').textContent = '';
 }
@@ -1296,18 +1449,22 @@ $('#save').onclick = async ()=>{
   if(d.style === OTHER){ $('#said').textContent='Type the style name, or pick one from the list.'; $('#f_style_other').focus(); return; }
 
   const id = editing || uid();
-  const before = editing ? (draft[editing] || published.filter(x=>x.id===editing)[0] || {}) : {};
   const it = {id:id};
-  FIELDS.forEach(f=>{ if(f !== 'photo') it[f] = d[f]; });
-  it.photo = before.photo || '';
+  FIELDS.forEach(f=>{ it[f] = d[f]; });
 
-  if(pending){
-    const name = photoBase(it);
-    it.photo = PHOTO_DIR + name;
-    files[id] = pending;
-    savedFiles[id] = (pendingName === name && savedFiles[id]) ? true : false;
-    try{ previews[id] = await shrink(pending, 620, 0.6); }catch(e){ previews[id] = pending; }
-  }
+  const paths = [];
+  pendingPhotos.forEach(p=>{
+    if(p.existing){ paths.push(p.path); return; }
+    const path = PHOTO_DIR + photoBase(it, p.tag);
+    p.path = path;
+    files[path] = p.full;
+    previews[path] = p.preview;
+    paths.push(path);
+  });
+  it.photos = paths;
+  it.cover = Math.max(0, Math.min(pendingCover, paths.length - 1));
+  if(it.cover < 0) it.cover = 0;
+  it.photo = paths[it.cover] || '';   /* kept so an older cached copy still shows something */
 
   draft[id] = it;
   if(!saveDraft()){ $('#said').textContent = 'The draft is too large for this browser. Publish what you have, then continue.'; return; }
@@ -1331,17 +1488,25 @@ function ledger(){
       + '<div class="txt"><b>' + esc(it.pattern) + '</b><small>'
       + esc(it.brand) + ' &middot; ' + esc(it.room)
       + (it.project ? ' &middot; ' + esc(it.project) : '')
+      + (photosOf(it).length > 1 ? ' &middot; ' + photosOf(it).length + ' photos' : '')
       + (isPending(it.id) ? ' &middot; not published' : '')
       + '</small></div>';
     const ops = el('div','ops');
     const e1 = el('button'); e1.textContent = 'Edit';
     e1.onclick = ()=>{
-      editing = it.id; pending = null;
+      editing = it.id;
       writeForm(it);
-      const src = previews[it.id] || it.photo || '';
-      $('#dzPreview').innerHTML = src ? '<img src="'+esc(src)+'" alt="Current photograph">' : '';
-      $('#dzText').innerHTML = src ? 'Tap to replace this photograph.' : 'Tap to choose a photograph, or drag one here.';
-      $('#savefile').hidden = true;
+      const list = photosOf(it);
+      pendingPhotos = list.map(p=>({
+        tag:'', full:null, preview: (files[p] || previews[p] || p), path:p, existing:true
+      }));
+      const n = Number(it.cover);
+      pendingCover = (n >= 0 && n < list.length) ? n : 0;
+      renderPhotoGrid();
+      $('#dzPreview').innerHTML = '';
+      $('#dzText').innerHTML = list.length
+        ? list.length + (list.length===1?' photograph':' photographs') + ' on this wall<br>Tap to add more, or remove any below.'
+        : 'Tap to choose photographs, or drag them here.';
       $('#save').textContent = 'Save changes';
       $('#said').textContent = 'Editing ' + it.pattern;
       $('#admin').scrollTop = 0; window.scrollTo(0,0);
@@ -1351,13 +1516,17 @@ function ledger(){
       if(!confirm('Remove ' + it.pattern + ' from the catalogue?')) return;
       const wasPublished = published.filter(x=>x.id===it.id).length > 0;
       if(wasPublished) draft[it.id] = null;
-      else { delete draft[it.id]; delete previews[it.id]; delete files[it.id]; delete savedFiles[it.id]; }
+      else {
+        photosOf(it).forEach(p=>{ delete previews[p]; delete files[p]; delete savedFiles[p]; });
+        delete draft[it.id];
+      }
       saveDraft(); ledger(); publishPanel(); buildDrawer();
       toast('Removed — publish to make it final');
       if(editing === it.id) clearForm();
     };
     ops.appendChild(e1); ops.appendChild(e2); row.appendChild(ops);
     L.appendChild(row);
+    wireImages(row);
   });
 }
 
@@ -1366,6 +1535,9 @@ function catalogueJS(){
   const items = merged().map(it=>{
     const o = {id:it.id};
     FIELDS.forEach(f=>{ o[f] = it[f] == null ? '' : it[f]; });
+    o.photos = photosOf(it);
+    o.cover  = Math.max(0, Math.min(Number(it.cover)||0, Math.max(0, o.photos.length-1)));
+    o.photo  = o.photos[o.cover] || '';
     return o;
   });
   return 'window.PARFAIT_CATALOGUE = '
@@ -1388,11 +1560,9 @@ function publishPanel(){
     return;
   }
 
-  const photos = [];
-  ids.forEach(id=>{
-    const it = draft[id];
-    if(it && it.photo) photos.push({id:id, name:it.photo.replace(PHOTO_DIR,''), have:!!files[id], done:!!savedFiles[id]});
-  });
+  const photos = pendingPhotoPaths().map(p=>({
+    path:p, name:p.replace(PHOTO_DIR,''), have:!!files[p], done:!!savedFiles[p]
+  }));
 
   const steps = [
     {n:'1', h:'Save the catalogue file',
@@ -1432,8 +1602,8 @@ function publishPanel(){
         } else {
           const b = el('button'); b.textContent = p.done ? 'Save again' : 'Save file';
           b.onclick = ()=>{
-            if(download(p.name, dataURLtoBlob(files[p.id]))){
-              savedFiles[p.id] = true; saveDraft(); publishPanel(); toast('Saved ' + p.name);
+            if(download(p.name, dataURLtoBlob(files[p.path]))){
+              savedFiles[p.path] = true; saveDraft(); publishPanel(); toast('Saved ' + p.name);
             } else toast('This browser blocked the download');
           };
           r.appendChild(b);
@@ -1573,16 +1743,14 @@ $('#pubGo').onclick = async ()=>{
 
     let sent = 0;
     const missing = [];
-    for(const id of ids){
-      const it = draft[id];
-      if(!it || !it.photo) continue;
-      if(!files[id]){ missing.push(it.photo); continue; }
-      pubLog('Preparing ' + it.photo + ' …');
-      const d = files[id];
+    for(const path of pendingPhotoPaths()){
+      if(!files[path]){ missing.push(path); continue; }
+      pubLog('Preparing ' + path + ' …');
+      const d = files[path];
       const blob = await gh(token, '/git/blobs', {method:'POST', body: JSON.stringify({
         content: d.slice(d.indexOf(',')+1), encoding:'base64'
       })});
-      entries.push({path:it.photo, mode:'100644', type:'blob', sha:blob.sha});
+      entries.push({path:path, mode:'100644', type:'blob', sha:blob.sha});
       sent++;
     }
 
@@ -1645,14 +1813,20 @@ $('#diagBtn').onclick = ()=>{
   const raw = local.get(KEY_DRAFT);
   out.push('DRAFT SIZE....... ' + (raw ? kb(raw.length) : '0 KB'));
   out.push('PHOTO FILES HELD. ' + Object.keys(files).length + ' in memory this session');
+  out.push('PHOTOS TO UPLOAD. ' + pendingPhotoPaths().length);
   out.push('');
   out.push('WALLS:');
   const all = merged();
   if(!all.length) out.push('  none');
   all.forEach(it=>{
+    const list = photosOf(it);
     out.push('  ' + (it.brand||'?') + ' · ' + (it.pattern||'?')
-      + (it.photo ? '  [' + it.photo + ']' : '  [no photo]')
+      + '  ' + list.length + ' photo(s)'
       + (isPending(it.id) ? '  UNPUBLISHED' : ''));
+    list.forEach((p,i)=>{
+      out.push('      ' + (i === (Number(it.cover)||0) ? 'cover  ' : '       ') + p
+        + (files[p] ? '  [in memory]' : ''));
+    });
   });
   const d = $('#diag'); d.hidden = false; d.textContent = out.join('\n');
 };
@@ -1689,7 +1863,9 @@ function toast(msg){
 (function boot(){
   storageOK = local.set('parfait:probe','x');
   if(storageOK) local.del('parfait:probe');
+  published.forEach(normalise);
   loadDraft();
+  Object.keys(draft).forEach(id=>{ if(draft[id]) normalise(draft[id]); });
   pruneDraft();
   buildSelects();
   const q = local.get(KEY_Q);
