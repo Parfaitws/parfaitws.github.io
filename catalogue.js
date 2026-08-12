@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-12T18:20:11.751Z",
+  "updated": "2026-08-12T18:22:19.941Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -16,11 +16,11 @@ window.PARFAIT_CATALOGUE = {
       "notes": "",
       "photos": [
         "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my.jpg",
-        "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-5gg.jpg",
-        "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-2ns.jpg"
+        "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-bw7.jpg",
+        "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-hsc.jpg"
       ],
-      "cover": 2,
-      "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-2ns.jpg"
+      "cover": 1,
+      "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-bw7.jpg"
     },
     {
       "id": "msgqt1vq5xyi2",
