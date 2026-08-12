@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-12T18:22:19.941Z",
+  "updated": "2026-08-12T18:23:58.979Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -36,8 +36,9 @@ window.PARFAIT_CATALOGUE = {
       "notes": "",
       "photos": [
         "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2.jpg",
-        "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2-yqf.jpg",
-        "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2-y90.jpg"
+        "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2-3rd.jpg",
+        "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2-4o7.jpg",
+        "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2-1k2.jpg"
       ],
       "cover": 0,
       "photo": "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2.jpg"
