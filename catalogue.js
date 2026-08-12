@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-05T23:53:22.509Z",
+  "updated": "2026-08-12T18:20:11.751Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -14,7 +14,13 @@ window.PARFAIT_CATALOGUE = {
       "year": "2026",
       "panels": "",
       "notes": "",
-      "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my.jpg"
+      "photos": [
+        "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my.jpg",
+        "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-5gg.jpg",
+        "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-2ns.jpg"
+      ],
+      "cover": 2,
+      "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-2ns.jpg"
     },
     {
       "id": "msgqt1vq5xyi2",
@@ -24,11 +30,41 @@ window.PARFAIT_CATALOGUE = {
       "room": "Living room",
       "style": "Chinoiserie",
       "project": "",
-      "city": "",
+      "city": "Atherton",
       "year": "",
       "panels": "",
       "notes": "",
+      "photos": [
+        "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2.jpg",
+        "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2-yqf.jpg",
+        "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2-y90.jpg"
+      ],
+      "cover": 0,
       "photo": "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2.jpg"
+    },
+    {
+      "id": "msqeu91xtlx2t",
+      "brand": "Kelly Ventura",
+      "pattern": "Marsh in Lagoon",
+      "colorway": "",
+      "room": "Living room",
+      "style": "Floral",
+      "project": "",
+      "city": "Belmont",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/kelly-ventura-marsh-in-lagoon-lx2t-jev.jpg",
+        "photos/kelly-ventura-marsh-in-lagoon-lx2t-hsa.jpg",
+        "photos/kelly-ventura-marsh-in-lagoon-lx2t-0il.jpg",
+        "photos/kelly-ventura-marsh-in-lagoon-lx2t-o04.jpg",
+        "photos/kelly-ventura-marsh-in-lagoon-lx2t-9w8.jpg",
+        "photos/kelly-ventura-marsh-in-lagoon-lx2t-41q.jpg",
+        "photos/kelly-ventura-marsh-in-lagoon-lx2t-w1l.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/kelly-ventura-marsh-in-lagoon-lx2t-jev.jpg"
     }
   ]
 };
