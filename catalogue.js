@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T14:37:23.119Z",
+  "updated": "2026-08-13T14:39:44.440Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -80,17 +80,17 @@ window.PARFAIT_CATALOGUE = {
       "panels": "",
       "notes": "",
       "photos": [
+        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg",
         "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-n1t.jpg",
-        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-28n.jpg",
-        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-hh2.jpg"
+        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-28n.jpg"
       ],
-      "cover": 2,
-      "photo": "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-hh2.jpg"
+      "cover": 0,
+      "photo": "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg"
     },
     {
-      "id": "msrmcir1urqt1",
+      "id": "msrmjsibzkwnx",
       "brand": "York Wallcoverings",
-      "pattern": "Gwendolyn Wallpaper - Magnolia Home collection by Joanna Gaines",
+      "pattern": "Gwendolyn Wallpaper - Magnolia Home collection by Joanna Gaines,",
       "colorway": "",
       "room": "Laundry room",
       "style": "Floral",
@@ -100,13 +100,13 @@ window.PARFAIT_CATALOGUE = {
       "panels": "",
       "notes": "",
       "photos": [
-        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-rqt1-mdz.jpg",
-        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-rqt1-5vp.jpg",
-        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-rqt1-hlp.jpg",
-        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-rqt1-37e.jpg"
+        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-mht.jpg",
+        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-wlc.jpg",
+        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-793.jpg",
+        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-h3o.jpg"
       ],
       "cover": 0,
-      "photo": "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-rqt1-mdz.jpg"
+      "photo": "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-mht.jpg"
     }
   ]
 };
