@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T21:46:40.694Z",
+  "updated": "2026-08-13T21:47:45.558Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -128,8 +128,8 @@ window.PARFAIT_CATALOGUE = {
         "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-7gi.jpg",
         "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-eg7.jpg"
       ],
-      "cover": 0,
-      "photo": "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-9t9.jpg"
+      "cover": 2,
+      "photo": "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-k1e.jpg"
     },
     {
       "id": "mss0m5aiji456",
