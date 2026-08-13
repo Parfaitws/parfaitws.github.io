@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T22:11:15.798Z",
+  "updated": "2026-08-13T22:17:48.553Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -261,6 +261,26 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/rebel-walls-flowing-hills-qjo4-x8p.jpg"
+    },
+    {
+      "id": "mss2ww0p7xrp9",
+      "brand": "York Wallcoverings",
+      "pattern": "Judarn Floral Mural",
+      "colorway": "",
+      "room": "Primary bedroom",
+      "style": "Mural & scenic",
+      "project": "2025",
+      "city": "",
+      "year": "",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/york-wallcoverings-judarn-floral-mural-2025-xrp9-7xl.jpg",
+        "photos/york-wallcoverings-judarn-floral-mural-2025-xrp9-0uo.jpg",
+        "photos/york-wallcoverings-judarn-floral-mural-2025-xrp9-dfc.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/york-wallcoverings-judarn-floral-mural-2025-xrp9-7xl.jpg"
     }
   ]
 };
