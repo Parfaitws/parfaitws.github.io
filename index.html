@@ -978,9 +978,9 @@ function pendingPhotoPaths(){
   });
   return out;
 }
-function merged(){
+function mergeWith(base){
   const out = [], seen = {};
-  published.forEach(p=>{
+  base.forEach(p=>{
     seen[p.id] = true;
     if(Object.prototype.hasOwnProperty.call(draft, p.id)){
       if(draft[p.id]) out.push(draft[p.id]);
@@ -988,6 +988,36 @@ function merged(){
   });
   for(const id in draft){ if(!seen[id] && draft[id]) out.push(draft[id]); }
   return out;
+}
+function merged(){ return mergeWith(published); }
+
+/* Reads the object out of a catalogue.js file. */
+function parseCatalogue(text){
+  const at = text.indexOf('PARFAIT_CATALOGUE');
+  const i = text.indexOf('{', at < 0 ? 0 : at);
+  const j = text.lastIndexOf('}');
+  if(i < 0 || j <= i) return null;
+  try{
+    const obj = JSON.parse(text.slice(i, j+1));
+    return (obj && Array.isArray(obj.items)) ? obj.items : null;
+  }catch(e){ return null; }
+}
+
+/* The browser caches catalogue.js, so a reload can show a catalogue older than
+   what was published minutes earlier — and publishing from that stale state
+   would drop the missing walls. A fresh copy is fetched past the cache. */
+async function refreshCatalogue(){
+  try{
+    const r = await fetch('catalogue.js?t=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) return;
+    const items = parseCatalogue(await r.text());
+    if(!items) return;
+    if(JSON.stringify(items) === JSON.stringify(published)) return;
+    published = items.map(normalise);
+    pruneDraft();
+    buildDrawer(); render();
+    if(unlocked){ ledger(); publishPanel(); }
+  }catch(e){}
 }
 const isPending = id => Object.prototype.hasOwnProperty.call(draft, id);
 
@@ -1537,8 +1567,8 @@ function ledger(){
 }
 
 /* ═══════════ publish ═══════════ */
-function catalogueJS(){
-  const items = merged().map(it=>{
+function catalogueJS(list){
+  const items = (list || merged()).map(it=>{
     const o = {id:it.id};
     FIELDS.forEach(f=>{ o[f] = it[f] == null ? '' : it[f]; });
     o.photos = photosOf(it);
@@ -1741,9 +1771,25 @@ $('#pubGo').onclick = async ()=>{
 
     const entries = [];
 
+    /* The list is rebuilt on top of whatever the repository holds right now,
+       so a wall published from another device is never overwritten away. */
+    let base = published;
+    try{
+      const f = await gh(token, '/contents/catalogue.js?ref=' + encodeURIComponent(c.branch));
+      const text = decodeURIComponent(escape(atob(String(f.content || '').replace(/\s/g,''))));
+      const remote = parseCatalogue(text);
+      if(remote){
+        base = remote.map(normalise);
+        pubLog('Repository holds ' + base.length + ' walls');
+      }
+    }catch(e){
+      pubLog('Could not read the current catalogue — using the copy in this page');
+    }
+    const finalList = mergeWith(base);
+
     pubLog('Preparing catalogue.js …');
     const cat = await gh(token, '/git/blobs', {method:'POST', body: JSON.stringify({
-      content: b64utf8(catalogueJS()), encoding:'base64'
+      content: b64utf8(catalogueJS(finalList)), encoding:'base64'
     })});
     entries.push({path:'catalogue.js', mode:'100644', type:'blob', sha:cat.sha});
 
@@ -1764,7 +1810,7 @@ $('#pubGo').onclick = async ()=>{
     const tree = await gh(token, '/git/trees', {method:'POST', body: JSON.stringify({
       base_tree: head.tree.sha, tree: entries
     })});
-    const message = 'Publish catalogue — ' + merged().length + ' walls'
+    const message = 'Publish catalogue — ' + finalList.length + ' walls'
       + (sent ? ', ' + sent + ' new photograph' + (sent>1 ? 's' : '') : '');
     const made = await gh(token, '/git/commits', {method:'POST', body: JSON.stringify({
       message: message, tree: tree.sha, parents: [headSha]
@@ -1778,7 +1824,7 @@ $('#pubGo').onclick = async ()=>{
     else local.del(KEY_TOKEN);
 
     /* what was waiting is now published */
-    published = merged();
+    published = finalList;
     draft = {}; previews = {}; files = {}; savedFiles = {};
     saveDraft(); clearForm(); ledger(); publishPanel(); buildDrawer(); render();
 
@@ -1885,6 +1931,10 @@ function toast(msg){
   if(savedTok){ $('#tok').value = savedTok; $('#tokRemember').checked = true; }
   buildDrawer(); render();
   if(!storageOK) raiseAlarm();
+  refreshCatalogue();
+  document.addEventListener('visibilitychange', ()=>{
+    if(!document.hidden && !publishing) refreshCatalogue();
+  });
   if(String(location.search||'').indexOf('check') !== -1) renderCheck();
 })();
 
