@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T14:43:21.966Z",
+  "updated": "2026-08-13T15:57:09.537Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -107,6 +107,29 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-xnd.jpg"
+    },
+    {
+      "id": "msrowrdmrh7dx",
+      "brand": "Phillip Jeffries",
+      "pattern": "Fuji Weave - Fresh Stream",
+      "colorway": "",
+      "room": "Primary bedroom",
+      "style": "Grasscloth & texture",
+      "project": "",
+      "city": "San Francisco",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/phillip-jeffries-grasscloth-h7dx-pto.jpg",
+        "photos/phillip-jeffries-grasscloth-h7dx-rk1.jpg",
+        "photos/phillip-jeffries-grasscloth-h7dx-wfe.jpg",
+        "photos/phillip-jeffries-grasscloth-h7dx-5a6.jpg",
+        "photos/phillip-jeffries-grasscloth-h7dx-xei.jpg",
+        "photos/phillip-jeffries-grasscloth-h7dx-5fs.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/phillip-jeffries-grasscloth-h7dx-pto.jpg"
     }
   ]
 };
