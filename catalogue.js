@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T21:49:31.233Z",
+  "updated": "2026-08-13T21:55:36.416Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -199,6 +199,27 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/spoonflower-art-deco-swans-qby5-ije.jpg"
+    },
+    {
+      "id": "mss24arga0pmm",
+      "brand": "Hygge & West",
+      "pattern": "Underwater World Wallpaper",
+      "colorway": "Deep Blue",
+      "room": "Guest bathroom",
+      "style": "Metallic",
+      "project": "",
+      "city": "San Francisco",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/hygge-west-underwater-world-wallpaper-0pmm-rqm.jpg",
+        "photos/hygge-west-underwater-world-wallpaper-0pmm-akt.jpg",
+        "photos/hygge-west-underwater-world-wallpaper-0pmm-9ab.jpg",
+        "photos/hygge-west-underwater-world-wallpaper-0pmm-x82.jpg"
+      ],
+      "cover": 3,
+      "photo": "photos/hygge-west-underwater-world-wallpaper-0pmm-x82.jpg"
     }
   ]
 };
