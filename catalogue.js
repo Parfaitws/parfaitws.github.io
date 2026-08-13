@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T22:04:31.520Z",
+  "updated": "2026-08-13T22:08:52.088Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -239,6 +239,28 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/sandberg-klint-misty-blue-wallpaper-mural-m76c-2fq.jpg"
+    },
+    {
+      "id": "mss2lbajqqjo4",
+      "brand": "Rebel Walls",
+      "pattern": "Flowing Hills",
+      "colorway": "Green",
+      "room": "Office",
+      "style": "Mural & scenic",
+      "project": "",
+      "city": "San Francisco",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/rebel-walls-flowing-hills-qjo4-x8p.jpg",
+        "photos/rebel-walls-flowing-hills-qjo4-869.jpg",
+        "photos/rebel-walls-flowing-hills-qjo4-wcp.jpg",
+        "photos/rebel-walls-flowing-hills-qjo4-8uj.jpg",
+        "photos/rebel-walls-flowing-hills-qjo4-oq0.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/rebel-walls-flowing-hills-qjo4-x8p.jpg"
     }
   ]
 };
