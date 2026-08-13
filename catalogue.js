@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T15:58:32.108Z",
+  "updated": "2026-08-13T21:13:27.577Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -70,7 +70,7 @@ window.PARFAIT_CATALOGUE = {
     {
       "id": "msrm2hpqkvfom",
       "brand": "York Wallcoverings",
-      "pattern": "Modern Heritage Yarrow Nouveau",
+      "pattern": "York Modern Heritage Yarrow Nouveau",
       "colorway": "Charcoal & Gold",
       "room": "Primary bedroom",
       "style": "Floral",
@@ -130,6 +130,29 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/phillip-jeffries-grasscloth-h7dx-pto.jpg"
+    },
+    {
+      "id": "mss0m5aiji456",
+      "brand": "Happy Wall",
+      "pattern": "Dandelion Dreamscape",
+      "colorway": "",
+      "room": "Bathroom",
+      "style": "Mural & scenic",
+      "project": "",
+      "city": "San Mateo",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/happy-wall-dandelion-dreamscape-i456-uji.jpg",
+        "photos/happy-wall-dandelion-dreamscape-i456-v31.jpg",
+        "photos/happy-wall-dandelion-dreamscape-i456-3yj.jpg",
+        "photos/happy-wall-dandelion-dreamscape-i456-gkp.jpg",
+        "photos/happy-wall-dandelion-dreamscape-i456-5sw.jpg",
+        "photos/happy-wall-dandelion-dreamscape-i456-jip.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/happy-wall-dandelion-dreamscape-i456-uji.jpg"
     }
   ]
 };
