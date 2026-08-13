@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T21:27:38.245Z",
+  "updated": "2026-08-13T21:39:23.399Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -153,6 +153,31 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/happy-wall-dandelion-dreamscape-i456-uji.jpg"
+    },
+    {
+      "id": "mss1jilh0x9nl",
+      "brand": "Phillip Jeffries",
+      "pattern": "Aura Ivory",
+      "colorway": "",
+      "room": "Primary bedroom",
+      "style": "Mural & scenic",
+      "project": "",
+      "city": "San Rafael - Marinwood",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/phillip-jeffries-aura-ivory-x9nl-ceh.jpg",
+        "photos/phillip-jeffries-aura-ivory-x9nl-sh1.jpg",
+        "photos/phillip-jeffries-aura-ivory-x9nl-n14.jpg",
+        "photos/phillip-jeffries-aura-ivory-x9nl-nyi.jpg",
+        "photos/phillip-jeffries-aura-ivory-x9nl-cul.jpg",
+        "photos/phillip-jeffries-aura-ivory-x9nl-gnt.jpg",
+        "photos/phillip-jeffries-aura-ivory-x9nl-py8.jpg",
+        "photos/phillip-jeffries-aura-ivory-x9nl-k6m.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/phillip-jeffries-aura-ivory-x9nl-ceh.jpg"
     }
   ]
 };
