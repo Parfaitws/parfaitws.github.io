@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T21:13:27.577Z",
+  "updated": "2026-08-13T21:27:38.245Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -116,20 +116,20 @@ window.PARFAIT_CATALOGUE = {
       "room": "Primary bedroom",
       "style": "Grasscloth & texture",
       "project": "",
-      "city": "San Francisco",
+      "city": "Corte Madera",
       "year": "2026",
       "panels": "",
       "notes": "",
       "photos": [
-        "photos/phillip-jeffries-grasscloth-h7dx-pto.jpg",
-        "photos/phillip-jeffries-grasscloth-h7dx-rk1.jpg",
-        "photos/phillip-jeffries-grasscloth-h7dx-wfe.jpg",
-        "photos/phillip-jeffries-grasscloth-h7dx-5a6.jpg",
-        "photos/phillip-jeffries-grasscloth-h7dx-xei.jpg",
-        "photos/phillip-jeffries-grasscloth-h7dx-5fs.jpg"
+        "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-9t9.jpg",
+        "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-8pj.jpg",
+        "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-k1e.jpg",
+        "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-i1w.jpg",
+        "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-7gi.jpg",
+        "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-eg7.jpg"
       ],
       "cover": 0,
-      "photo": "photos/phillip-jeffries-grasscloth-h7dx-pto.jpg"
+      "photo": "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-9t9.jpg"
     },
     {
       "id": "mss0m5aiji456",
