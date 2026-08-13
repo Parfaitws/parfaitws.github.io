@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T22:08:52.088Z",
+  "updated": "2026-08-13T22:09:57.209Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -227,7 +227,7 @@ window.PARFAIT_CATALOGUE = {
       "pattern": "Klint Misty Blue Wallpaper Mural",
       "colorway": "",
       "room": "Office",
-      "style": "Chinoiserie",
+      "style": "Mural & scenic",
       "project": "",
       "city": "San Francisco",
       "year": "2026",
