@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T21:39:23.399Z",
+  "updated": "2026-08-13T21:46:40.694Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -178,6 +178,27 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/phillip-jeffries-aura-ivory-x9nl-ceh.jpg"
+    },
+    {
+      "id": "mss1scrkeqby5",
+      "brand": "Spoonflower",
+      "pattern": "Art Deco Swans",
+      "colorway": "Black on cream",
+      "room": "Sitting room",
+      "style": "Pattern",
+      "project": "",
+      "city": "",
+      "year": "2025",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/spoonflower-art-deco-swans-qby5-ije.jpg",
+        "photos/spoonflower-art-deco-swans-qby5-9sl.jpg",
+        "photos/spoonflower-art-deco-swans-qby5-ze5.jpg",
+        "photos/spoonflower-art-deco-swans-qby5-p0j.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/spoonflower-art-deco-swans-qby5-ije.jpg"
     }
   ]
 };
