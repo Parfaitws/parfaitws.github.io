@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T21:55:36.416Z",
+  "updated": "2026-08-13T22:04:31.520Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -220,6 +220,25 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 3,
       "photo": "photos/hygge-west-underwater-world-wallpaper-0pmm-x82.jpg"
+    },
+    {
+      "id": "mss2ft9wam76c",
+      "brand": "Sandberg",
+      "pattern": "Klint Misty Blue Wallpaper Mural",
+      "colorway": "",
+      "room": "Office",
+      "style": "Chinoiserie",
+      "project": "",
+      "city": "San Francisco",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/sandberg-klint-misty-blue-wallpaper-mural-m76c-2fq.jpg",
+        "photos/sandberg-klint-misty-blue-wallpaper-mural-m76c-6e5.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/sandberg-klint-misty-blue-wallpaper-mural-m76c-2fq.jpg"
     }
   ]
 };
