@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T22:17:48.553Z",
+  "updated": "2026-08-13T22:21:22.130Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -281,6 +281,26 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/york-wallcoverings-judarn-floral-mural-2025-xrp9-7xl.jpg"
+    },
+    {
+      "id": "mss31howbaabb",
+      "brand": "Belarte",
+      "pattern": "Vintage Landscape",
+      "colorway": "",
+      "room": "Primary bedroom",
+      "style": "Mural & scenic",
+      "project": "",
+      "city": "San Francisco",
+      "year": "",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/belarte-vintage-landscape-aabb-ixc.jpg",
+        "photos/belarte-vintage-landscape-aabb-l4t.jpg",
+        "photos/belarte-vintage-landscape-aabb-91q.jpg"
+      ],
+      "cover": 2,
+      "photo": "photos/belarte-vintage-landscape-aabb-91q.jpg"
     }
   ]
 };
