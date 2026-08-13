@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T14:39:44.440Z",
+  "updated": "2026-08-13T14:43:21.966Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -88,7 +88,7 @@ window.PARFAIT_CATALOGUE = {
       "photo": "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg"
     },
     {
-      "id": "msrmjsibzkwnx",
+      "id": "msrmoagz15cu4",
       "brand": "York Wallcoverings",
       "pattern": "Gwendolyn Wallpaper - Magnolia Home collection by Joanna Gaines,",
       "colorway": "",
@@ -100,13 +100,13 @@ window.PARFAIT_CATALOGUE = {
       "panels": "",
       "notes": "",
       "photos": [
-        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-mht.jpg",
-        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-wlc.jpg",
-        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-793.jpg",
-        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-h3o.jpg"
+        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-xnd.jpg",
+        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-tpv.jpg",
+        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-yht.jpg",
+        "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-rm3.jpg"
       ],
       "cover": 0,
-      "photo": "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-kwnx-mht.jpg"
+      "photo": "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-xnd.jpg"
     }
   ]
 };
