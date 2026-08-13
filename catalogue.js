@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T22:09:57.209Z",
+  "updated": "2026-08-13T22:11:15.798Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -64,8 +64,8 @@ window.PARFAIT_CATALOGUE = {
         "photos/kelly-ventura-marsh-in-lagoon-lx2t-41q.jpg",
         "photos/kelly-ventura-marsh-in-lagoon-lx2t-w1l.jpg"
       ],
-      "cover": 1,
-      "photo": "photos/kelly-ventura-marsh-in-lagoon-lx2t-hsa.jpg"
+      "cover": 3,
+      "photo": "photos/kelly-ventura-marsh-in-lagoon-lx2t-o04.jpg"
     },
     {
       "id": "msrm2hpqkvfom",
