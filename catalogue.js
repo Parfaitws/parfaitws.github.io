@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T14:34:38.046Z",
+  "updated": "2026-08-13T14:37:23.119Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -80,12 +80,12 @@ window.PARFAIT_CATALOGUE = {
       "panels": "",
       "notes": "",
       "photos": [
-        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg",
         "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-n1t.jpg",
-        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-28n.jpg"
+        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-28n.jpg",
+        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-hh2.jpg"
       ],
-      "cover": 0,
-      "photo": "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg"
+      "cover": 2,
+      "photo": "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-hh2.jpg"
     },
     {
       "id": "msrmcir1urqt1",
