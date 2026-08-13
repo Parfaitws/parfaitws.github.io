@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T15:57:09.537Z",
+  "updated": "2026-08-13T15:58:32.108Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -70,7 +70,7 @@ window.PARFAIT_CATALOGUE = {
     {
       "id": "msrm2hpqkvfom",
       "brand": "York Wallcoverings",
-      "pattern": "York Modern Heritage Yarrow Nouveau",
+      "pattern": "Modern Heritage Yarrow Nouveau",
       "colorway": "Charcoal & Gold",
       "room": "Primary bedroom",
       "style": "Floral",
