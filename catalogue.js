@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-12T18:23:58.979Z",
+  "updated": "2026-08-13T14:26:25.965Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -66,6 +66,26 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/kelly-ventura-marsh-in-lagoon-lx2t-jev.jpg"
+    },
+    {
+      "id": "msrm2hpqkvfom",
+      "brand": "York Wallcoverings",
+      "pattern": "York Modern Heritage Yarrow Nouveau",
+      "colorway": "Charcoal & Gold",
+      "room": "Primary bedroom",
+      "style": "Floral",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg",
+        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-n1t.jpg",
+        "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-28n.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg"
     }
   ]
 };
