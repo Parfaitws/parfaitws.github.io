@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-13T22:21:22.130Z",
+  "updated": "2026-08-14T00:22:31.325Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -301,6 +301,22 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 2,
       "photo": "photos/belarte-vintage-landscape-aabb-91q.jpg"
+    },
+    {
+      "id": "mss7d96dndn1d",
+      "brand": "Riley Shinney",
+      "pattern": "Botanical Cream Wallpaper",
+      "colorway": "",
+      "room": "Nursery",
+      "style": "Floral",
+      "project": "",
+      "city": "",
+      "year": "2025",
+      "panels": "",
+      "notes": "",
+      "photos": [],
+      "cover": 0,
+      "photo": ""
     }
   ]
 };
