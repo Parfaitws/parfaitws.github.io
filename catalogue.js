@@ -1,9 +1,10 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-14T00:22:31.325Z",
+  "updated": "2026-08-15T18:37:44.601Z",
   "items": [
     {
       "id": "msgp527nmr7my",
+      "kind": "wallpaper",
       "brand": "York Wallcoverings",
       "pattern": "Antonina Vella Deco Speakeasy",
       "colorway": "",
@@ -20,15 +21,19 @@ window.PARFAIT_CATALOGUE = {
         "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-hsc.jpg"
       ],
       "cover": 1,
-      "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-bw7.jpg"
+      "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-bw7.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "msgqt1vq5xyi2",
+      "kind": "wallpaper",
       "brand": "Wallism",
       "pattern": "Ukiyo-e Clouds, Blues wallpaper mural",
       "colorway": "",
       "room": "Living room",
-      "style": "Chinoiserie",
+      "style": "Mural & scenic",
       "project": "",
       "city": "Atherton",
       "year": "",
@@ -41,10 +46,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2-1k2.jpg"
       ],
       "cover": 0,
-      "photo": "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2.jpg"
+      "photo": "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "msqeu91xtlx2t",
+      "kind": "wallpaper",
       "brand": "Kelly Ventura",
       "pattern": "Marsh in Lagoon",
       "colorway": "",
@@ -65,10 +74,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/kelly-ventura-marsh-in-lagoon-lx2t-w1l.jpg"
       ],
       "cover": 3,
-      "photo": "photos/kelly-ventura-marsh-in-lagoon-lx2t-o04.jpg"
+      "photo": "photos/kelly-ventura-marsh-in-lagoon-lx2t-o04.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "msrm2hpqkvfom",
+      "kind": "wallpaper",
       "brand": "York Wallcoverings",
       "pattern": "York Modern Heritage Yarrow Nouveau",
       "colorway": "Charcoal & Gold",
@@ -85,10 +98,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-28n.jpg"
       ],
       "cover": 0,
-      "photo": "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg"
+      "photo": "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "msrmoagz15cu4",
+      "kind": "wallpaper",
       "brand": "York Wallcoverings",
       "pattern": "Gwendolyn Wallpaper - Magnolia Home collection by Joanna Gaines,",
       "colorway": "",
@@ -106,10 +123,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-rm3.jpg"
       ],
       "cover": 0,
-      "photo": "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-xnd.jpg"
+      "photo": "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-xnd.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "msrowrdmrh7dx",
+      "kind": "wallpaper",
       "brand": "Phillip Jeffries",
       "pattern": "Fuji Weave - Fresh Stream",
       "colorway": "",
@@ -129,10 +150,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-eg7.jpg"
       ],
       "cover": 2,
-      "photo": "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-k1e.jpg"
+      "photo": "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-k1e.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "mss0m5aiji456",
+      "kind": "wallpaper",
       "brand": "Happy Wall",
       "pattern": "Dandelion Dreamscape",
       "colorway": "",
@@ -152,10 +177,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/happy-wall-dandelion-dreamscape-i456-jip.jpg"
       ],
       "cover": 0,
-      "photo": "photos/happy-wall-dandelion-dreamscape-i456-uji.jpg"
+      "photo": "photos/happy-wall-dandelion-dreamscape-i456-uji.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "mss1jilh0x9nl",
+      "kind": "wallpaper",
       "brand": "Phillip Jeffries",
       "pattern": "Aura Ivory",
       "colorway": "",
@@ -177,10 +206,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/phillip-jeffries-aura-ivory-x9nl-k6m.jpg"
       ],
       "cover": 0,
-      "photo": "photos/phillip-jeffries-aura-ivory-x9nl-ceh.jpg"
+      "photo": "photos/phillip-jeffries-aura-ivory-x9nl-ceh.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "mss1scrkeqby5",
+      "kind": "wallpaper",
       "brand": "Spoonflower",
       "pattern": "Art Deco Swans",
       "colorway": "Black on cream",
@@ -198,10 +231,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/spoonflower-art-deco-swans-qby5-p0j.jpg"
       ],
       "cover": 0,
-      "photo": "photos/spoonflower-art-deco-swans-qby5-ije.jpg"
+      "photo": "photos/spoonflower-art-deco-swans-qby5-ije.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "mss24arga0pmm",
+      "kind": "wallpaper",
       "brand": "Hygge & West",
       "pattern": "Underwater World Wallpaper",
       "colorway": "Deep Blue",
@@ -219,10 +256,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/hygge-west-underwater-world-wallpaper-0pmm-x82.jpg"
       ],
       "cover": 3,
-      "photo": "photos/hygge-west-underwater-world-wallpaper-0pmm-x82.jpg"
+      "photo": "photos/hygge-west-underwater-world-wallpaper-0pmm-x82.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "mss2ft9wam76c",
+      "kind": "wallpaper",
       "brand": "Sandberg",
       "pattern": "Klint Misty Blue Wallpaper Mural",
       "colorway": "",
@@ -238,10 +279,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/sandberg-klint-misty-blue-wallpaper-mural-m76c-6e5.jpg"
       ],
       "cover": 0,
-      "photo": "photos/sandberg-klint-misty-blue-wallpaper-mural-m76c-2fq.jpg"
+      "photo": "photos/sandberg-klint-misty-blue-wallpaper-mural-m76c-2fq.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "mss2lbajqqjo4",
+      "kind": "wallpaper",
       "brand": "Rebel Walls",
       "pattern": "Flowing Hills",
       "colorway": "Green",
@@ -260,10 +305,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/rebel-walls-flowing-hills-qjo4-oq0.jpg"
       ],
       "cover": 0,
-      "photo": "photos/rebel-walls-flowing-hills-qjo4-x8p.jpg"
+      "photo": "photos/rebel-walls-flowing-hills-qjo4-x8p.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "mss2ww0p7xrp9",
+      "kind": "wallpaper",
       "brand": "York Wallcoverings",
       "pattern": "Judarn Floral Mural",
       "colorway": "",
@@ -280,10 +329,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/york-wallcoverings-judarn-floral-mural-2025-xrp9-dfc.jpg"
       ],
       "cover": 0,
-      "photo": "photos/york-wallcoverings-judarn-floral-mural-2025-xrp9-7xl.jpg"
+      "photo": "photos/york-wallcoverings-judarn-floral-mural-2025-xrp9-7xl.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "mss31howbaabb",
+      "kind": "wallpaper",
       "brand": "Belarte",
       "pattern": "Vintage Landscape",
       "colorway": "",
@@ -300,10 +353,14 @@ window.PARFAIT_CATALOGUE = {
         "photos/belarte-vintage-landscape-aabb-91q.jpg"
       ],
       "cover": 2,
-      "photo": "photos/belarte-vintage-landscape-aabb-91q.jpg"
+      "photo": "photos/belarte-vintage-landscape-aabb-91q.jpg",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     },
     {
       "id": "mss7d96dndn1d",
+      "kind": "wallpaper",
       "brand": "Riley Shinney",
       "pattern": "Botanical Cream Wallpaper",
       "colorway": "",
@@ -316,7 +373,10 @@ window.PARFAIT_CATALOGUE = {
       "notes": "",
       "photos": [],
       "cover": 0,
-      "photo": ""
+      "photo": "",
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     }
   ]
 };
