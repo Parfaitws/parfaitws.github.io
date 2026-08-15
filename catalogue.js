@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-15T18:37:44.601Z",
+  "updated": "2026-08-15T18:39:33.084Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -371,9 +371,12 @@ window.PARFAIT_CATALOGUE = {
       "year": "2025",
       "panels": "",
       "notes": "",
-      "photos": [],
+      "photos": [
+        "photos/riley-shinney-botanical-cream-wallpaper-dn1d-qhc.jpg",
+        "photos/riley-shinney-botanical-cream-wallpaper-dn1d-0v5.jpg"
+      ],
       "cover": 0,
-      "photo": "",
+      "photo": "photos/riley-shinney-botanical-cream-wallpaper-dn1d-qhc.jpg",
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
