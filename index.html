@@ -457,6 +457,18 @@ body.tv .alarm b{font-size:14px}
 body.tv .drop-face .pend{font-size:13px;padding:5px 10px}
 
 /* ─────────────────────────────────────────────
+   BEFORE & AFTER
+   ───────────────────────────────────────────── */
+.baPair{display:flex;gap:14px;flex-wrap:wrap}
+.baSlot{flex:1;min-width:220px}
+.lb-strip button .baTag{
+  position:absolute;bottom:0;left:0;right:0;z-index:2;
+  font-size:8px;letter-spacing:.14em;text-transform:uppercase;text-align:center;
+  color:var(--paper);background:rgba(19,48,78,.82);padding:3px 0
+}
+body.tv .lb-strip button .baTag{font-size:12px;padding:6px 0}
+
+/* ─────────────────────────────────────────────
    MORE THAN ONE PHOTOGRAPH
    ───────────────────────────────────────────── */
 .lb-col{min-width:0}
@@ -633,6 +645,29 @@ details summary:active{color:var(--navy)}
     <div id="adminBody" hidden>
       <div class="form">
         <div class="wide">
+          <label><span>Entry type</span>
+            <select id="f_kind">
+              <option value="wallpaper">Wallpaper</option>
+              <option value="paint">Paint</option>
+              <option value="before_after">Before &amp; After</option>
+            </select>
+          </label>
+        </div>
+        <div class="wide" id="workTypeWrap" hidden>
+          <label><span>What was done</span>
+            <select id="f_worktype">
+              <option value="wallpaper">Wallpaper</option>
+              <option value="paint">Paint</option>
+            </select>
+          </label>
+        </div>
+        <div class="wide">
+          <label><span>Start from an existing wall</span>
+            <select id="f_dup"><option value="">&mdash; New, blank &mdash;</option></select>
+          </label>
+        </div>
+
+        <div class="wide" id="photoAreaMulti">
           <label><span>Photograph</span></label>
           <div class="dropzone" id="dz">
             <div id="dzPreview"></div>
@@ -641,6 +676,28 @@ details summary:active{color:var(--navy)}
           <input type="file" id="file" accept="image/*" multiple hidden>
           <div class="pgrid" id="photoGrid" hidden></div>
         </div>
+
+        <div class="wide" id="photoAreaBA" hidden>
+          <div class="baPair">
+            <div class="baSlot">
+              <label><span>Before photograph</span></label>
+              <div class="dropzone" id="dzBefore">
+                <div id="dzBeforePreview"></div>
+                <p id="dzBeforeText">Tap to choose the before photo.</p>
+              </div>
+              <input type="file" id="fileBefore" accept="image/*" hidden>
+            </div>
+            <div class="baSlot">
+              <label><span>After photograph</span></label>
+              <div class="dropzone" id="dzAfter">
+                <div id="dzAfterPreview"></div>
+                <p id="dzAfterText">Tap to choose the after photo.</p>
+              </div>
+              <input type="file" id="fileAfter" accept="image/*" hidden>
+            </div>
+          </div>
+        </div>
+
         <div class="wide">
           <label><span>Photo quality</span>
             <select id="f_quality">
@@ -651,12 +708,12 @@ details summary:active{color:var(--navy)}
             </select>
           </label>
         </div>
-        <label><span>Brand</span><select id="f_brand"></select></label>
+        <label><span id="lbl_brand">Brand</span><select id="f_brand"></select></label>
         <label id="otherWrap" hidden><span>Brand name</span>
           <input type="text" id="f_brand_other" placeholder="Type the house or maker">
         </label>
-        <label><span>Pattern</span><input type="text" id="f_pattern" placeholder="Askew"></label>
-        <label><span>Colourway / substrate</span><input type="text" id="f_colorway" placeholder="Custom on antiqued gold"></label>
+        <label><span id="lbl_pattern">Pattern</span><input type="text" id="f_pattern" placeholder="Askew"></label>
+        <label><span id="lbl_colorway">Colourway / substrate</span><input type="text" id="f_colorway" placeholder="Custom on antiqued gold"></label>
         <label><span>Room</span><select id="f_room"></select></label>
         <label id="otherRoomWrap" hidden><span>Room name</span>
           <input type="text" id="f_room_other" placeholder="Type the room">
@@ -668,7 +725,7 @@ details summary:active{color:var(--navy)}
         <label><span>Project</span><input type="text" id="f_project" placeholder="Belvedere residence"></label>
         <label><span>City</span><input type="text" id="f_city" placeholder="Belvedere"></label>
         <label><span>Year</span><input type="number" id="f_year" min="1990" max="2100" placeholder="2026"></label>
-        <label><span>Panels hung</span><input type="number" id="f_panels" min="1" placeholder="8"></label>
+        <label id="panelsWrap"><span>Panels hung</span><input type="number" id="f_panels" min="1" placeholder="8"></label>
         <label class="wide"><span>Note for the client</span>
           <textarea id="f_notes" placeholder="One or two sentences on the commission &mdash; the ground colour chosen, the seam layout, what the room does with the light."></textarea>
         </label>
@@ -789,13 +846,45 @@ const ROOM_OF = {};
 ROOM_GROUPS.forEach(g=>g.rooms.forEach(r=>{ ROOM_OF[r]=g.group; }));
 const roomGroup = r => ROOM_OF[r] || r || 'Unassigned';
 
-const STYLES = ['Chinoiserie','Floral','Damask','Geometric','Grasscloth & texture','Mural & scenic','Metallic'];
+const WALLPAPER_STYLES = ['Chinoiserie','Floral','Damask','Geometric','Grasscloth & texture','Mural & scenic','Metallic'];
+
+/* Paint jobs use a different vocabulary from wallpaper. Compiled from general
+   market knowledge, not a verified vendor list — check it against who Parfait
+   actually works with. */
+const PAINT_BRANDS = [
+  'Backdrop','Behr','Benjamin Moore','C2 Paint','Cabot','California Paints',
+  'Clare','Dunn-Edwards','Dutch Boy','Farrow & Ball','Fine Paints of Europe',
+  'Glidden','Kelly-Moore Paints','Little Greene','Miller Paint','Olympic',
+  'PPG Paints','Portola Paints & Glazes','Pratt & Lambert','Rodda Paint',
+  'Romabio Paints','Rust-Oleum','Sherwin-Williams','Sico','Tikkurila','Valspar'
+];
+const PAINT_STYLES = [
+  'Solid colour','Colour-drenched','Venetian plaster','Limewash',
+  'Faux finish','Ombré & colour wash','Stripes & pattern','Textured & stucco'
+];
 
 const VIEWS = [
-  {id:'brand', label:'Brand', note:'House',   key:i=>i.brand || 'Unattributed'},
-  {id:'room',  label:'Room',  note:'Setting', key:i=>roomGroup(i.room)},
-  {id:'style', label:'Style', note:'Motif',   key:i=>i.style || 'Unassigned'}
+  {id:'brand', label:'Brand', note:'House',        key:i=>i.brand || 'Unattributed'},
+  {id:'room',  label:'Room',  note:'Setting',      key:i=>roomGroup(i.room)},
+  {id:'style', label:'Style', note:'Motif',        key:i=>i.style || 'Unassigned'},
+  {id:'ba',    label:'Before & After', note:'Reveal', key:i=>roomGroup(i.room)}
 ];
+/* Before & After walls are a different kind of showcase and never mix into
+   the Brand/Room/Style arrangements, and vice versa. */
+function inView(it, viewId){
+  const isBA = (it.kind||'wallpaper') === 'before_after';
+  return viewId === 'ba' ? isBA : !isBA;
+}
+function brandListFor(kind, workType){
+  if(kind === 'paint') return PAINT_BRANDS;
+  if(kind === 'before_after') return workType === 'paint' ? PAINT_BRANDS : BRANDS;
+  return BRANDS;
+}
+function styleListFor(kind, workType){
+  if(kind === 'paint') return PAINT_STYLES;
+  if(kind === 'before_after') return workType === 'paint' ? PAINT_STYLES : WALLPAPER_STYLES;
+  return WALLPAPER_STYLES;
+}
 
 const QUALITY = {
   '1600': {max:1600, q:0.86}, '2200': {max:2200, q:0.88},
@@ -923,9 +1012,13 @@ function srcFor(path){ return files[path] || previews[path] || path; }
 
 /* older catalogues carried a single photo field */
 function normalise(it){
+  it.kind = it.kind || 'wallpaper';
   if(!Array.isArray(it.photos)) it.photos = it.photo ? [it.photo] : [];
   const n = Number(it.cover);
   it.cover = (n >= 0 && n < it.photos.length) ? n : 0;
+  it.beforePhoto = it.beforePhoto || '';
+  it.afterPhoto  = it.afterPhoto  || '';
+  it.workType = it.workType || (it.kind === 'before_after' ? 'wallpaper' : '');
   return it;
 }
 
@@ -959,6 +1052,10 @@ function pruneDraft(){
 }
 function sameItem(a,b){
   for(const f of FIELDS){ if(String(a[f]==null?'':a[f]) !== String(b[f]==null?'':b[f])) return false; }
+  if((a.kind||'wallpaper') !== (b.kind||'wallpaper')) return false;
+  if((a.workType||'') !== (b.workType||'')) return false;
+  if((a.beforePhoto||'') !== (b.beforePhoto||'')) return false;
+  if((a.afterPhoto||'') !== (b.afterPhoto||'')) return false;
   if(photosOf(a).join('|') !== photosOf(b).join('|')) return false;
   if(coverOf(a) !== coverOf(b)) return false;
   return true;
@@ -974,6 +1071,12 @@ function pendingPhotoPaths(){
     const already = was ? photosOf(was) : [];
     photosOf(it).forEach(p=>{
       if(already.indexOf(p) === -1 && out.indexOf(p) === -1) out.push(p);
+    });
+    ['beforePhoto','afterPhoto'].forEach(f=>{
+      const p = it[f];
+      if(!p) return;
+      const wasP = was ? (was[f] || '') : '';
+      if(p !== wasP && out.indexOf(p) === -1) out.push(p);
     });
   });
   return out;
@@ -1016,7 +1119,7 @@ async function refreshCatalogue(){
     published = items.map(normalise);
     pruneDraft();
     buildDrawer(); render();
-    if(unlocked){ ledger(); publishPanel(); }
+    if(unlocked){ ledger(); publishPanel(); refreshDupList(); }
   }catch(e){}
 }
 const isPending = id => Object.prototype.hasOwnProperty.call(draft, id);
@@ -1044,7 +1147,7 @@ function buildDrawer(){
     box.appendChild(b);
   });
   const box2 = $('#chips'); box2.innerHTML = '';
-  const all = merged(), k = currentView().key;
+  const all = merged().filter(i=>inView(i, view)), k = currentView().key;
   const groups = [];
   all.forEach(i=>{ const g=k(i); if(groups.indexOf(g)===-1) groups.push(g); });
   groups.sort((a,b)=>a.localeCompare(b));
@@ -1065,7 +1168,8 @@ $('#showAll').onclick = ()=>{ filters.clear(); buildDrawer(); render(); closeDra
 
 /* ═══════════ gallery ═══════════ */
 function faceHTML(it){
-  const cover = coverOf(it);
+  const isBA = (it.kind||'wallpaper') === 'before_after';
+  const cover = isBA ? (it.afterPhoto || it.beforePhoto || '') : coverOf(it);
   const src = cover ? srcFor(cover) : '';
   return swatch(it.style, it.id)
     + (src ? '<img src="'+esc(src)+'" alt="'+esc(it.pattern)+', '+esc(String(it.room||'').toLowerCase())+'" loading="lazy">' : '');
@@ -1083,11 +1187,13 @@ function wireImages(root){
 }
 
 function drop(it){
+  const isBA = (it.kind||'wallpaper') === 'before_after';
   const b = el('button','drop');
   b.setAttribute('aria-label', (it.pattern||'Wall') + (it.brand ? ' by ' + it.brand : ''));
   b.innerHTML =
     '<div class="drop-face">' + faceHTML(it)
       + (isPending(it.id) ? '<span class="pend">Not published</span>' : '')
+      + (isBA ? '<span class="priv">Before &amp; After</span>' : '')
       + '</div>'
     + '<div class="drop-meta">'
       + '<div class="b">' + esc(it.brand) + '</div>'
@@ -1099,16 +1205,18 @@ function drop(it){
 }
 function render(){
   const v = currentView();
-  const all = merged();
+  const all = merged().filter(i=>inView(i, v.id));
   const shown = all.filter(i=> !filters.size || filters.has(v.key(i)) );
   $('#tally').textContent = shown.length + (shown.length===1 ? ' wall' : ' walls');
 
   const g = $('#gallery'); g.innerHTML = '';
   if(!shown.length){
     const z = el('div','void');
-    z.innerHTML = catalogueLoaded
-      ? '<h3>The catalogue is empty.</h3><p>Add a wall from the manage screen, then publish it so every device shows the same work.</p>'
-      : '<h3>No catalogue file found.</h3><p>This portfolio reads its walls from <code>catalogue.js</code> in the same folder. Add a wall from the manage screen and the publish step will create that file for you.</p>';
+    z.innerHTML = !catalogueLoaded
+      ? '<h3>No catalogue file found.</h3><p>This portfolio reads its walls from <code>catalogue.js</code> in the same folder. Add a wall from the manage screen and the publish step will create that file for you.</p>'
+      : (v.id === 'ba'
+          ? '<h3>No before &amp; after walls yet.</h3><p>Add a wall from the manage screen, set its type to Before &amp; After, and publish it.</p>'
+          : '<h3>The catalogue is empty.</h3><p>Add a wall from the manage screen, then publish it so every device shows the same work.</p>');
     const b = el('button'); b.textContent = 'Manage catalogue'; b.onclick = openAdmin;
     z.appendChild(b); g.appendChild(z); cur = -1; return;
   }
@@ -1136,8 +1244,36 @@ let lbItem = null, lbIndex = 0;
 function paintLB(){
   const it = lbItem;
   if(!it) return;
-  const list = photosOf(it);
   const face = $('#lbFace');
+  const strip = $('#lbStrip');
+  const isBA = (it.kind||'wallpaper') === 'before_after';
+
+  if(isBA){
+    const slots = [
+      {label:'Before', path: it.beforePhoto},
+      {label:'After',  path: it.afterPhoto}
+    ].filter(s=>s.path);
+    if(!slots.length){ face.innerHTML = swatch(it.style, it.id); strip.hidden = true; strip.innerHTML = ''; return; }
+    if(lbIndex >= slots.length) lbIndex = 0;
+    const cur = slots[lbIndex];
+    face.innerHTML = '<img src="'+esc(srcFor(cur.path))+'" alt="'+esc(cur.label)+' — '+esc(it.pattern)+'">';
+    const im0 = face.querySelector('img');
+    im0.onerror = ()=>{ face.innerHTML = swatch(it.style, it.id); };
+    if(slots.length < 2){ strip.hidden = true; strip.innerHTML = ''; return; }
+    strip.hidden = false;
+    strip.innerHTML = '';
+    slots.forEach((s,i)=>{
+      const bt = el('button', i === lbIndex ? 'on' : '');
+      bt.setAttribute('aria-label', s.label + ' photograph');
+      bt.innerHTML = '<img src="'+esc(srcFor(s.path))+'" alt=""><span class="baTag">'+s.label+'</span>';
+      bt.onclick = ()=>{ lbIndex = i; paintLB(); };
+      strip.appendChild(bt);
+    });
+    wireImages(strip);
+    return;
+  }
+
+  const list = photosOf(it);
   const src = list.length ? srcFor(list[lbIndex]) : '';
   face.innerHTML = src
     ? '<img src="'+esc(src)+'" alt="'+esc(it.pattern)+'">'
@@ -1146,7 +1282,6 @@ function paintLB(){
     const im = face.querySelector('img');
     im.onerror = ()=>{ face.innerHTML = swatch(it.style, it.id); };
   }
-  const strip = $('#lbStrip');
   if(list.length < 2){ strip.hidden = true; strip.innerHTML = ''; return; }
   strip.hidden = false;
   strip.innerHTML = '';
@@ -1162,18 +1297,39 @@ function paintLB(){
 
 function openLB(it){
   lbItem = it;
-  const list = photosOf(it);
-  const n = Number(it.cover);
-  lbIndex = (n >= 0 && n < list.length) ? n : 0;
+  const isBA = (it.kind||'wallpaper') === 'before_after';
+  const isPaint = (it.kind||'wallpaper') === 'paint';
+  lbIndex = 0;
+  if(!isBA){
+    const list = photosOf(it);
+    const n = Number(it.cover);
+    lbIndex = (n >= 0 && n < list.length) ? n : 0;
+  }
   paintLB();
-  const rows = [
-    ['House', it.brand], ['Pattern', it.pattern], ['Colourway', it.colorway],
-    ['Room', it.room],
-    ['Grouped as', roomGroup(it.room) !== it.room ? roomGroup(it.room) : ''],
-    ['Style', it.style], ['Project', it.project], ['Location', it.city],
-    ['Installed', it.year], ['Panels hung', it.panels],
-    ['Photographs', list.length > 1 ? list.length : '']
-  ].filter(r=>r[1]);
+  let rows;
+  if(isBA){
+    rows = [
+      ['Type', it.workType === 'paint' ? 'Paint transformation' : 'Wallpaper transformation'],
+      [it.workType === 'paint' ? 'Paint brand' : 'Brand', it.brand],
+      [it.workType === 'paint' ? 'Colour name' : 'Pattern', it.pattern],
+      [it.workType === 'paint' ? 'Finish' : 'Colourway', it.colorway],
+      ['Room', it.room],
+      ['Grouped as', roomGroup(it.room) !== it.room ? roomGroup(it.room) : ''],
+      ['Style', it.style], ['Project', it.project], ['Location', it.city],
+      ['Installed', it.year]
+    ].filter(r=>r[1]);
+  } else {
+    rows = [
+      [isPaint ? 'Paint brand' : 'House', it.brand],
+      [isPaint ? 'Colour name' : 'Pattern', it.pattern],
+      [isPaint ? 'Finish' : 'Colourway', it.colorway],
+      ['Room', it.room],
+      ['Grouped as', roomGroup(it.room) !== it.room ? roomGroup(it.room) : ''],
+      ['Style', it.style], ['Project', it.project], ['Location', it.city],
+      ['Installed', it.year], ['Panels hung', isPaint ? '' : it.panels],
+      ['Photographs', photosOf(it).length > 1 ? photosOf(it).length : '']
+    ].filter(r=>r[1]);
+  }
   $('#lbBody').innerHTML =
     '<span class="eyebrow">' + esc(it.brand) + '</span>'
     + '<h3>' + esc(it.pattern) + '</h3>'
@@ -1237,10 +1393,13 @@ document.addEventListener('keydown', e=>{
     return;
   }
   if($('#lb').classList.contains('on')){
-    const list = lbItem ? photosOf(lbItem) : [];
-    if(list.length > 1 && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')){
+    const isBAk = lbItem && (lbItem.kind||'wallpaper') === 'before_after';
+    const n = isBAk
+      ? ['beforePhoto','afterPhoto'].reduce((c,f)=>c+(lbItem[f]?1:0),0)
+      : (lbItem ? photosOf(lbItem).length : 0);
+    if(n > 1 && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')){
       e.preventDefault();
-      lbIndex = (lbIndex + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length;
+      lbIndex = (lbIndex + (e.key === 'ArrowRight' ? 1 : -1) + n) % n;
       paintLB();
       return;
     }
@@ -1272,8 +1431,6 @@ function setSelect(sel, val){
   sel.value = val;
 }
 function buildSelects(){
-  fill($('#f_brand'), BRANDS.concat([OTHER]));
-  fill($('#f_style'), STYLES.concat([OTHER]));
   $('#f_room').innerHTML = ROOM_GROUPS.map(g =>
     '<optgroup label="'+esc(g.group)+'">' + g.rooms.map(r=>'<option>'+esc(r)+'</option>').join('') + '</optgroup>'
   ).join('') + '<option>'+OTHER+'</option>';
@@ -1281,10 +1438,97 @@ function buildSelects(){
   $('#f_room').onchange  = toggleOtherRoom;
   $('#f_style').onchange = toggleOtherStyle;
   $('#f_quality').onchange = ()=> local.set(KEY_Q, $('#f_quality').value);
+
+  $('#f_kind').onchange = ()=>{
+    applyKind();
+    $('#f_brand_other').value=''; $('#f_style_other').value='';
+    toggleOtherBrand(); toggleOtherStyle();
+    pendingPhotos = []; pendingCover = 0; renderPhotoGrid();
+    pendingBefore = null; pendingAfter = null; renderBAPreviews();
+    $('#dzText').innerHTML = 'Tap to choose photographs, or drag them here.<br>The first becomes the cover unless you say otherwise.';
+  };
+  $('#f_worktype').onchange = ()=>{
+    applyKind();
+    $('#f_brand_other').value=''; $('#f_style_other').value='';
+    toggleOtherBrand(); toggleOtherStyle();
+  };
+  $('#f_dup').onchange = ()=>{
+    const id = $('#f_dup').value;
+    if(!id) return;
+    const src = merged().filter(i=>i.id===id)[0];
+    if(!src) return;
+    editing = null;
+    if((src.kind||'wallpaper') === 'before_after') setSelect($('#f_worktype'), src.workType || 'wallpaper');
+    applyKind();
+    setBrandField(src.brand);
+    $('#f_pattern').value = src.pattern || '';
+    $('#f_colorway').value = src.colorway || '';
+    setSelect($('#f_room'), src.room); $('#f_room_other').value=''; toggleOtherRoom();
+    setSelect($('#f_style'), src.style); $('#f_style_other').value=''; toggleOtherStyle();
+    $('#f_project').value = src.project || '';
+    $('#f_city').value = src.city || '';
+    $('#f_year').value = src.year || '';
+    $('#f_panels').value = src.panels || '';
+    $('#f_notes').value = src.notes || '';
+    $('#save').textContent = 'Save to catalogue';
+    $('#said').textContent = 'Copied from ' + (src.pattern || 'that wall') + ' — add new photographs and adjust what is different.';
+  };
+
+  applyKind();
 }
 function toggleOtherBrand(){ const on = $('#f_brand').value===OTHER; $('#otherWrap').hidden = !on; if(on) $('#f_brand_other').focus(); }
 function toggleOtherRoom(){  const on = $('#f_room').value===OTHER;  $('#otherRoomWrap').hidden = !on; if(on) $('#f_room_other').focus(); }
 function toggleOtherStyle(){ const on = $('#f_style').value===OTHER; $('#otherStyleWrap').hidden = !on; if(on) $('#f_style_other').focus(); }
+
+/* Selects the matching option for a brand, or falls back to the free-text
+   Other field when the value is not in the current kind's list. */
+function setBrandField(brandVal){
+  const kind = $('#f_kind').value;
+  const workType = $('#f_worktype').value || 'wallpaper';
+  const list = brandListFor(kind, workType);
+  const known = !brandVal || list.indexOf(brandVal) !== -1;
+  $('#f_brand').value = known ? (brandVal || list[0]) : OTHER;
+  $('#f_brand_other').value = known ? '' : (brandVal || '');
+  toggleOtherBrand();
+}
+
+/* Rebuilds the brand/style option lists and shows the right fields for the
+   selected entry type. Called on load, on type change, and before loading an
+   existing wall into the form. */
+function applyKind(){
+  const kind = $('#f_kind').value;
+  const isPaint = kind === 'paint';
+  const isBA = kind === 'before_after';
+  const workType = $('#f_worktype').value || 'wallpaper';
+
+  $('#workTypeWrap').hidden = !isBA;
+  $('#panelsWrap').hidden = isPaint || isBA;
+  $('#photoAreaMulti').hidden = isBA;
+  $('#photoAreaBA').hidden = !isBA;
+
+  $('#lbl_brand').textContent = isPaint ? 'Paint brand' : 'Brand';
+  $('#lbl_pattern').textContent = isPaint ? 'Colour name' : 'Pattern';
+  $('#lbl_colorway').textContent = isPaint ? 'Finish' : 'Colourway / substrate';
+
+  fill($('#f_brand'), brandListFor(kind, workType).concat([OTHER]));
+  fill($('#f_style'), styleListFor(kind, workType).concat([OTHER]));
+
+  refreshDupList();
+}
+
+/* Lists existing walls of the same kind, so a new entry can start from one
+   without retyping everything that is the same. */
+function refreshDupList(){
+  const kind = $('#f_kind').value;
+  const sel = $('#f_dup');
+  const keep = sel.value;
+  const items = merged().filter(i=> (i.kind||'wallpaper') === kind && i.id !== editing);
+  sel.innerHTML = '<option value="">&mdash; New, blank &mdash;</option>' + items.map(i=>
+    '<option value="'+esc(i.id)+'">' + esc(i.brand||'—') + ' — ' + esc(i.pattern||'—')
+    + (i.room ? ' (' + esc(i.room) + ')' : '') + '</option>'
+  ).join('');
+  sel.value = items.some(i=>i.id===keep) ? keep : '';
+}
 
 function openAdmin(){
   $('#admin').classList.add('on'); document.body.classList.add('locked'); closeDrawer();
@@ -1350,42 +1594,52 @@ $('#dz').addEventListener('dragleave', ()=> $('#dz').classList.remove('hot'));
 $('#dz').addEventListener('drop', e=>{ e.preventDefault(); $('#dz').classList.remove('hot'); intakeMany(e.dataTransfer.files); });
 $('#file').onchange = e=>{ intakeMany(e.target.files); e.target.value=''; };
 
-/* pendingPhotos: what the form is holding right now.
+/* pendingPhotos: what the multi-photo form is holding right now.
    {tag, full, preview, path, existing} — existing ones are already in the
    repository, new ones are named when the wall is saved. */
 let pendingPhotos = [], pendingCover = 0;
+/* pendingBefore / pendingAfter: the same shape, one slot each, for a
+   Before & After wall. */
+let pendingBefore = null, pendingAfter = null;
+
+/* Shared by every intake path: reduces one file to a full-size data URL at
+   the chosen quality, plus a small preview kept in the draft. */
+async function processOnePhoto(file){
+  const pick = $('#f_quality').value, cfg = QUALITY[pick] || QUALITY['2200'];
+  let full;
+  if(pick === 'orig'){
+    full = await fileToDataURL(file);
+  } else {
+    let src, w, hh, bmp = null;
+    try{
+      bmp = await createImageBitmap(file, {imageOrientation:'from-image'});
+      src = bmp; w = bmp.width; hh = bmp.height;
+    }catch(e){
+      const im = await loadImage(await fileToDataURL(file));
+      src = im; w = im.naturalWidth; hh = im.naturalHeight;
+    }
+    const s = Math.min(1, cfg.max/Math.max(w,hh));
+    const tw = Math.max(1,Math.round(w*s)), th = Math.max(1,Math.round(hh*s));
+    full = scaleStepped(src, w, hh, tw, th).toDataURL('image/jpeg', cfg.q);
+    if(bmp && bmp.close) bmp.close();
+  }
+  let prev;
+  try{ prev = await shrink(full, 620, 0.6); }catch(e){ prev = full; }
+  return {full:full, preview:prev};
+}
 
 async function intakeMany(list){
   const arr = Array.prototype.slice.call(list || []);
   if(!arr.length) return;
-  const pick = $('#f_quality').value, cfg = QUALITY[pick] || QUALITY['2200'];
   let done = 0, failed = 0;
   $('#dzText').textContent = 'Processing ' + arr.length + (arr.length===1?' photograph…':' photographs…');
   for(const file of arr){
     if(!file.type || file.type.indexOf('image/') !== 0){ failed++; continue; }
     try{
-      let full;
-      if(pick === 'orig'){
-        full = await fileToDataURL(file);
-      } else {
-        let src, w, hh, bmp = null;
-        try{
-          bmp = await createImageBitmap(file, {imageOrientation:'from-image'});
-          src = bmp; w = bmp.width; hh = bmp.height;
-        }catch(e){
-          const im = await loadImage(await fileToDataURL(file));
-          src = im; w = im.naturalWidth; hh = im.naturalHeight;
-        }
-        const s = Math.min(1, cfg.max/Math.max(w,hh));
-        const tw = Math.max(1,Math.round(w*s)), th = Math.max(1,Math.round(hh*s));
-        full = scaleStepped(src, w, hh, tw, th).toDataURL('image/jpeg', cfg.q);
-        if(bmp && bmp.close) bmp.close();
-      }
-      let prev;
-      try{ prev = await shrink(full, 620, 0.6); }catch(e){ prev = full; }
+      const r = await processOnePhoto(file);
       pendingPhotos.push({
         tag: Math.random().toString(36).slice(2,5),
-        full: full, preview: prev, path: '', existing: false
+        full: r.full, preview: r.preview, path: '', existing: false
       });
       done++;
     }catch(err){ failed++; }
@@ -1397,6 +1651,44 @@ async function intakeMany(list){
     + ' on this wall' + (failed ? ' · ' + failed + ' could not be read' : '')
     + '<br>Tap to add more. The one marked Cover is what shows on the rail.';
 }
+
+/* ── before / after intake: one photograph per slot ── */
+$('#dzBefore').onclick = ()=> $('#fileBefore').click();
+$('#dzBefore').addEventListener('dragover', e=>{ e.preventDefault(); $('#dzBefore').classList.add('hot'); });
+$('#dzBefore').addEventListener('dragleave', ()=> $('#dzBefore').classList.remove('hot'));
+$('#dzBefore').addEventListener('drop', e=>{ e.preventDefault(); $('#dzBefore').classList.remove('hot'); if(e.dataTransfer.files[0]) intakeBA('before', e.dataTransfer.files[0]); });
+$('#fileBefore').onchange = e=>{ if(e.target.files[0]) intakeBA('before', e.target.files[0]); e.target.value=''; };
+
+$('#dzAfter').onclick = ()=> $('#fileAfter').click();
+$('#dzAfter').addEventListener('dragover', e=>{ e.preventDefault(); $('#dzAfter').classList.add('hot'); });
+$('#dzAfter').addEventListener('dragleave', ()=> $('#dzAfter').classList.remove('hot'));
+$('#dzAfter').addEventListener('drop', e=>{ e.preventDefault(); $('#dzAfter').classList.remove('hot'); if(e.dataTransfer.files[0]) intakeBA('after', e.dataTransfer.files[0]); });
+$('#fileAfter').onchange = e=>{ if(e.target.files[0]) intakeBA('after', e.target.files[0]); e.target.value=''; };
+
+async function intakeBA(slot, file){
+  if(!file.type || file.type.indexOf('image/') !== 0){ toast('That file is not an image'); return; }
+  const textEl = $(slot === 'before' ? '#dzBeforeText' : '#dzAfterText');
+  textEl.textContent = 'Processing…';
+  try{
+    const r = await processOnePhoto(file);
+    const obj = {full:r.full, preview:r.preview, path:'', existing:false};
+    if(slot === 'before') pendingBefore = obj; else pendingAfter = obj;
+    renderBASlot(slot);
+  }catch(e){
+    textEl.textContent = 'That image could not be read. Try another file.';
+  }
+}
+function renderBASlot(slot){
+  const obj = slot === 'before' ? pendingBefore : pendingAfter;
+  const prev = $(slot === 'before' ? '#dzBeforePreview' : '#dzAfterPreview');
+  const text = $(slot === 'before' ? '#dzBeforeText' : '#dzAfterText');
+  if(!obj){ prev.innerHTML = ''; text.innerHTML = 'Tap to choose the ' + slot + ' photo.'; return; }
+  const src = obj.preview || obj.path;
+  prev.innerHTML = '<img src="'+esc(src)+'" alt="">';
+  text.innerHTML = 'Tap to replace.';
+  wireImages(prev);
+}
+function renderBAPreviews(){ renderBASlot('before'); renderBASlot('after'); }
 
 function renderPhotoGrid(){
   const g = $('#photoGrid');
@@ -1451,10 +1743,7 @@ function readForm(){
   };
 }
 function writeForm(it){
-  const known = !it.brand || BRANDS.indexOf(it.brand) !== -1;
-  $('#f_brand').value = known ? (it.brand || BRANDS[0]) : OTHER;
-  $('#f_brand_other').value = known ? '' : (it.brand || '');
-  toggleOtherBrand();
+  setBrandField(it.brand);
   $('#f_pattern').value = it.pattern || '';
   $('#f_colorway').value = it.colorway || '';
   setSelect($('#f_room'), it.room); $('#f_room_other').value=''; toggleOtherRoom();
@@ -1468,10 +1757,14 @@ function writeForm(it){
 function clearForm(){
   editing = null;
   pendingPhotos = []; pendingCover = 0;
+  pendingBefore = null; pendingAfter = null;
+  applyKind();
   writeForm({});
   $('#dzPreview').innerHTML = '';
   $('#dzText').innerHTML = 'Tap to choose photographs, or drag them here.<br>The first becomes the cover unless you say otherwise.';
   renderPhotoGrid();
+  renderBAPreviews();
+  $('#f_dup').value = '';
   $('#save').textContent = 'Save to catalogue';
   $('#said').textContent = '';
 }
@@ -1479,34 +1772,57 @@ $('#clear').onclick = clearForm;
 
 $('#save').onclick = async ()=>{
   const d = readForm();
+  const kind = $('#f_kind').value;
   if(!d.pattern){ $('#said').textContent='A pattern name is required.'; $('#f_pattern').focus(); return; }
   if(d.brand === OTHER){ $('#said').textContent='Type the brand name, or pick a house from the list.'; $('#f_brand_other').focus(); return; }
   if(d.room  === OTHER){ $('#said').textContent='Type the room name, or pick one from the list.'; $('#f_room_other').focus(); return; }
   if(d.style === OTHER){ $('#said').textContent='Type the style name, or pick one from the list.'; $('#f_style_other').focus(); return; }
+  if(kind === 'before_after' && (!pendingBefore || !pendingAfter)){
+    $('#said').textContent = 'A before and after wall needs both photographs.';
+    return;
+  }
 
   const id = editing || uid();
-  const it = {id:id};
+  const it = {id:id, kind:kind};
   FIELDS.forEach(f=>{ it[f] = d[f]; });
 
-  const paths = [];
-  pendingPhotos.forEach(p=>{
-    if(p.existing){ paths.push(p.path); return; }
-    const path = PHOTO_DIR + photoBase(it, p.tag);
-    p.path = path;
-    files[path] = p.full;
-    previews[path] = p.preview;
-    paths.push(path);
-  });
-  it.photos = paths;
-  it.cover = Math.max(0, Math.min(pendingCover, paths.length - 1));
-  if(it.cover < 0) it.cover = 0;
-  it.photo = paths[it.cover] || '';   /* kept so an older cached copy still shows something */
+  if(kind === 'before_after'){
+    it.workType = $('#f_worktype').value || 'wallpaper';
+    let beforePath = '', afterPath = '';
+    if(pendingBefore){
+      beforePath = pendingBefore.existing ? pendingBefore.path : PHOTO_DIR + photoBase(it, 'before');
+      if(!pendingBefore.existing){ files[beforePath] = pendingBefore.full; previews[beforePath] = pendingBefore.preview; }
+    }
+    if(pendingAfter){
+      afterPath = pendingAfter.existing ? pendingAfter.path : PHOTO_DIR + photoBase(it, 'after');
+      if(!pendingAfter.existing){ files[afterPath] = pendingAfter.full; previews[afterPath] = pendingAfter.preview; }
+    }
+    it.beforePhoto = beforePath; it.afterPhoto = afterPath;
+    it.photos = []; it.cover = 0; it.photo = afterPath || beforePath || '';
+  } else {
+    const paths = [];
+    pendingPhotos.forEach(p=>{
+      if(p.existing){ paths.push(p.path); return; }
+      const path = PHOTO_DIR + photoBase(it, p.tag);
+      p.path = path;
+      files[path] = p.full;
+      previews[path] = p.preview;
+      paths.push(path);
+    });
+    it.photos = paths;
+    it.cover = Math.max(0, Math.min(pendingCover, paths.length - 1));
+    if(it.cover < 0) it.cover = 0;
+    it.photo = paths[it.cover] || '';   /* kept so an older cached copy still shows something */
+    it.beforePhoto = ''; it.afterPhoto = '';
+  }
 
   draft[id] = it;
   if(!saveDraft()){ $('#said').textContent = 'The draft is too large for this browser. Publish what you have, then continue.'; return; }
   toast(editing ? 'Updated — not published yet' : 'Added — not published yet');
   clearForm(); ledger(); publishPanel(); buildDrawer(); render();
 };
+
+const KIND_LABEL = {wallpaper:'Wallpaper', paint:'Paint', before_after:'Before & After'};
 
 function ledger(){
   const all = merged();
@@ -1519,9 +1835,11 @@ function ledger(){
     return;
   }
   all.slice().reverse().forEach(it=>{
+    const kind = it.kind || 'wallpaper';
     const row = el('div','entry');
     row.innerHTML = '<div class="thumb">' + faceHTML(it) + '</div>'
       + '<div class="txt"><b>' + esc(it.pattern) + '</b><small>'
+      + esc(KIND_LABEL[kind] || kind) + ' &middot; '
       + esc(it.brand) + ' &middot; ' + esc(it.room)
       + (it.project ? ' &middot; ' + esc(it.project) : '')
       + (photosOf(it).length > 1 ? ' &middot; ' + photosOf(it).length + ' photos' : '')
@@ -1531,18 +1849,31 @@ function ledger(){
     const e1 = el('button'); e1.textContent = 'Edit';
     e1.onclick = ()=>{
       editing = it.id;
+      setSelect($('#f_kind'), kind);
+      if(kind === 'before_after') setSelect($('#f_worktype'), it.workType || 'wallpaper');
+      applyKind();
       writeForm(it);
-      const list = photosOf(it);
-      pendingPhotos = list.map(p=>({
-        tag:'', full:null, preview: (files[p] || previews[p] || p), path:p, existing:true
-      }));
-      const n = Number(it.cover);
-      pendingCover = (n >= 0 && n < list.length) ? n : 0;
-      renderPhotoGrid();
-      $('#dzPreview').innerHTML = '';
-      $('#dzText').innerHTML = list.length
-        ? list.length + (list.length===1?' photograph':' photographs') + ' on this wall<br>Tap to add more, or remove any below.'
-        : 'Tap to choose photographs, or drag them here.';
+
+      if(kind === 'before_after'){
+        pendingPhotos = []; pendingCover = 0;
+        pendingBefore = it.beforePhoto ? {full:null, preview:(files[it.beforePhoto]||previews[it.beforePhoto]||it.beforePhoto), path:it.beforePhoto, existing:true} : null;
+        pendingAfter  = it.afterPhoto  ? {full:null, preview:(files[it.afterPhoto]||previews[it.afterPhoto]||it.afterPhoto),  path:it.afterPhoto,  existing:true} : null;
+        renderBAPreviews();
+        $('#dzPreview').innerHTML = '';
+      } else {
+        pendingBefore = null; pendingAfter = null; renderBAPreviews();
+        const list = photosOf(it);
+        pendingPhotos = list.map(p=>({
+          tag:'', full:null, preview: (files[p] || previews[p] || p), path:p, existing:true
+        }));
+        const n = Number(it.cover);
+        pendingCover = (n >= 0 && n < list.length) ? n : 0;
+        renderPhotoGrid();
+        $('#dzPreview').innerHTML = '';
+        $('#dzText').innerHTML = list.length
+          ? list.length + (list.length===1?' photograph':' photographs') + ' on this wall<br>Tap to add more, or remove any below.'
+          : 'Tap to choose photographs, or drag them here.';
+      }
       $('#save').textContent = 'Save changes';
       $('#said').textContent = 'Editing ' + it.pattern;
       $('#admin').scrollTop = 0; window.scrollTo(0,0);
@@ -1554,6 +1885,7 @@ function ledger(){
       if(wasPublished) draft[it.id] = null;
       else {
         photosOf(it).forEach(p=>{ delete previews[p]; delete files[p]; delete savedFiles[p]; });
+        [it.beforePhoto, it.afterPhoto].forEach(p=>{ if(p){ delete previews[p]; delete files[p]; delete savedFiles[p]; } });
         delete draft[it.id];
       }
       saveDraft(); ledger(); publishPanel(); buildDrawer();
@@ -1569,11 +1901,14 @@ function ledger(){
 /* ═══════════ publish ═══════════ */
 function catalogueJS(list){
   const items = (list || merged()).map(it=>{
-    const o = {id:it.id};
+    const o = {id:it.id, kind: it.kind || 'wallpaper'};
     FIELDS.forEach(f=>{ o[f] = it[f] == null ? '' : it[f]; });
     o.photos = photosOf(it);
     o.cover  = Math.max(0, Math.min(Number(it.cover)||0, Math.max(0, o.photos.length-1)));
     o.photo  = o.photos[o.cover] || '';
+    o.beforePhoto = it.beforePhoto || '';
+    o.afterPhoto  = it.afterPhoto  || '';
+    o.workType = it.workType || '';
     return o;
   });
   return 'window.PARFAIT_CATALOGUE = '
@@ -1871,14 +2206,19 @@ $('#diagBtn').onclick = ()=>{
   const all = merged();
   if(!all.length) out.push('  none');
   all.forEach(it=>{
-    const list = photosOf(it);
-    out.push('  ' + (it.brand||'?') + ' · ' + (it.pattern||'?')
-      + '  ' + list.length + ' photo(s)'
+    const kind = it.kind || 'wallpaper';
+    out.push('  [' + (KIND_LABEL[kind]||kind) + '] ' + (it.brand||'?') + ' · ' + (it.pattern||'?')
       + (isPending(it.id) ? '  UNPUBLISHED' : ''));
-    list.forEach((p,i)=>{
-      out.push('      ' + (i === (Number(it.cover)||0) ? 'cover  ' : '       ') + p
-        + (files[p] ? '  [in memory]' : ''));
-    });
+    if(kind === 'before_after'){
+      out.push('      before  ' + (it.beforePhoto || '(none)') + (files[it.beforePhoto] ? '  [in memory]' : ''));
+      out.push('      after   ' + (it.afterPhoto  || '(none)') + (files[it.afterPhoto]  ? '  [in memory]' : ''));
+    } else {
+      const list = photosOf(it);
+      list.forEach((p,i)=>{
+        out.push('      ' + (i === (Number(it.cover)||0) ? 'cover  ' : '       ') + p
+          + (files[p] ? '  [in memory]' : ''));
+      });
+    }
   });
   const d = $('#diag'); d.hidden = false; d.textContent = out.join('\n');
 };
