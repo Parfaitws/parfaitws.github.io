@@ -680,20 +680,20 @@ details summary:active{color:var(--navy)}
         <div class="wide" id="photoAreaBA" hidden>
           <div class="baPair">
             <div class="baSlot">
-              <label><span>Before photograph</span></label>
+              <label><span>Before photographs</span></label>
               <div class="dropzone" id="dzBefore">
-                <div id="dzBeforePreview"></div>
-                <p id="dzBeforeText">Tap to choose the before photo.</p>
+                <p id="dzBeforeText">Tap to choose before photographs, or drag them here.</p>
               </div>
-              <input type="file" id="fileBefore" accept="image/*" hidden>
+              <input type="file" id="fileBefore" accept="image/*" multiple hidden>
+              <div class="pgrid" id="photoGridBefore" hidden></div>
             </div>
             <div class="baSlot">
-              <label><span>After photograph</span></label>
+              <label><span>After photographs</span></label>
               <div class="dropzone" id="dzAfter">
-                <div id="dzAfterPreview"></div>
-                <p id="dzAfterText">Tap to choose the after photo.</p>
+                <p id="dzAfterText">Tap to choose after photographs, or drag them here.</p>
               </div>
-              <input type="file" id="fileAfter" accept="image/*" hidden>
+              <input type="file" id="fileAfter" accept="image/*" multiple hidden>
+              <div class="pgrid" id="photoGridAfter" hidden></div>
             </div>
           </div>
         </div>
@@ -701,9 +701,9 @@ details summary:active{color:var(--navy)}
         <div class="wide">
           <label><span>Photo quality</span>
             <select id="f_quality">
-              <option value="2200">Presentation &mdash; 2200 px, recommended</option>
+              <option value="1600">Showroom &mdash; 1600 px, recommended for TV</option>
+              <option value="2200">Presentation &mdash; 2200 px, sharper, slower on TV</option>
               <option value="3000">Archive &mdash; 3000 px, near-original detail</option>
-              <option value="1600">Showroom &mdash; 1600 px, fastest to load</option>
               <option value="orig">Original file &mdash; untouched, slowest</option>
             </select>
           </label>
@@ -1016,8 +1016,14 @@ function normalise(it){
   if(!Array.isArray(it.photos)) it.photos = it.photo ? [it.photo] : [];
   const n = Number(it.cover);
   it.cover = (n >= 0 && n < it.photos.length) ? n : 0;
-  it.beforePhoto = it.beforePhoto || '';
-  it.afterPhoto  = it.afterPhoto  || '';
+  if(!Array.isArray(it.beforePhotos)) it.beforePhotos = it.beforePhoto ? [it.beforePhoto] : [];
+  if(!Array.isArray(it.afterPhotos))  it.afterPhotos  = it.afterPhoto  ? [it.afterPhoto]  : [];
+  const bn = Number(it.beforeCover);
+  it.beforeCover = (bn >= 0 && bn < it.beforePhotos.length) ? bn : 0;
+  const an = Number(it.afterCover);
+  it.afterCover = (an >= 0 && an < it.afterPhotos.length) ? an : 0;
+  it.beforePhoto = it.beforePhotos[it.beforeCover] || '';
+  it.afterPhoto  = it.afterPhotos[it.afterCover]  || '';
   it.workType = it.workType || (it.kind === 'before_after' ? 'wallpaper' : '');
   return it;
 }
@@ -1054,8 +1060,10 @@ function sameItem(a,b){
   for(const f of FIELDS){ if(String(a[f]==null?'':a[f]) !== String(b[f]==null?'':b[f])) return false; }
   if((a.kind||'wallpaper') !== (b.kind||'wallpaper')) return false;
   if((a.workType||'') !== (b.workType||'')) return false;
-  if((a.beforePhoto||'') !== (b.beforePhoto||'')) return false;
-  if((a.afterPhoto||'') !== (b.afterPhoto||'')) return false;
+  if((a.beforePhotos||[]).join('|') !== (b.beforePhotos||[]).join('|')) return false;
+  if((a.afterPhotos||[]).join('|')  !== (b.afterPhotos||[]).join('|'))  return false;
+  if((a.beforeCover||0) !== (b.beforeCover||0)) return false;
+  if((a.afterCover||0)  !== (b.afterCover||0))  return false;
   if(photosOf(a).join('|') !== photosOf(b).join('|')) return false;
   if(coverOf(a) !== coverOf(b)) return false;
   return true;
@@ -1072,11 +1080,12 @@ function pendingPhotoPaths(){
     photosOf(it).forEach(p=>{
       if(already.indexOf(p) === -1 && out.indexOf(p) === -1) out.push(p);
     });
-    ['beforePhoto','afterPhoto'].forEach(f=>{
-      const p = it[f];
-      if(!p) return;
-      const wasP = was ? (was[f] || '') : '';
-      if(p !== wasP && out.indexOf(p) === -1) out.push(p);
+    ['beforePhotos','afterPhotos'].forEach(f=>{
+      const list = Array.isArray(it[f]) ? it[f] : [];
+      const wasList = was ? (Array.isArray(was[f]) ? was[f] : []) : [];
+      list.forEach(p=>{
+        if(wasList.indexOf(p) === -1 && out.indexOf(p) === -1) out.push(p);
+      });
     });
   });
   return out;
@@ -1249,10 +1258,10 @@ function paintLB(){
   const isBA = (it.kind||'wallpaper') === 'before_after';
 
   if(isBA){
-    const slots = [
-      {label:'Before', path: it.beforePhoto},
-      {label:'After',  path: it.afterPhoto}
-    ].filter(s=>s.path);
+    const beforeList = Array.isArray(it.beforePhotos) ? it.beforePhotos : (it.beforePhoto ? [it.beforePhoto] : []);
+    const afterList  = Array.isArray(it.afterPhotos)  ? it.afterPhotos  : (it.afterPhoto  ? [it.afterPhoto]  : []);
+    const slots = beforeList.map((p,i)=>({label: beforeList.length>1 ? 'Before '+(i+1) : 'Before', path:p}))
+      .concat(afterList.map((p,i)=>({label: afterList.length>1 ? 'After '+(i+1) : 'After', path:p})));
     if(!slots.length){ face.innerHTML = swatch(it.style, it.id); strip.hidden = true; strip.innerHTML = ''; return; }
     if(lbIndex >= slots.length) lbIndex = 0;
     const cur = slots[lbIndex];
@@ -1395,7 +1404,8 @@ document.addEventListener('keydown', e=>{
   if($('#lb').classList.contains('on')){
     const isBAk = lbItem && (lbItem.kind||'wallpaper') === 'before_after';
     const n = isBAk
-      ? ['beforePhoto','afterPhoto'].reduce((c,f)=>c+(lbItem[f]?1:0),0)
+      ? (Array.isArray(lbItem.beforePhotos) ? lbItem.beforePhotos.length : (lbItem.beforePhoto?1:0))
+        + (Array.isArray(lbItem.afterPhotos) ? lbItem.afterPhotos.length : (lbItem.afterPhoto?1:0))
       : (lbItem ? photosOf(lbItem).length : 0);
     if(n > 1 && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')){
       e.preventDefault();
@@ -1444,7 +1454,9 @@ function buildSelects(){
     $('#f_brand_other').value=''; $('#f_style_other').value='';
     toggleOtherBrand(); toggleOtherStyle();
     pendingPhotos = []; pendingCover = 0; renderPhotoGrid();
-    pendingBefore = null; pendingAfter = null; renderBAPreviews();
+    pendingBeforePhotos = []; pendingBeforeCover = 0;
+    pendingAfterPhotos = []; pendingAfterCover = 0;
+    renderBAPreviews();
     $('#dzText').innerHTML = 'Tap to choose photographs, or drag them here.<br>The first becomes the cover unless you say otherwise.';
   };
   $('#f_worktype').onchange = ()=>{
@@ -1598,9 +1610,12 @@ $('#file').onchange = e=>{ intakeMany(e.target.files); e.target.value=''; };
    {tag, full, preview, path, existing} — existing ones are already in the
    repository, new ones are named when the wall is saved. */
 let pendingPhotos = [], pendingCover = 0;
-/* pendingBefore / pendingAfter: the same shape, one slot each, for a
-   Before & After wall. */
-let pendingBefore = null, pendingAfter = null;
+/* pendingBeforePhotos / pendingAfterPhotos: the same shape, one list per
+   side, for a Before & After wall. Each side keeps its own cover — the
+   photograph that leads when that side is opened, and (for After) the one
+   shown on the rail. */
+let pendingBeforePhotos = [], pendingBeforeCover = 0;
+let pendingAfterPhotos  = [], pendingAfterCover  = 0;
 
 /* Shared by every intake path: reduces one file to a full-size data URL at
    the chosen quality, plus a small preview kept in the draft. */
@@ -1652,63 +1667,83 @@ async function intakeMany(list){
     + '<br>Tap to add more. The one marked Cover is what shows on the rail.';
 }
 
-/* ── before / after intake: one photograph per slot ── */
+/* ── before / after intake: any number of photographs per side ── */
 $('#dzBefore').onclick = ()=> $('#fileBefore').click();
 $('#dzBefore').addEventListener('dragover', e=>{ e.preventDefault(); $('#dzBefore').classList.add('hot'); });
 $('#dzBefore').addEventListener('dragleave', ()=> $('#dzBefore').classList.remove('hot'));
-$('#dzBefore').addEventListener('drop', e=>{ e.preventDefault(); $('#dzBefore').classList.remove('hot'); if(e.dataTransfer.files[0]) intakeBA('before', e.dataTransfer.files[0]); });
-$('#fileBefore').onchange = e=>{ if(e.target.files[0]) intakeBA('before', e.target.files[0]); e.target.value=''; };
+$('#dzBefore').addEventListener('drop', e=>{ e.preventDefault(); $('#dzBefore').classList.remove('hot'); intakeBA('before', e.dataTransfer.files); });
+$('#fileBefore').onchange = e=>{ intakeBA('before', e.target.files); e.target.value=''; };
 
 $('#dzAfter').onclick = ()=> $('#fileAfter').click();
 $('#dzAfter').addEventListener('dragover', e=>{ e.preventDefault(); $('#dzAfter').classList.add('hot'); });
 $('#dzAfter').addEventListener('dragleave', ()=> $('#dzAfter').classList.remove('hot'));
-$('#dzAfter').addEventListener('drop', e=>{ e.preventDefault(); $('#dzAfter').classList.remove('hot'); if(e.dataTransfer.files[0]) intakeBA('after', e.dataTransfer.files[0]); });
-$('#fileAfter').onchange = e=>{ if(e.target.files[0]) intakeBA('after', e.target.files[0]); e.target.value=''; };
+$('#dzAfter').addEventListener('drop', e=>{ e.preventDefault(); $('#dzAfter').classList.remove('hot'); intakeBA('after', e.dataTransfer.files); });
+$('#fileAfter').onchange = e=>{ intakeBA('after', e.target.files); e.target.value=''; };
 
-async function intakeBA(slot, file){
-  if(!file.type || file.type.indexOf('image/') !== 0){ toast('That file is not an image'); return; }
+async function intakeBA(slot, list){
+  const arr = Array.prototype.slice.call(list || []);
+  if(!arr.length) return;
+  const targetArr = slot === 'before' ? pendingBeforePhotos : pendingAfterPhotos;
   const textEl = $(slot === 'before' ? '#dzBeforeText' : '#dzAfterText');
-  textEl.textContent = 'Processing…';
-  try{
-    const r = await processOnePhoto(file);
-    const obj = {full:r.full, preview:r.preview, path:'', existing:false};
-    if(slot === 'before') pendingBefore = obj; else pendingAfter = obj;
-    renderBASlot(slot);
-  }catch(e){
-    textEl.textContent = 'That image could not be read. Try another file.';
+  let failed = 0;
+  textEl.textContent = 'Processing ' + arr.length + (arr.length===1?' photograph…':' photographs…');
+  for(const file of arr){
+    if(!file.type || file.type.indexOf('image/') !== 0){ failed++; continue; }
+    try{
+      const r = await processOnePhoto(file);
+      targetArr.push({tag: Math.random().toString(36).slice(2,5), full:r.full, preview:r.preview, path:'', existing:false});
+    }catch(e){ failed++; }
   }
+  if(slot === 'before'){
+    pendingBeforeCover = Math.max(0, Math.min(pendingBeforeCover, pendingBeforePhotos.length-1));
+    renderBeforeGrid();
+  } else {
+    pendingAfterCover = Math.max(0, Math.min(pendingAfterCover, pendingAfterPhotos.length-1));
+    renderAfterGrid();
+  }
+  updateBAText(slot, failed);
 }
-function renderBASlot(slot){
-  const obj = slot === 'before' ? pendingBefore : pendingAfter;
-  const prev = $(slot === 'before' ? '#dzBeforePreview' : '#dzAfterPreview');
-  const text = $(slot === 'before' ? '#dzBeforeText' : '#dzAfterText');
-  if(!obj){ prev.innerHTML = ''; text.innerHTML = 'Tap to choose the ' + slot + ' photo.'; return; }
-  const src = obj.preview || obj.path;
-  prev.innerHTML = '<img src="'+esc(src)+'" alt="">';
-  text.innerHTML = 'Tap to replace.';
-  wireImages(prev);
+function updateBAText(slot, failed){
+  const arr = slot === 'before' ? pendingBeforePhotos : pendingAfterPhotos;
+  const textEl = $(slot === 'before' ? '#dzBeforeText' : '#dzAfterText');
+  const t = arr.length;
+  textEl.innerHTML = t
+    ? t + (t===1 ? ' photograph' : ' photographs') + (failed ? ' · ' + failed + ' could not be read' : '')
+      + '<br>Tap to add more. The one marked Cover is what leads.'
+    : 'Tap to choose ' + slot + ' photographs, or drag them here.';
 }
-function renderBAPreviews(){ renderBASlot('before'); renderBASlot('after'); }
 
-function renderPhotoGrid(){
-  const g = $('#photoGrid');
-  g.innerHTML = '';
-  if(!pendingPhotos.length){ g.hidden = true; return; }
-  g.hidden = false;
-  pendingPhotos.forEach((p,i)=>{
-    const cell = el('div','pcell' + (i === pendingCover ? ' is-cover' : ''));
+/* One grid renderer, reused for the wallpaper/paint photo picker and for
+   each side of a Before & After wall — same layout, same Cover control. */
+function renderGroupGrid(gridEl, list, coverIdx, onMakeCover, onRemove){
+  gridEl.innerHTML = '';
+  if(!list.length){ gridEl.hidden = true; return; }
+  gridEl.hidden = false;
+  list.forEach((p,i)=>{
+    const cell = el('div','pcell' + (i === coverIdx ? ' is-cover' : ''));
     const shot = el('div','shot');
-    shot.innerHTML = (i === pendingCover ? '<span class="flag">Cover</span>' : '')
+    shot.innerHTML = (i === coverIdx ? '<span class="flag">Cover</span>' : '')
       + '<img src="'+esc(p.preview || p.path)+'" alt="">';
     const bar = el('div','pbar');
     const cov = el('button');
-    cov.textContent = (i === pendingCover) ? 'Cover' : 'Make cover';
-    cov.disabled = (i === pendingCover);
-    cov.onclick = ()=>{ pendingCover = i; renderPhotoGrid(); };
+    cov.textContent = (i === coverIdx) ? 'Cover' : 'Make cover';
+    cov.disabled = (i === coverIdx);
+    cov.onclick = ()=> onMakeCover(i);
     const rm = el('button','rm');
     rm.textContent = '×';
     rm.setAttribute('aria-label','Remove this photograph');
-    rm.onclick = ()=>{
+    rm.onclick = ()=> onRemove(i);
+    bar.appendChild(cov); bar.appendChild(rm);
+    cell.appendChild(shot); cell.appendChild(bar);
+    gridEl.appendChild(cell);
+  });
+  wireImages(gridEl);
+}
+
+function renderPhotoGrid(){
+  renderGroupGrid($('#photoGrid'), pendingPhotos, pendingCover,
+    i=>{ pendingCover = i; renderPhotoGrid(); },
+    i=>{
       pendingPhotos.splice(i,1);
       if(pendingCover >= pendingPhotos.length) pendingCover = Math.max(0, pendingPhotos.length-1);
       renderPhotoGrid();
@@ -1716,13 +1751,27 @@ function renderPhotoGrid(){
       $('#dzText').innerHTML = t
         ? t + (t===1?' photograph':' photographs') + ' on this wall<br>Tap to add more.'
         : 'Tap to choose photographs, or drag them here.<br>The first becomes the cover unless you say otherwise.';
-    };
-    bar.appendChild(cov); bar.appendChild(rm);
-    cell.appendChild(shot); cell.appendChild(bar);
-    g.appendChild(cell);
-  });
-  wireImages(g);
+    });
 }
+function renderBeforeGrid(){
+  renderGroupGrid($('#photoGridBefore'), pendingBeforePhotos, pendingBeforeCover,
+    i=>{ pendingBeforeCover = i; renderBeforeGrid(); },
+    i=>{
+      pendingBeforePhotos.splice(i,1);
+      if(pendingBeforeCover >= pendingBeforePhotos.length) pendingBeforeCover = Math.max(0, pendingBeforePhotos.length-1);
+      renderBeforeGrid(); updateBAText('before', 0);
+    });
+}
+function renderAfterGrid(){
+  renderGroupGrid($('#photoGridAfter'), pendingAfterPhotos, pendingAfterCover,
+    i=>{ pendingAfterCover = i; renderAfterGrid(); },
+    i=>{
+      pendingAfterPhotos.splice(i,1);
+      if(pendingAfterCover >= pendingAfterPhotos.length) pendingAfterCover = Math.max(0, pendingAfterPhotos.length-1);
+      renderAfterGrid(); updateBAText('after', 0);
+    });
+}
+function renderBAPreviews(){ renderBeforeGrid(); renderAfterGrid(); }
 
 /* ── form ── */
 function readForm(){
@@ -1757,7 +1806,8 @@ function writeForm(it){
 function clearForm(){
   editing = null;
   pendingPhotos = []; pendingCover = 0;
-  pendingBefore = null; pendingAfter = null;
+  pendingBeforePhotos = []; pendingBeforeCover = 0;
+  pendingAfterPhotos = []; pendingAfterCover = 0;
   applyKind();
   writeForm({});
   $('#dzPreview').innerHTML = '';
@@ -1777,8 +1827,8 @@ $('#save').onclick = async ()=>{
   if(d.brand === OTHER){ $('#said').textContent='Type the brand name, or pick a house from the list.'; $('#f_brand_other').focus(); return; }
   if(d.room  === OTHER){ $('#said').textContent='Type the room name, or pick one from the list.'; $('#f_room_other').focus(); return; }
   if(d.style === OTHER){ $('#said').textContent='Type the style name, or pick one from the list.'; $('#f_style_other').focus(); return; }
-  if(kind === 'before_after' && (!pendingBefore || !pendingAfter)){
-    $('#said').textContent = 'A before and after wall needs both photographs.';
+  if(kind === 'before_after' && (!pendingBeforePhotos.length || !pendingAfterPhotos.length)){
+    $('#said').textContent = 'A before and after wall needs at least one photograph on each side.';
     return;
   }
 
@@ -1788,17 +1838,29 @@ $('#save').onclick = async ()=>{
 
   if(kind === 'before_after'){
     it.workType = $('#f_worktype').value || 'wallpaper';
-    let beforePath = '', afterPath = '';
-    if(pendingBefore){
-      beforePath = pendingBefore.existing ? pendingBefore.path : PHOTO_DIR + photoBase(it, 'before');
-      if(!pendingBefore.existing){ files[beforePath] = pendingBefore.full; previews[beforePath] = pendingBefore.preview; }
-    }
-    if(pendingAfter){
-      afterPath = pendingAfter.existing ? pendingAfter.path : PHOTO_DIR + photoBase(it, 'after');
-      if(!pendingAfter.existing){ files[afterPath] = pendingAfter.full; previews[afterPath] = pendingAfter.preview; }
-    }
-    it.beforePhoto = beforePath; it.afterPhoto = afterPath;
-    it.photos = []; it.cover = 0; it.photo = afterPath || beforePath || '';
+    const beforePaths = [];
+    pendingBeforePhotos.forEach(p=>{
+      if(p.existing){ beforePaths.push(p.path); return; }
+      const path = PHOTO_DIR + photoBase(it, 'before-' + p.tag);
+      p.path = path; files[path] = p.full; previews[path] = p.preview;
+      beforePaths.push(path);
+    });
+    const afterPaths = [];
+    pendingAfterPhotos.forEach(p=>{
+      if(p.existing){ afterPaths.push(p.path); return; }
+      const path = PHOTO_DIR + photoBase(it, 'after-' + p.tag);
+      p.path = path; files[path] = p.full; previews[path] = p.preview;
+      afterPaths.push(path);
+    });
+    it.beforePhotos = beforePaths;
+    it.beforeCover = Math.max(0, Math.min(pendingBeforeCover, beforePaths.length - 1));
+    if(it.beforeCover < 0) it.beforeCover = 0;
+    it.beforePhoto = beforePaths[it.beforeCover] || '';
+    it.afterPhotos = afterPaths;
+    it.afterCover = Math.max(0, Math.min(pendingAfterCover, afterPaths.length - 1));
+    if(it.afterCover < 0) it.afterCover = 0;
+    it.afterPhoto = afterPaths[it.afterCover] || '';
+    it.photos = []; it.cover = 0; it.photo = it.afterPhoto || it.beforePhoto || '';
   } else {
     const paths = [];
     pendingPhotos.forEach(p=>{
@@ -1813,7 +1875,8 @@ $('#save').onclick = async ()=>{
     it.cover = Math.max(0, Math.min(pendingCover, paths.length - 1));
     if(it.cover < 0) it.cover = 0;
     it.photo = paths[it.cover] || '';   /* kept so an older cached copy still shows something */
-    it.beforePhoto = ''; it.afterPhoto = '';
+    it.beforePhotos = []; it.beforeCover = 0; it.beforePhoto = '';
+    it.afterPhotos = []; it.afterCover = 0; it.afterPhoto = '';
   }
 
   draft[id] = it;
@@ -1856,12 +1919,19 @@ function ledger(){
 
       if(kind === 'before_after'){
         pendingPhotos = []; pendingCover = 0;
-        pendingBefore = it.beforePhoto ? {full:null, preview:(files[it.beforePhoto]||previews[it.beforePhoto]||it.beforePhoto), path:it.beforePhoto, existing:true} : null;
-        pendingAfter  = it.afterPhoto  ? {full:null, preview:(files[it.afterPhoto]||previews[it.afterPhoto]||it.afterPhoto),  path:it.afterPhoto,  existing:true} : null;
+        const beforeList = Array.isArray(it.beforePhotos) ? it.beforePhotos : (it.beforePhoto ? [it.beforePhoto] : []);
+        const afterList  = Array.isArray(it.afterPhotos)  ? it.afterPhotos  : (it.afterPhoto  ? [it.afterPhoto]  : []);
+        pendingBeforePhotos = beforeList.map(p=>({tag:'', full:null, preview:(files[p]||previews[p]||p), path:p, existing:true}));
+        pendingAfterPhotos  = afterList.map(p=>({tag:'', full:null, preview:(files[p]||previews[p]||p), path:p, existing:true}));
+        pendingBeforeCover = Number(it.beforeCover) || 0;
+        pendingAfterCover  = Number(it.afterCover)  || 0;
         renderBAPreviews();
+        updateBAText('before', 0); updateBAText('after', 0);
         $('#dzPreview').innerHTML = '';
       } else {
-        pendingBefore = null; pendingAfter = null; renderBAPreviews();
+        pendingBeforePhotos = []; pendingBeforeCover = 0;
+        pendingAfterPhotos = []; pendingAfterCover = 0;
+        renderBAPreviews();
         const list = photosOf(it);
         pendingPhotos = list.map(p=>({
           tag:'', full:null, preview: (files[p] || previews[p] || p), path:p, existing:true
@@ -1885,7 +1955,7 @@ function ledger(){
       if(wasPublished) draft[it.id] = null;
       else {
         photosOf(it).forEach(p=>{ delete previews[p]; delete files[p]; delete savedFiles[p]; });
-        [it.beforePhoto, it.afterPhoto].forEach(p=>{ if(p){ delete previews[p]; delete files[p]; delete savedFiles[p]; } });
+        [].concat(it.beforePhotos||[], it.afterPhotos||[]).forEach(p=>{ delete previews[p]; delete files[p]; delete savedFiles[p]; });
         delete draft[it.id];
       }
       saveDraft(); ledger(); publishPanel(); buildDrawer();
@@ -1906,8 +1976,12 @@ function catalogueJS(list){
     o.photos = photosOf(it);
     o.cover  = Math.max(0, Math.min(Number(it.cover)||0, Math.max(0, o.photos.length-1)));
     o.photo  = o.photos[o.cover] || '';
-    o.beforePhoto = it.beforePhoto || '';
-    o.afterPhoto  = it.afterPhoto  || '';
+    o.beforePhotos = Array.isArray(it.beforePhotos) ? it.beforePhotos : (it.beforePhoto ? [it.beforePhoto] : []);
+    o.afterPhotos  = Array.isArray(it.afterPhotos)  ? it.afterPhotos  : (it.afterPhoto  ? [it.afterPhoto]  : []);
+    o.beforeCover = Math.max(0, Math.min(Number(it.beforeCover)||0, Math.max(0, o.beforePhotos.length-1)));
+    o.afterCover  = Math.max(0, Math.min(Number(it.afterCover) ||0, Math.max(0, o.afterPhotos.length-1)));
+    o.beforePhoto = o.beforePhotos[o.beforeCover] || '';
+    o.afterPhoto  = o.afterPhotos[o.afterCover]  || '';
     o.workType = it.workType || '';
     return o;
   });
@@ -2210,8 +2284,10 @@ $('#diagBtn').onclick = ()=>{
     out.push('  [' + (KIND_LABEL[kind]||kind) + '] ' + (it.brand||'?') + ' · ' + (it.pattern||'?')
       + (isPending(it.id) ? '  UNPUBLISHED' : ''));
     if(kind === 'before_after'){
-      out.push('      before  ' + (it.beforePhoto || '(none)') + (files[it.beforePhoto] ? '  [in memory]' : ''));
-      out.push('      after   ' + (it.afterPhoto  || '(none)') + (files[it.afterPhoto]  ? '  [in memory]' : ''));
+      const beforeList = Array.isArray(it.beforePhotos) ? it.beforePhotos : [];
+      const afterList  = Array.isArray(it.afterPhotos)  ? it.afterPhotos  : [];
+      beforeList.forEach((p,i)=> out.push('      ' + (i===(Number(it.beforeCover)||0)?'before cover  ':'before        ') + p + (files[p]?'  [in memory]':'')));
+      afterList.forEach((p,i)=> out.push('      ' + (i===(Number(it.afterCover)||0)?'after cover   ':'after         ') + p + (files[p]?'  [in memory]':'')));
     } else {
       const list = photosOf(it);
       list.forEach((p,i)=>{
