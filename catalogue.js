@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T20:47:50.982Z",
+  "updated": "2026-08-17T20:49:37.971Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -541,6 +541,41 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
+    },
+    {
+      "id": "msxpixayd0i1y",
+      "kind": "before_after",
+      "brand": "Cowtan & Tout",
+      "pattern": "Pompano Wallpaper",
+      "colorway": "",
+      "room": "Home office",
+      "style": "Grasscloth & texture",
+      "project": "",
+      "city": "Mill Valley",
+      "year": "",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/cowtan-tout-pompano-wallpaper-0i1y-after-hmj.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/cowtan-tout-pompano-wallpaper-0i1y-after-hmj.jpg",
+      "beforePhotos": [
+        "photos/cowtan-tout-pompano-wallpaper-0i1y-before-g7v.jpg",
+        "photos/cowtan-tout-pompano-wallpaper-0i1y-before-ezs.jpg",
+        "photos/cowtan-tout-pompano-wallpaper-0i1y-before-4ti.jpg"
+      ],
+      "afterPhotos": [
+        "photos/cowtan-tout-pompano-wallpaper-0i1y-after-196.jpg",
+        "photos/cowtan-tout-pompano-wallpaper-0i1y-after-9bl.jpg",
+        "photos/cowtan-tout-pompano-wallpaper-0i1y-after-3dr.jpg",
+        "photos/cowtan-tout-pompano-wallpaper-0i1y-after-hmj.jpg"
+      ],
+      "beforeCover": 0,
+      "afterCover": 3,
+      "beforePhoto": "photos/cowtan-tout-pompano-wallpaper-0i1y-before-g7v.jpg",
+      "afterPhoto": "photos/cowtan-tout-pompano-wallpaper-0i1y-after-hmj.jpg",
+      "workType": "wallpaper"
     }
   ]
 };
