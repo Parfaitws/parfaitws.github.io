@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T20:04:17.096Z",
+  "updated": "2026-08-17T20:47:50.982Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -512,6 +512,35 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "photos/happy-wall-dandelion-dreamscape-n3s7-before-2v7.jpg",
       "afterPhoto": "photos/happy-wall-dandelion-dreamscape-n3s7-after-ovb.jpg",
       "workType": "wallpaper"
+    },
+    {
+      "id": "msxpglzgg4kwd",
+      "kind": "wallpaper",
+      "brand": "Cowtan & Tout",
+      "pattern": "Pompano Wallpaper",
+      "colorway": "",
+      "room": "Home office",
+      "style": "Grasscloth & texture",
+      "project": "",
+      "city": "Mill Valley",
+      "year": "",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/cowtan-tout-pompano-wallpaper-4kwd-hez.jpg",
+        "photos/cowtan-tout-pompano-wallpaper-4kwd-cm5.jpg",
+        "photos/cowtan-tout-pompano-wallpaper-4kwd-nge.jpg",
+        "photos/cowtan-tout-pompano-wallpaper-4kwd-1xh.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/cowtan-tout-pompano-wallpaper-4kwd-hez.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     }
   ]
 };
