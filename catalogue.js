@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T20:55:23.169Z",
+  "updated": "2026-08-17T21:09:52.412Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -600,6 +600,36 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/arte-arte-antigua-stagionato-8i24-fg5.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "msxq8y0q9pi9i",
+      "kind": "wallpaper",
+      "brand": "Schumacher",
+      "pattern": "Schumacher Tasmanian Mimosa",
+      "colorway": "",
+      "room": "Bathroom",
+      "style": "Floral",
+      "project": "",
+      "city": "Mill Valley",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-a54.jpg",
+        "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-cw2.jpg",
+        "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-ts4.jpg",
+        "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-nca.jpg",
+        "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-n5g.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-a54.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
