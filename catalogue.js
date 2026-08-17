@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T23:30:31.062Z",
+  "updated": "2026-08-17T23:33:39.607Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -820,6 +820,40 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
+    },
+    {
+      "id": "msxvdv8zhiyho",
+      "kind": "before_after",
+      "brand": "Riley Sheehey",
+      "pattern": "English Garden Stripe",
+      "colorway": "",
+      "room": "Nursery",
+      "style": "Pattern Repeat",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/riley-sheehey-english-garden-stripe-iyho-after-j74.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/riley-sheehey-english-garden-stripe-iyho-after-j74.jpg",
+      "beforePhotos": [
+        "photos/riley-sheehey-english-garden-stripe-iyho-before-u0f.jpg",
+        "photos/riley-sheehey-english-garden-stripe-iyho-before-77s.jpg"
+      ],
+      "afterPhotos": [
+        "photos/riley-sheehey-english-garden-stripe-iyho-after-w9e.jpg",
+        "photos/riley-sheehey-english-garden-stripe-iyho-after-16g.jpg",
+        "photos/riley-sheehey-english-garden-stripe-iyho-after-y9h.jpg",
+        "photos/riley-sheehey-english-garden-stripe-iyho-after-j74.jpg"
+      ],
+      "beforeCover": 0,
+      "afterCover": 3,
+      "beforePhoto": "photos/riley-sheehey-english-garden-stripe-iyho-before-u0f.jpg",
+      "afterPhoto": "photos/riley-sheehey-english-garden-stripe-iyho-after-j74.jpg",
+      "workType": "wallpaper"
     }
   ]
 };
