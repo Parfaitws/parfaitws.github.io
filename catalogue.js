@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T21:13:46.115Z",
+  "updated": "2026-08-17T21:30:46.057Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -630,6 +630,39 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 2,
       "photo": "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-ts4.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "msxqzqjgxae4o",
+      "kind": "wallpaper",
+      "brand": "Phillip Jeffries",
+      "pattern": "All Wound Up",
+      "colorway": "Navy Check",
+      "room": "Bedroom",
+      "style": "Grasscloth & texture",
+      "project": "",
+      "city": "San Anselmo",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/phillip-jeffries-all-wound-up-ae4o-jst.jpg",
+        "photos/phillip-jeffries-all-wound-up-ae4o-5um.jpg",
+        "photos/phillip-jeffries-all-wound-up-ae4o-p8q.jpg",
+        "photos/phillip-jeffries-all-wound-up-ae4o-6xo.jpg",
+        "photos/phillip-jeffries-all-wound-up-ae4o-xhn.jpg",
+        "photos/phillip-jeffries-all-wound-up-ae4o-swr.jpg",
+        "photos/phillip-jeffries-all-wound-up-ae4o-e3h.jpg",
+        "photos/phillip-jeffries-all-wound-up-ae4o-378.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/phillip-jeffries-all-wound-up-ae4o-jst.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
