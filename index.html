@@ -1001,8 +1001,87 @@ const catalogueLoaded = !!(window.PARFAIT_CATALOGUE && Array.isArray(window.PARF
 
 let draft = {};        // id -> item, or null to mark a published wall deleted
 let previews = {};     // path -> small dataURL, kept in the draft
-let files = {};        // path -> full dataURL held in memory this session
+let files = {};        // path -> full dataURL, mirrored durably in IndexedDB
 let savedFiles = {};   // path -> true once saved by hand
+
+/* ═══════════════════════════════════════════
+   DURABLE PHOTO STORE (IndexedDB)
+
+   A saved wall survives a reload because its record lives in the draft,
+   in localStorage. Its full-size photograph does not — files{} is plain
+   JS memory, gone the moment the tab reloads or is discarded. IndexedDB
+   holds a durable copy: written the moment a photograph is attached to a
+   saved wall, and read back to refill files{} whenever the draft points
+   at a photograph this page load does not currently hold.
+   ═══════════════════════════════════════════ */
+const IDB_NAME = 'parfait-photos', IDB_STORE = 'files';
+let idbOpen = null;
+function idbDB(){
+  if(idbOpen) return idbOpen;
+  idbOpen = new Promise((resolve,reject)=>{
+    if(!window.indexedDB){ reject(new Error('unsupported')); return; }
+    const req = indexedDB.open(IDB_NAME, 1);
+    req.onupgradeneeded = ()=>{ try{ req.result.createObjectStore(IDB_STORE); }catch(e){} };
+    req.onsuccess = ()=> resolve(req.result);
+    req.onerror = ()=> reject(req.error);
+  });
+  return idbOpen;
+}
+async function idbSet(key, value){
+  try{
+    const db = await idbDB();
+    return await new Promise(res=>{
+      const tx = db.transaction(IDB_STORE,'readwrite');
+      tx.objectStore(IDB_STORE).put(value, key);
+      tx.oncomplete = ()=>res(true);
+      tx.onerror = ()=>res(false);
+    });
+  }catch(e){ return false; }
+}
+async function idbGet(key){
+  try{
+    const db = await idbDB();
+    return await new Promise(res=>{
+      const tx = db.transaction(IDB_STORE,'readonly');
+      const req = tx.objectStore(IDB_STORE).get(key);
+      req.onsuccess = ()=>res(req.result==null ? null : req.result);
+      req.onerror = ()=>res(null);
+    });
+  }catch(e){ return null; }
+}
+async function idbDel(key){
+  try{
+    const db = await idbDB();
+    return await new Promise(res=>{
+      const tx = db.transaction(IDB_STORE,'readwrite');
+      tx.objectStore(IDB_STORE).delete(key);
+      tx.oncomplete = ()=>res(true);
+      tx.onerror = ()=>res(false);
+    });
+  }catch(e){ return false; }
+}
+/* Call wherever a photograph becomes part of a saved wall. */
+function rememberFile(path, dataURL){
+  files[path] = dataURL;
+  idbSet(path, dataURL);
+}
+/* Call wherever a photograph stops being part of any saved wall. */
+function forgetFile(path){
+  delete files[path];
+  idbDel(path);
+}
+/* Refills files{} for anything the draft references that this page load
+   does not already hold — the actual recovery step after a reload. */
+async function hydrateFiles(){
+  const needed = pendingPhotoPaths().filter(p=>!files[p]);
+  if(!needed.length) return;
+  let recovered = 0;
+  for(const p of needed){
+    const v = await idbGet(p);
+    if(v){ files[p] = v; recovered++; }
+  }
+  if(recovered){ ledger(); publishPanel(); }
+}
 
 let view = 'brand';
 let filters = new Set();
@@ -1889,14 +1968,14 @@ $('#save').onclick = async ()=>{
     pendingBeforePhotos.forEach(p=>{
       if(p.existing){ beforePaths.push(p.path); return; }
       const path = PHOTO_DIR + photoBase(it, 'before-' + p.tag);
-      p.path = path; files[path] = p.full; previews[path] = p.preview;
+      p.path = path; rememberFile(path, p.full); previews[path] = p.preview;
       beforePaths.push(path);
     });
     const afterPaths = [];
     pendingAfterPhotos.forEach(p=>{
       if(p.existing){ afterPaths.push(p.path); return; }
       const path = PHOTO_DIR + photoBase(it, 'after-' + p.tag);
-      p.path = path; files[path] = p.full; previews[path] = p.preview;
+      p.path = path; rememberFile(path, p.full); previews[path] = p.preview;
       afterPaths.push(path);
     });
     it.beforePhotos = beforePaths;
@@ -1914,7 +1993,7 @@ $('#save').onclick = async ()=>{
       if(p.existing){ paths.push(p.path); return; }
       const path = PHOTO_DIR + photoBase(it, p.tag);
       p.path = path;
-      files[path] = p.full;
+      rememberFile(path, p.full);
       previews[path] = p.preview;
       paths.push(path);
     });
@@ -2001,8 +2080,8 @@ function ledger(){
       const wasPublished = published.filter(x=>x.id===it.id).length > 0;
       if(wasPublished) draft[it.id] = null;
       else {
-        photosOf(it).forEach(p=>{ delete previews[p]; delete files[p]; delete savedFiles[p]; });
-        [].concat(it.beforePhotos||[], it.afterPhotos||[]).forEach(p=>{ delete previews[p]; delete files[p]; delete savedFiles[p]; });
+        photosOf(it).forEach(p=>{ delete previews[p]; forgetFile(p); delete savedFiles[p]; });
+        [].concat(it.beforePhotos||[], it.afterPhotos||[]).forEach(p=>{ delete previews[p]; forgetFile(p); delete savedFiles[p]; });
         delete draft[it.id];
       }
       saveDraft(); ledger(); publishPanel(); buildDrawer();
@@ -2113,6 +2192,7 @@ function publishPanel(){
   const dis = el('button','btn btn-ghost'); dis.textContent = 'Discard unpublished changes';
   dis.onclick = ()=>{
     if(!confirm('Discard all ' + ids.length + ' unpublished changes? Published walls are not affected.')) return;
+    pendingPhotoPaths().forEach(idbDel);
     draft = {}; previews = {}; files = {}; savedFiles = {};
     saveDraft(); clearForm(); ledger(); publishPanel(); buildDrawer(); render();
     toast('Draft discarded');
@@ -2211,6 +2291,7 @@ $('#pubGo').onclick = async ()=>{
   if(!ids.length){ $('#pubSaid').textContent = 'Nothing waiting to publish.'; return; }
   const token = $('#tok').value.trim();
   if(!token){ $('#pubSaid').textContent = 'Paste the token first.'; $('#tok').focus(); return; }
+  await hydrateFiles();
 
   const c = saveRepoCfg();
   publishing = true;
@@ -2279,7 +2360,9 @@ $('#pubGo').onclick = async ()=>{
     if($('#tokRemember').checked) local.set(KEY_TOKEN, token);
     else local.del(KEY_TOKEN);
 
-    /* what was waiting is now published */
+    /* what was waiting is now published — the durable copies are no longer
+       needed locally, since the repository now holds them */
+    pendingPhotoPaths().forEach(idbDel);
     published = finalList;
     draft = {}; previews = {}; files = {}; savedFiles = {};
     saveDraft(); clearForm(); ledger(); publishPanel(); buildDrawer(); render();
@@ -2395,6 +2478,7 @@ function toast(msg){
   buildDrawer(); render();
   if(!storageOK) raiseAlarm();
   refreshCatalogue();
+  hydrateFiles();
   document.addEventListener('visibilitychange', ()=>{
     if(!document.hidden && !publishing) refreshCatalogue();
   });
