@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T21:30:46.057Z",
+  "updated": "2026-08-17T22:14:53.692Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -663,6 +663,34 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/phillip-jeffries-all-wound-up-ae4o-jst.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "msxscq8n82c5c",
+      "kind": "wallpaper",
+      "brand": "Phillip Jeffries",
+      "pattern": "Extra Fine Arrowroot",
+      "colorway": "Key West",
+      "room": "Living room",
+      "style": "Grasscloth & texture",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/phillip-jeffries-extra-fine-arrowroot-2c5c-lxd.jpg",
+        "photos/phillip-jeffries-extra-fine-arrowroot-2c5c-g9r.jpg",
+        "photos/phillip-jeffries-extra-fine-arrowroot-2c5c-lpj.jpg"
+      ],
+      "cover": 1,
+      "photo": "photos/phillip-jeffries-extra-fine-arrowroot-2c5c-g9r.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
