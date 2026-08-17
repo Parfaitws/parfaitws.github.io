@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-15T18:39:33.084Z",
+  "updated": "2026-08-17T16:59:49.080Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -22,6 +22,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 1,
       "photo": "photos/york-wallcoverings-antonina-vella-deco-speakeasy-r7my-bw7.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -47,6 +51,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/wallism-ukiyo-e-clouds-blues-wallpaper-mural-xyi2.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -75,6 +83,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 3,
       "photo": "photos/kelly-ventura-marsh-in-lagoon-lx2t-o04.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -99,6 +111,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/york-wallcoverings-york-modern-heritage-yarrow-nouveau-vfom-y09.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -124,6 +140,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/york-wallcoverings-gwendolyn-wallpaper-magnolia-home-collection-5cu4-xnd.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -151,6 +171,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 2,
       "photo": "photos/phillip-jeffries-fuji-weave-fresh-stream-h7dx-k1e.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -178,6 +202,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/happy-wall-dandelion-dreamscape-i456-uji.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -207,6 +235,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/phillip-jeffries-aura-ivory-x9nl-ceh.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -232,6 +264,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/spoonflower-art-deco-swans-qby5-ije.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -257,6 +293,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 3,
       "photo": "photos/hygge-west-underwater-world-wallpaper-0pmm-x82.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -280,6 +320,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/sandberg-klint-misty-blue-wallpaper-mural-m76c-2fq.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -306,6 +350,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/rebel-walls-flowing-hills-qjo4-x8p.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -330,6 +378,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/york-wallcoverings-judarn-floral-mural-2025-xrp9-7xl.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -354,6 +406,10 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 2,
       "photo": "photos/belarte-vintage-landscape-aabb-91q.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
@@ -377,9 +433,49 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/riley-shinney-botanical-cream-wallpaper-dn1d-qhc.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
+    },
+    {
+      "id": "msxhb6voa20ci",
+      "kind": "before_after",
+      "brand": "Sarah Von Dreele",
+      "pattern": "Beth",
+      "colorway": "Cream",
+      "room": "Kids room",
+      "style": "Patter Rapeat",
+      "project": "",
+      "city": "San Anselmo",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/sarah-von-dreele-beth-20ci-after-hi3.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/sarah-von-dreele-beth-20ci-after-hi3.jpg",
+      "beforePhotos": [
+        "photos/sarah-von-dreele-beth-20ci-before-k6g.jpg",
+        "photos/sarah-von-dreele-beth-20ci-before-hn0.jpg",
+        "photos/sarah-von-dreele-beth-20ci-before-dp9.jpg",
+        "photos/sarah-von-dreele-beth-20ci-before-ywq.jpg"
+      ],
+      "afterPhotos": [
+        "photos/sarah-von-dreele-beth-20ci-after-hi3.jpg",
+        "photos/sarah-von-dreele-beth-20ci-after-hf4.jpg",
+        "photos/sarah-von-dreele-beth-20ci-after-oml.jpg",
+        "photos/sarah-von-dreele-beth-20ci-after-fbz.jpg"
+      ],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "photos/sarah-von-dreele-beth-20ci-before-k6g.jpg",
+      "afterPhoto": "photos/sarah-von-dreele-beth-20ci-after-hi3.jpg",
+      "workType": "wallpaper"
     }
   ]
 };
