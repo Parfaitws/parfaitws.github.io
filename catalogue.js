@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T16:59:49.080Z",
+  "updated": "2026-08-17T20:04:17.096Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -475,6 +475,42 @@ window.PARFAIT_CATALOGUE = {
       "afterCover": 0,
       "beforePhoto": "photos/sarah-von-dreele-beth-20ci-before-k6g.jpg",
       "afterPhoto": "photos/sarah-von-dreele-beth-20ci-after-hi3.jpg",
+      "workType": "wallpaper"
+    },
+    {
+      "id": "msxnwgzdon3s7",
+      "kind": "before_after",
+      "brand": "Happy Wall",
+      "pattern": "Dandelion Dreamscape",
+      "colorway": "",
+      "room": "Bathroom",
+      "style": "Mural & scenic",
+      "project": "",
+      "city": "San Mateo",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/happy-wall-dandelion-dreamscape-n3s7-after-ovb.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/happy-wall-dandelion-dreamscape-n3s7-after-ovb.jpg",
+      "beforePhotos": [
+        "photos/happy-wall-dandelion-dreamscape-n3s7-before-2v7.jpg",
+        "photos/happy-wall-dandelion-dreamscape-n3s7-before-730.jpg",
+        "photos/happy-wall-dandelion-dreamscape-n3s7-before-c83.jpg",
+        "photos/happy-wall-dandelion-dreamscape-n3s7-before-741.jpg"
+      ],
+      "afterPhotos": [
+        "photos/happy-wall-dandelion-dreamscape-n3s7-after-ovb.jpg",
+        "photos/happy-wall-dandelion-dreamscape-n3s7-after-v2p.jpg",
+        "photos/happy-wall-dandelion-dreamscape-n3s7-after-pil.jpg",
+        "photos/happy-wall-dandelion-dreamscape-n3s7-after-st1.jpg"
+      ],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "photos/happy-wall-dandelion-dreamscape-n3s7-before-2v7.jpg",
+      "afterPhoto": "photos/happy-wall-dandelion-dreamscape-n3s7-after-ovb.jpg",
       "workType": "wallpaper"
     }
   ]
