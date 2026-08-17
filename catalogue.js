@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T22:18:12.289Z",
+  "updated": "2026-08-17T23:05:07.183Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -720,6 +720,37 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/sarah-von-dreele-beth-rwaj-99o.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "msxud0d5csf3m",
+      "kind": "wallpaper",
+      "brand": "Riley Sheehey",
+      "pattern": "English Garden Stripe",
+      "colorway": "",
+      "room": "Nursery",
+      "style": "Pattern Repeat",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/riley-sheehey-english-garden-stripe-sf3m-fmp.jpg",
+        "photos/riley-sheehey-english-garden-stripe-sf3m-8x1.jpg",
+        "photos/riley-sheehey-english-garden-stripe-sf3m-d38.jpg",
+        "photos/riley-sheehey-english-garden-stripe-sf3m-lvm.jpg",
+        "photos/riley-sheehey-english-garden-stripe-sf3m-p1t.jpg",
+        "photos/riley-sheehey-english-garden-stripe-sf3m-5ju.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/riley-sheehey-english-garden-stripe-sf3m-fmp.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
