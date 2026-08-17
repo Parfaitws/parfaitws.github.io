@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T20:49:37.971Z",
+  "updated": "2026-08-17T20:55:23.169Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -576,6 +576,37 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "photos/cowtan-tout-pompano-wallpaper-0i1y-before-g7v.jpg",
       "afterPhoto": "photos/cowtan-tout-pompano-wallpaper-0i1y-after-hmj.jpg",
       "workType": "wallpaper"
+    },
+    {
+      "id": "msxpphbco8i24",
+      "kind": "wallpaper",
+      "brand": "Arte",
+      "pattern": "Arte Antigua Stagionato",
+      "colorway": "33010 Foliage.",
+      "room": "Bathroom",
+      "style": "Floral",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/arte-arte-antigua-stagionato-8i24-fg5.jpg",
+        "photos/arte-arte-antigua-stagionato-8i24-cc1.jpg",
+        "photos/arte-arte-antigua-stagionato-8i24-ooq.jpg",
+        "photos/arte-arte-antigua-stagionato-8i24-aqm.jpg",
+        "photos/arte-arte-antigua-stagionato-8i24-yjk.jpg",
+        "photos/arte-arte-antigua-stagionato-8i24-utz.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/arte-arte-antigua-stagionato-8i24-fg5.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     }
   ]
 };
