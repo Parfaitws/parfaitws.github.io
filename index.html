@@ -1656,15 +1656,28 @@ function applyKind(){
 
 /* Lists existing walls of the same kind, so a new entry can start from one
    without retyping everything that is the same. */
+/* For Wallpaper/Paint entries this lists other walls of the same kind. For
+   Before & After, the product info almost always matches an existing
+   Wallpaper or Paint wall for that same installation — so it lists those,
+   filtered by the current "What was done" choice, plus any other Before &
+   After walls that used the same kind of work. */
 function refreshDupList(){
   const kind = $('#f_kind').value;
+  const workType = $('#f_worktype').value || 'wallpaper';
   const sel = $('#f_dup');
   const keep = sel.value;
-  const items = merged().filter(i=> (i.kind||'wallpaper') === kind && i.id !== editing);
-  sel.innerHTML = '<option value="">&mdash; New, blank &mdash;</option>' + items.map(i=>
-    '<option value="'+esc(i.id)+'">' + esc(i.brand||'—') + ' — ' + esc(i.pattern||'—')
-    + (i.room ? ' (' + esc(i.room) + ')' : '') + '</option>'
-  ).join('');
+  const items = merged().filter(i=>{
+    if(i.id === editing) return false;
+    const k = i.kind || 'wallpaper';
+    if(kind === 'before_after') return k === workType || (k === 'before_after' && (i.workType||'wallpaper') === workType);
+    return k === kind;
+  });
+  sel.innerHTML = '<option value="">&mdash; New, blank &mdash;</option>' + items.map(i=>{
+    const k = i.kind || 'wallpaper';
+    const tag = (kind === 'before_after' && k === 'before_after') ? '(Before & After) ' : '';
+    return '<option value="'+esc(i.id)+'">' + tag + esc(i.brand||'—') + ' — ' + esc(i.pattern||'—')
+      + (i.room ? ' (' + esc(i.room) + ')' : '') + '</option>';
+  }).join('');
   sel.value = items.some(i=>i.id===keep) ? keep : '';
 }
 
