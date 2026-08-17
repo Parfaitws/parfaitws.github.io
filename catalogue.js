@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T21:09:52.412Z",
+  "updated": "2026-08-17T21:13:46.115Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -628,8 +628,8 @@ window.PARFAIT_CATALOGUE = {
         "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-nca.jpg",
         "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-n5g.jpg"
       ],
-      "cover": 0,
-      "photo": "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-a54.jpg",
+      "cover": 2,
+      "photo": "photos/schumacher-schumacher-tasmanian-mimosa-pi9i-ts4.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
