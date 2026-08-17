@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T23:12:28.487Z",
+  "updated": "2026-08-17T23:30:31.062Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -791,6 +791,35 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "photos/riley-sheehey-english-garden-stripe-4bxx-before-ahx.jpg",
       "afterPhoto": "photos/riley-sheehey-english-garden-stripe-4bxx-after-5lo.jpg",
       "workType": "wallpaper"
+    },
+    {
+      "id": "msxv9tuepieeh",
+      "kind": "wallpaper",
+      "brand": "Spoonflower",
+      "pattern": "Luxurious Vintage Floral Ornament",
+      "colorway": "Gold And Midnight Blue",
+      "room": "Living room",
+      "style": "Pattern Repeat",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/spoonflower-luxurious-vintage-floral-ornament-ieeh-5xb.jpg",
+        "photos/spoonflower-luxurious-vintage-floral-ornament-ieeh-n2s.jpg",
+        "photos/spoonflower-luxurious-vintage-floral-ornament-ieeh-sd2.jpg",
+        "photos/spoonflower-luxurious-vintage-floral-ornament-ieeh-ju4.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/spoonflower-luxurious-vintage-floral-ornament-ieeh-5xb.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     }
   ]
 };
