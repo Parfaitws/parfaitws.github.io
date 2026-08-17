@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T22:14:53.692Z",
+  "updated": "2026-08-17T22:18:12.289Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -691,6 +691,35 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 1,
       "photo": "photos/phillip-jeffries-extra-fine-arrowroot-2c5c-g9r.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "msxsoplm8rwaj",
+      "kind": "wallpaper",
+      "brand": "Sarah Von Dreele",
+      "pattern": "Beth",
+      "colorway": "Cream",
+      "room": "Kids room",
+      "style": "Floral",
+      "project": "",
+      "city": "San Anselmo",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/sarah-von-dreele-beth-rwaj-99o.jpg",
+        "photos/sarah-von-dreele-beth-rwaj-rzv.jpg",
+        "photos/sarah-von-dreele-beth-rwaj-flj.jpg",
+        "photos/sarah-von-dreele-beth-rwaj-yu6.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/sarah-von-dreele-beth-rwaj-99o.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
