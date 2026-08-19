@@ -2089,17 +2089,28 @@ function ledger(){
     };
     const e2 = el('button','kill'); e2.textContent = 'Remove';
     e2.onclick = ()=>{
-      if(!confirm('Remove ' + it.pattern + ' from the catalogue?')) return;
-      const wasPublished = published.filter(x=>x.id===it.id).length > 0;
-      if(wasPublished) draft[it.id] = null;
-      else {
-        photosOf(it).forEach(p=>{ delete previews[p]; forgetFile(p); delete savedFiles[p]; });
-        [].concat(it.beforePhotos||[], it.afterPhotos||[]).forEach(p=>{ delete previews[p]; forgetFile(p); delete savedFiles[p]; });
-        delete draft[it.id];
-      }
-      saveDraft(); ledger(); publishPanel(); buildDrawer();
-      toast('Removed — publish to make it final');
-      if(editing === it.id) clearForm();
+      /* A native confirm() dialog is easy to dismiss by accident on a
+         touchscreen with no visible sign anything happened — which reads
+         exactly like "nothing changed." This confirms in the page itself,
+         where the state is unmistakable. */
+      ops.innerHTML = '';
+      const yes = el('button','kill'); yes.textContent = 'Confirm';
+      yes.setAttribute('aria-label', 'Confirm removing ' + it.pattern);
+      yes.onclick = ()=>{
+        const wasPublished = published.filter(x=>x.id===it.id).length > 0;
+        if(wasPublished) draft[it.id] = null;
+        else {
+          photosOf(it).forEach(p=>{ delete previews[p]; forgetFile(p); delete savedFiles[p]; });
+          [].concat(it.beforePhotos||[], it.afterPhotos||[]).forEach(p=>{ delete previews[p]; forgetFile(p); delete savedFiles[p]; });
+          delete draft[it.id];
+        }
+        saveDraft(); ledger(); publishPanel(); buildDrawer(); render();
+        toast('Removed — publish to make it final');
+        if(editing === it.id) clearForm();
+      };
+      const no = el('button'); no.textContent = 'Cancel';
+      no.onclick = ()=> ledger();
+      ops.appendChild(yes); ops.appendChild(no);
     };
     ops.appendChild(e1); ops.appendChild(e2); row.appendChild(ops);
     L.appendChild(row);
@@ -2204,11 +2215,14 @@ function publishPanel(){
   const act = el('div','actions'); act.style.marginTop = '20px';
   const dis = el('button','btn btn-ghost'); dis.textContent = 'Discard unpublished changes';
   dis.onclick = ()=>{
-    if(!confirm('Discard all ' + ids.length + ' unpublished changes? Published walls are not affected.')) return;
-    pendingPhotoPaths().forEach(idbDel);
-    draft = {}; previews = {}; files = {}; savedFiles = {};
-    saveDraft(); clearForm(); ledger(); publishPanel(); buildDrawer(); render();
-    toast('Draft discarded');
+    dis.textContent = 'Tap again to confirm — this cannot be undone';
+    dis.style.color = '#B0564E'; dis.style.borderColor = '#B0564E';
+    dis.onclick = ()=>{
+      pendingPhotoPaths().forEach(idbDel);
+      draft = {}; previews = {}; files = {}; savedFiles = {};
+      saveDraft(); clearForm(); ledger(); publishPanel(); buildDrawer(); render();
+      toast('Draft discarded');
+    };
   };
   act.appendChild(dis); box.appendChild(act);
 }
@@ -2263,7 +2277,7 @@ function pubLog(line){
   n.scrollTop = n.scrollHeight;
 }
 
-async function gh(token, path, opts){
+async function ghOnce(token, path, opts){
   const c = repoCfg();
   const o = opts || {};
   const r = await fetch('https://api.github.com/repos/'+c.owner+'/'+c.repo+path, {
@@ -2285,8 +2299,34 @@ async function gh(token, path, opts){
   }
   return r.json();
 }
+/* A large batch means many sequential requests, each a chance for a Wi-Fi
+   hiccup to interrupt the connection before any response arrives — that
+   shows up as a network-level failure with no HTTP status at all. That kind
+   of failure is usually transient, so it gets a couple of quiet retries
+   before being treated as real. A response that did arrive (even an error
+   one, like a bad token) is never retried — retrying won't fix that. */
+async function gh(token, path, opts){
+  let lastErr;
+  for(let attempt=0; attempt<3; attempt++){
+    try{
+      return await ghOnce(token, path, opts);
+    }catch(err){
+      lastErr = err;
+      if(err.status != null) throw err;
+      if(attempt < 2){
+        pubLog('Connection interrupted — retrying (' + (attempt+2) + ' of 3) …');
+        await new Promise(res=>setTimeout(res, 1200 * (attempt+1)));
+      }
+    }
+  }
+  throw lastErr;
+}
 
 function ghExplain(err){
+  if(err.status == null){
+    return 'The connection to GitHub was interrupted before a response came back'
+      + (err.message ? ' (' + err.message + ')' : '') + '. Check the Wi-Fi and try again.';
+  }
   switch(err.status){
     case 401: return 'The token was not accepted. Check that it was pasted whole, and that it has not expired.';
     case 403: return 'The token was accepted but lacks permission. It needs Contents: read and write on this repository.';
