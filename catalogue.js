@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-17T23:33:39.607Z",
+  "updated": "2026-08-19T00:52:41.319Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -853,6 +853,106 @@ window.PARFAIT_CATALOGUE = {
       "afterCover": 3,
       "beforePhoto": "photos/riley-sheehey-english-garden-stripe-iyho-before-u0f.jpg",
       "afterPhoto": "photos/riley-sheehey-english-garden-stripe-iyho-after-j74.jpg",
+      "workType": "wallpaper"
+    },
+    {
+      "id": "msxvfsjjio8lf",
+      "kind": "before_after",
+      "brand": "Spoonflower",
+      "pattern": "Luxurious Vintage Floral Ornament",
+      "colorway": "Gold And Midnight Blue",
+      "room": "Living room",
+      "style": "Pattern Repeat",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-after-8uh.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-after-8uh.jpg",
+      "beforePhotos": [
+        "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-before-hs3.jpg",
+        "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-before-3oo.jpg"
+      ],
+      "afterPhotos": [
+        "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-after-8uh.jpg",
+        "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-after-tdr.jpg",
+        "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-after-r09.jpg",
+        "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-after-y7a.jpg"
+      ],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-before-hs3.jpg",
+      "afterPhoto": "photos/spoonflower-luxurious-vintage-floral-ornament-o8lf-after-8uh.jpg",
+      "workType": "wallpaper"
+    },
+    {
+      "id": "mszdjoz2vwdg3",
+      "kind": "wallpaper",
+      "brand": "Wallism",
+      "pattern": "Summer Birch",
+      "colorway": "",
+      "room": "Guest bedroom",
+      "style": "Mural & scenic",
+      "project": "",
+      "city": "Agua Caliente",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/wallism-summer-birch-wdg3-bfj.jpg",
+        "photos/wallism-summer-birch-wdg3-i53.jpg",
+        "photos/wallism-summer-birch-wdg3-3un.jpg",
+        "photos/wallism-summer-birch-wdg3-u5u.jpg",
+        "photos/wallism-summer-birch-wdg3-zs7.jpg",
+        "photos/wallism-summer-birch-wdg3-hup.jpg",
+        "photos/wallism-summer-birch-wdg3-yvo.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/wallism-summer-birch-wdg3-bfj.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "mszdn89g7uy33",
+      "kind": "before_after",
+      "brand": "Wallism",
+      "pattern": "Summer Birch",
+      "colorway": "",
+      "room": "Guest bedroom",
+      "style": "Mural & scenic",
+      "project": "",
+      "city": "Agua Caliente",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/wallism-summer-birch-uy33-after-bdp.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/wallism-summer-birch-uy33-after-bdp.jpg",
+      "beforePhotos": [
+        "photos/wallism-summer-birch-uy33-before-kr5.jpg",
+        "photos/wallism-summer-birch-uy33-before-8g3.jpg",
+        "photos/wallism-summer-birch-uy33-before-twt.jpg"
+      ],
+      "afterPhotos": [
+        "photos/wallism-summer-birch-uy33-after-bdp.jpg",
+        "photos/wallism-summer-birch-uy33-after-f2t.jpg",
+        "photos/wallism-summer-birch-uy33-after-1f0.jpg"
+      ],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "photos/wallism-summer-birch-uy33-before-kr5.jpg",
+      "afterPhoto": "photos/wallism-summer-birch-uy33-after-bdp.jpg",
       "workType": "wallpaper"
     }
   ]
