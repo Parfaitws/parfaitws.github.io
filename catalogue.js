@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-20T03:03:55.938Z",
+  "updated": "2026-08-20T03:05:22.255Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -718,8 +718,8 @@ window.PARFAIT_CATALOGUE = {
         "photos/sarah-von-dreele-beth-rwaj-flj.jpg",
         "photos/sarah-von-dreele-beth-rwaj-yu6.jpg"
       ],
-      "cover": 0,
-      "photo": "photos/sarah-von-dreele-beth-rwaj-99o.jpg",
+      "cover": 1,
+      "photo": "photos/sarah-von-dreele-beth-rwaj-rzv.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
