@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-20T03:05:22.255Z",
+  "updated": "2026-08-20T14:31:11.139Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -920,6 +920,37 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "photos/wallism-summer-birch-uy33-before-kr5.jpg",
       "afterPhoto": "photos/wallism-summer-birch-uy33-after-bdp.jpg",
       "workType": "wallpaper"
+    },
+    {
+      "id": "mt1ma42yb9sgt",
+      "kind": "wallpaper",
+      "brand": "Phillip Jeffries",
+      "pattern": "Soho Hemp",
+      "colorway": "Concrete Jungle",
+      "room": "Media room",
+      "style": "Grasscloth & texture",
+      "project": "",
+      "city": "El Granada",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/phillip-jeffries-soho-hemp-9sgt-103.jpg",
+        "photos/phillip-jeffries-soho-hemp-9sgt-1a7.jpg",
+        "photos/phillip-jeffries-soho-hemp-9sgt-3dl.jpg",
+        "photos/phillip-jeffries-soho-hemp-9sgt-24p.jpg",
+        "photos/phillip-jeffries-soho-hemp-9sgt-85s.jpg",
+        "photos/phillip-jeffries-soho-hemp-9sgt-wqc.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/phillip-jeffries-soho-hemp-9sgt-103.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     }
   ]
 };
