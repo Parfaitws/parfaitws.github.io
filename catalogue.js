@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-20T14:34:32.029Z",
+  "updated": "2026-08-20T14:50:55.173Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -975,6 +975,35 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/fayce-lapel-nahu-s9i.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "mt1n13hwnap5b",
+      "kind": "wallpaper",
+      "brand": "Coordonné",
+      "pattern": "Coordonné Bank of Fish Wallpaper",
+      "colorway": "Swan",
+      "room": "Dining room",
+      "style": "Pattern Repeat",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/coordonne-coordonne-bank-of-fish-wallpaper-ap5b-qwk.jpg",
+        "photos/coordonne-coordonne-bank-of-fish-wallpaper-ap5b-9r1.jpg",
+        "photos/coordonne-coordonne-bank-of-fish-wallpaper-ap5b-0tz.jpg",
+        "photos/coordonne-coordonne-bank-of-fish-wallpaper-ap5b-cpu.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/coordonne-coordonne-bank-of-fish-wallpaper-ap5b-qwk.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
