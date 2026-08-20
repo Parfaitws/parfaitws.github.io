@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-20T14:31:11.139Z",
+  "updated": "2026-08-20T14:34:32.029Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -944,6 +944,37 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/phillip-jeffries-soho-hemp-9sgt-103.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "mt1mfkyljnahu",
+      "kind": "wallpaper",
+      "brand": "Fayce",
+      "pattern": "Lapel",
+      "colorway": "",
+      "room": "Primary bedroom",
+      "style": "Geometric",
+      "project": "",
+      "city": "El Granada",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/fayce-lapel-nahu-s9i.jpg",
+        "photos/fayce-lapel-nahu-tcd.jpg",
+        "photos/fayce-lapel-nahu-vcc.jpg",
+        "photos/fayce-lapel-nahu-hie.jpg",
+        "photos/fayce-lapel-nahu-bkc.jpg",
+        "photos/fayce-lapel-nahu-ehw.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/fayce-lapel-nahu-s9i.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
