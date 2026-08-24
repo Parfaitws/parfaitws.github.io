@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-24T15:03:11.582Z",
+  "updated": "2026-08-24T15:08:23.344Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1110,6 +1110,40 @@ window.PARFAIT_CATALOGUE = {
       "afterCover": 0,
       "beforePhoto": "photos/carlisle-co-fusion-edge-aplq-before-g3j.jpg",
       "afterPhoto": "photos/carlisle-co-fusion-edge-aplq-after-4ln.jpg",
+      "workType": "wallpaper"
+    },
+    {
+      "id": "mt7dewta1rzrt",
+      "kind": "before_after",
+      "brand": "SARAH JESSICA PARKER & wallshøppe.",
+      "pattern": "Purveyor of hip",
+      "colorway": "",
+      "room": "Living room",
+      "style": "Floral",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-after-lx6.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-after-lx6.jpg",
+      "beforePhotos": [
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-before-8pq.jpg",
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-before-dhj.jpg"
+      ],
+      "afterPhotos": [
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-after-lx6.jpg",
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-after-j9r.jpg",
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-after-w5s.jpg",
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-after-3fq.jpg"
+      ],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-before-8pq.jpg",
+      "afterPhoto": "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-after-lx6.jpg",
       "workType": "wallpaper"
     }
   ]
