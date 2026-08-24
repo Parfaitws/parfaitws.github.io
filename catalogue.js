@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-20T14:50:55.173Z",
+  "updated": "2026-08-24T14:46:38.728Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1004,6 +1004,35 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/coordonne-coordonne-bank-of-fish-wallpaper-ap5b-qwk.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "mt7cm4nfev31h",
+      "kind": "wallpaper",
+      "brand": "SARAH JESSICA PARKER & wallshøppe.",
+      "pattern": "Purveyor of hip",
+      "colorway": "",
+      "room": "Living room",
+      "style": "Floral",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-v31h-5jz.jpg",
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-v31h-1mb.jpg",
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-v31h-7do.jpg",
+        "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-v31h-cj3.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-v31h-5jz.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
