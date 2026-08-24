@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-24T14:50:06.071Z",
+  "updated": "2026-08-24T15:03:11.582Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1071,6 +1071,46 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
+    },
+    {
+      "id": "mt7d8c28vaplq",
+      "kind": "before_after",
+      "brand": "CARLISLE . & CO.",
+      "pattern": "Fusion Edge",
+      "colorway": "Sandstone",
+      "room": "Primary bathroom",
+      "style": "Chinoiserie",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/carlisle-co-fusion-edge-aplq-after-4ln.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/carlisle-co-fusion-edge-aplq-after-4ln.jpg",
+      "beforePhotos": [
+        "photos/carlisle-co-fusion-edge-aplq-before-g3j.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-before-3es.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-before-133.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-before-sc9.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-before-55t.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-before-j0b.jpg"
+      ],
+      "afterPhotos": [
+        "photos/carlisle-co-fusion-edge-aplq-after-4ln.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-after-azv.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-after-sht.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-after-1r2.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-after-quc.jpg",
+        "photos/carlisle-co-fusion-edge-aplq-after-0qz.jpg"
+      ],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "photos/carlisle-co-fusion-edge-aplq-before-g3j.jpg",
+      "afterPhoto": "photos/carlisle-co-fusion-edge-aplq-after-4ln.jpg",
+      "workType": "wallpaper"
     }
   ]
 };
