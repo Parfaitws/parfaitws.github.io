@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-24T15:08:23.344Z",
+  "updated": "2026-08-25T15:00:42.292Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1115,7 +1115,7 @@ window.PARFAIT_CATALOGUE = {
     {
       "id": "mt7dewta1rzrt",
       "kind": "before_after",
-      "brand": "SARAH JESSICA PARKER & wallshøppe.",
+      "brand": "Sarah Jessica Parker & wallshøppe.",
       "pattern": "Purveyor of hip",
       "colorway": "",
       "room": "Living room",
