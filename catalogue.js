@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-27T19:47:57.221Z",
+  "updated": "2026-08-27T19:49:24.999Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1203,6 +1203,38 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "",
       "afterPhoto": "",
       "workType": ""
+    },
+    {
+      "id": "mtbxrn8mflnfl",
+      "kind": "before_after",
+      "brand": "Cork",
+      "pattern": "Single stripe",
+      "colorway": "",
+      "room": "Kitchen",
+      "style": "Acoustic",
+      "project": "",
+      "city": "",
+      "year": "",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/cork-single-stripe-lnfl-after-oo0.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/cork-single-stripe-lnfl-after-oo0.jpg",
+      "beforePhotos": [
+        "photos/cork-single-stripe-lnfl-before-von.jpg",
+        "photos/cork-single-stripe-lnfl-before-zs4.jpg"
+      ],
+      "afterPhotos": [
+        "photos/cork-single-stripe-lnfl-after-oo0.jpg",
+        "photos/cork-single-stripe-lnfl-after-9yk.jpg"
+      ],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "photos/cork-single-stripe-lnfl-before-von.jpg",
+      "afterPhoto": "photos/cork-single-stripe-lnfl-after-oo0.jpg",
+      "workType": "wallpaper"
     }
   ]
 };
