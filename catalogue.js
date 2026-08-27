@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-27T19:40:52.625Z",
+  "updated": "2026-08-27T19:47:57.221Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1169,6 +1169,33 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/rebel-walls-cuddle-clouds-h38c-yp2.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "mtbxq0fxzkmfj",
+      "kind": "wallpaper",
+      "brand": "Cork",
+      "pattern": "Single stripe",
+      "colorway": "",
+      "room": "Kitchen",
+      "style": "Acoustic",
+      "project": "",
+      "city": "",
+      "year": "",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/cork-single-stripe-kmfj-eto.jpg",
+        "photos/cork-single-stripe-kmfj-ppy.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/cork-single-stripe-kmfj-eto.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
