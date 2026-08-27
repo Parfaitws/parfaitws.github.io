@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-25T15:00:42.292Z",
+  "updated": "2026-08-27T19:40:52.625Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1145,6 +1145,37 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-before-8pq.jpg",
       "afterPhoto": "photos/sarah-jessica-parker-wallsh-ppe-purveyor-of-hip-rzrt-after-lx6.jpg",
       "workType": "wallpaper"
+    },
+    {
+      "id": "mtbxgwio2h38c",
+      "kind": "wallpaper",
+      "brand": "Rebel Walls",
+      "pattern": "Cuddle Clouds",
+      "colorway": "",
+      "room": "Primary bedroom",
+      "style": "Mural & scenic",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/rebel-walls-cuddle-clouds-h38c-yp2.jpg",
+        "photos/rebel-walls-cuddle-clouds-h38c-kya.jpg",
+        "photos/rebel-walls-cuddle-clouds-h38c-7yx.jpg",
+        "photos/rebel-walls-cuddle-clouds-h38c-24n.jpg",
+        "photos/rebel-walls-cuddle-clouds-h38c-vhf.jpg",
+        "photos/rebel-walls-cuddle-clouds-h38c-npn.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/rebel-walls-cuddle-clouds-h38c-yp2.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     }
   ]
 };
