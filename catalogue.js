@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-09-01T13:47:55.497Z",
+  "updated": "2026-09-01T14:03:01.494Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1256,6 +1256,35 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/graham-brown-palazzo-bap6-xwi.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "mtiqgy709jbjz",
+      "kind": "wallpaper",
+      "brand": "Common Room",
+      "pattern": "Climbing Curios",
+      "colorway": "",
+      "room": "Primary bathroom",
+      "style": "Stripe & Ribbon",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/anna-french-climbing-curios-jbjz-2fb.jpg",
+        "photos/anna-french-climbing-curios-jbjz-08j.jpg",
+        "photos/anna-french-climbing-curios-jbjz-aud.jpg",
+        "photos/anna-french-climbing-curios-jbjz-x6f.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/anna-french-climbing-curios-jbjz-2fb.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
