@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-09-01T14:46:04.324Z",
+  "updated": "2026-09-01T14:53:12.045Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1404,6 +1404,35 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 2,
       "photo": "photos/dedar-schwarzwald-wall-fatp-8re.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "mtise8f5jkrve",
+      "kind": "wallpaper",
+      "brand": "Designer Wallpapers",
+      "pattern": "Eco Chic Birches",
+      "colorway": "EH61008",
+      "room": "Kitchen",
+      "style": "Mural & scenic",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/designer-wallpapers-eco-chic-birches-krve-p03.jpg",
+        "photos/designer-wallpapers-eco-chic-birches-krve-4yx.jpg",
+        "photos/designer-wallpapers-eco-chic-birches-krve-bjv.jpg",
+        "photos/designer-wallpapers-eco-chic-birches-krve-lex.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/designer-wallpapers-eco-chic-birches-krve-p03.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
