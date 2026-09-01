@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-09-01T14:29:12.763Z",
+  "updated": "2026-09-01T14:32:27.187Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1343,6 +1343,37 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 0,
       "photo": "photos/timorous-beasties-omni-splatt-wallpaper-oywg-mc2.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "mtirnlfy4a52s",
+      "kind": "wallpaper",
+      "brand": "Cole & Son",
+      "pattern": "Melville",
+      "colorway": "",
+      "room": "Water closet",
+      "style": "Metallic",
+      "project": "",
+      "city": "Tiburon",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/cole-son-melville-a52s-1sw.jpg",
+        "photos/cole-son-melville-a52s-djn.jpg",
+        "photos/cole-son-melville-a52s-zfy.jpg",
+        "photos/cole-son-melville-a52s-hvx.jpg",
+        "photos/cole-son-melville-a52s-8qc.jpg",
+        "photos/cole-son-melville-a52s-9w4.jpg"
+      ],
+      "cover": 2,
+      "photo": "photos/cole-son-melville-a52s-zfy.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
