@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-08-27T19:49:24.999Z",
+  "updated": "2026-09-01T13:47:55.497Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1235,6 +1235,34 @@ window.PARFAIT_CATALOGUE = {
       "beforePhoto": "photos/cork-single-stripe-lnfl-before-von.jpg",
       "afterPhoto": "photos/cork-single-stripe-lnfl-after-oo0.jpg",
       "workType": "wallpaper"
+    },
+    {
+      "id": "mtiq2b1vgbap6",
+      "kind": "wallpaper",
+      "brand": "Graham & Brown",
+      "pattern": "Palazzo",
+      "colorway": "Verde",
+      "room": "Powder room",
+      "style": "Floral",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/graham-brown-palazzo-bap6-xwi.jpg",
+        "photos/graham-brown-palazzo-bap6-r58.jpg",
+        "photos/graham-brown-palazzo-bap6-xna.jpg"
+      ],
+      "cover": 0,
+      "photo": "photos/graham-brown-palazzo-bap6-xwi.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
     }
   ]
 };
