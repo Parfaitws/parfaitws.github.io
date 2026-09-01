@@ -1,6 +1,6 @@
 window.PARFAIT_CATALOGUE = {
   "version": 1,
-  "updated": "2026-09-01T14:32:27.187Z",
+  "updated": "2026-09-01T14:46:04.324Z",
   "items": [
     {
       "id": "msgp527nmr7my",
@@ -1374,6 +1374,36 @@ window.PARFAIT_CATALOGUE = {
       ],
       "cover": 2,
       "photo": "photos/cole-son-melville-a52s-zfy.jpg",
+      "beforePhotos": [],
+      "afterPhotos": [],
+      "beforeCover": 0,
+      "afterCover": 0,
+      "beforePhoto": "",
+      "afterPhoto": "",
+      "workType": ""
+    },
+    {
+      "id": "mtis52a7wfatp",
+      "kind": "wallpaper",
+      "brand": "Dedar",
+      "pattern": "Schwarzwald Wall",
+      "colorway": "001",
+      "room": "Alcove",
+      "style": "Chinoiserie",
+      "project": "",
+      "city": "",
+      "year": "2026",
+      "panels": "",
+      "notes": "",
+      "photos": [
+        "photos/dedar-schwarzwald-wall-fatp-6rj.jpg",
+        "photos/dedar-schwarzwald-wall-fatp-to7.jpg",
+        "photos/dedar-schwarzwald-wall-fatp-8re.jpg",
+        "photos/dedar-schwarzwald-wall-fatp-zss.jpg",
+        "photos/dedar-schwarzwald-wall-fatp-9gq.jpg"
+      ],
+      "cover": 2,
+      "photo": "photos/dedar-schwarzwald-wall-fatp-8re.jpg",
       "beforePhotos": [],
       "afterPhotos": [],
       "beforeCover": 0,
