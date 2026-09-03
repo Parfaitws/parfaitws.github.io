@@ -4,6 +4,23 @@
 <meta charset="utf-8">
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+/* Runs before anything paints, so there is no flash of the masthead before
+   it hides. Two ways to end up "embedded": actually sitting inside an
+   iframe (how the new website will include this page), or the ?embed=1
+   override — useful for previewing the embedded look without setting up
+   a real iframe. ?standalone=1 forces the normal look even inside a frame,
+   for testing. A cross-origin parent throws on window.top access, which
+   itself only happens when framed, so the catch also means "embedded". */
+(function(){
+  var embedded;
+  try { embedded = window.self !== window.top; } catch(e){ embedded = true; }
+  var q = String(location.search || '');
+  if(/[?&]standalone=1\b/.test(q)) embedded = false;
+  else if(/[?&]embed=1\b/.test(q)) embedded = true;
+  if(embedded) document.documentElement.classList.add('embedded');
+})();
+</script>
 <title>Parfait — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,17 +37,20 @@
    TOKENS — Parfait brand palette
    ───────────────────────────────────────────── */
 :root{
-  --paper:#F6F4F5;        /* ground */
-  --card:#FFFFFF;         /* panel face */
-  --ink:#252122;          /* primary text */
-  --navy:#13304E;         /* structure, headings, controls */
-  --navy-soft:rgba(19,48,78,.06);
-  --sand-fill:#EDE2D3;   /* the only fill used for controls */
-  --sand:#D8C4AC;         /* warmth, accents */
-  --sand-soft:#EFE7DC;
-  --muted:#5D6875;        /* captions */
-  --rail:#DBD4CB;         /* hairlines */
-  --gold-ink:#9A7639;     /* gold as flat text where gradient can't apply */
+  /* Matched to the Lovable site (screenshots, Aug 2026) — best visual estimate,
+     not sampled pixel values. Adjust any of these if something looks off. */
+  --paper:#F8F4EB;        /* warm cream ground, lightened */
+  --card:#FDFBF6;         /* panel face, barely lighter than paper */
+  --ink:#2A2620;          /* primary text, warm near-black */
+  --navy:#1E3A5C;         /* structure, headings, filled buttons */
+  --navy-soft:rgba(30,58,92,.06);
+  --sand-fill:#EADFC8;   /* warm tan fill for secondary controls */
+  --sand:#DCCFB6;         /* warmth, hairlines, accents */
+  --sand-soft:#F0E8D8;
+  --muted:#726A5F;        /* warm gray captions */
+  --rail:#E4DBCC;         /* hairlines */
+  --gold-ink:#9F8459;     /* the Lovable site's muted gold-tan accent */
+  /* UNCHANGED — this is the one gold moment kept from the previous design */
   --gold-grad:linear-gradient(100deg,#8C6A2F 0%,#C0994F 20%,#EBD7A4 46%,#C0994F 72%,#8C6A2F 100%);
 
   --display:"Cormorant Garamond","Didot","Hoefler Text",Georgia,serif;
@@ -89,6 +109,10 @@ button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer
   background:var(--paper);
   border-bottom:1px solid var(--rail);
 }
+/* Embedded inside the new website: no heading, no way to reach the admin
+   panel (its only door is the burger button, which lives in the masthead) —
+   opened directly, everything above stays exactly as it is. */
+html.embedded .masthead{display:none}
 .burger{width:44px;height:44px;display:grid;place-items:center;margin-left:-11px}
 .burger span{display:block;width:19px;height:1px;background:var(--navy);transition:transform .3s var(--ease),opacity .2s}
 .burger span+span{margin-top:5px}
@@ -121,7 +145,7 @@ button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer
   position:fixed;top:0;left:0;bottom:0;z-index:50;width:min(88vw,338px);
   background:var(--card);border-right:1px solid var(--rail);
   padding:26px 0 32px;overflow-y:auto;
-  box-shadow:22px 0 44px -34px rgba(19,48,78,.18);
+  box-shadow:22px 0 44px -34px rgba(30,58,92,.18);
   transform:translateX(-101%);transition:transform .4s var(--ease);
 }
 .drawer.on{transform:none}
@@ -167,8 +191,8 @@ button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer
 .stage{
   position:relative;z-index:1;padding:8px 0 90px;min-height:100vh;
   background:
-    radial-gradient(1100px 640px at 82% -6%, rgba(216,196,172,.34), transparent 62%),
-    radial-gradient(860px 560px at 4% 96%, rgba(216,196,172,.2), transparent 60%),
+    radial-gradient(1100px 640px at 82% -6%, rgba(220,207,182,.10), transparent 62%),
+    radial-gradient(860px 560px at 4% 96%, rgba(220,207,182,.06), transparent 60%),
     var(--paper);
 }
 .opener{padding:26px var(--pad) 46px;max-width:640px}
@@ -221,23 +245,23 @@ button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer
 .drop{-webkit-user-select:none;user-select:none}
 .drop:focus-visible{transform:translateY(-7px)}
 .drop:focus-visible::before{background:var(--gold-ink)}
-.drop:focus-visible::after{box-shadow:0 0 0 3px rgba(216,196,172,.5)}
+.drop:focus-visible::after{box-shadow:0 0 0 3px rgba(214,199,172,.5)}
 @media(hover:hover){
   .drop:hover{transform:translateY(-7px)}
   .drop:hover::before{background:var(--gold-ink)}
-  .drop:hover::after{box-shadow:0 0 0 3px rgba(216,196,172,.5)}
+  .drop:hover::after{box-shadow:0 0 0 3px rgba(214,199,172,.5)}
 }
 .drop:active{transform:translateY(-3px) scale(.986)}
 
 .drop-face{
   position:relative;aspect-ratio:2/3;overflow:hidden;
   background:var(--card);border:1px solid var(--rail);
-  box-shadow:0 1px 2px rgba(19,48,78,.04);
+  box-shadow:0 1px 2px rgba(30,58,92,.04);
   transition:box-shadow .38s var(--ease),border-color .3s
 }
-.drop:focus-visible .drop-face,.drop:active .drop-face{box-shadow:0 16px 30px -18px rgba(19,48,78,.16);border-color:var(--sand)}
+.drop:focus-visible .drop-face,.drop:active .drop-face{box-shadow:0 16px 30px -18px rgba(30,58,92,.16);border-color:var(--sand)}
 @media(hover:hover){
-  .drop:hover .drop-face{box-shadow:0 16px 30px -18px rgba(19,48,78,.16);border-color:var(--sand)}
+  .drop:hover .drop-face{box-shadow:0 16px 30px -18px rgba(30,58,92,.16);border-color:var(--sand)}
 }
 .drop-face img{width:100%;height:100%;object-fit:cover;display:block}
 .drop-face svg{width:100%;height:100%;display:block}
@@ -259,7 +283,7 @@ button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer
   margin-top:20px;padding:11px 22px;border:1px solid var(--navy);color:var(--navy);
   font-size:10px;letter-spacing:.2em;text-transform:uppercase;transition:all .25s
 }
-.void button:hover{background:var(--sand-fill)}
+.void button:hover{background:var(--navy);color:var(--paper)}
 
 /* ─────────────────────────────────────────────
    LIGHTBOX
@@ -279,8 +303,8 @@ button{font-family:inherit;color:inherit;background:none;border:0;cursor:pointer
   display:grid;place-items:center;font-size:22px;font-weight:300;color:var(--navy);
   background:var(--card);border:1px solid var(--rail);border-radius:50%
 }
-.lb-shut:hover{background:var(--sand-fill);border-color:var(--sand)}
-.lb-face{background:var(--card);border:1px solid var(--rail);overflow:hidden;box-shadow:0 18px 38px -28px rgba(19,48,78,.16)}
+.lb-shut:hover{background:var(--navy);border-color:var(--navy);color:var(--paper)}
+.lb-face{background:var(--card);border:1px solid var(--rail);overflow:hidden;box-shadow:0 18px 38px -28px rgba(30,58,92,.16)}
 .lb-face img,.lb-face svg{width:100%;display:block;max-height:74vh;object-fit:contain}
 .lb-body h3{
   font-family:var(--display);font-weight:400;color:var(--navy);
@@ -330,7 +354,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 
 .actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px}
 .btn{
-  padding:12px 26px;border:1px solid var(--sand);background:var(--sand-fill);color:var(--navy);
+  padding:12px 26px;border:1px solid var(--navy);background:var(--navy);color:var(--paper);
   font-size:10px;letter-spacing:.2em;text-transform:uppercase;transition:opacity .2s
 }
 .btn:hover{opacity:.86}
@@ -406,7 +430,7 @@ body.tv .row{padding-bottom:34px}
 .drop.cursor{transform:translateY(-9px)}
 .drop.cursor .drop-face{
   outline:3px solid var(--navy);outline-offset:6px;
-  box-shadow:0 22px 40px -18px rgba(19,48,78,.3)
+  box-shadow:0 22px 40px -18px rgba(30,58,92,.3)
 }
 .drop.cursor::before{background:var(--gold-ink)}
 .burger.cursor,.arrange button.cursor{outline:3px solid var(--navy);outline-offset:4px}
@@ -864,7 +888,13 @@ const ROOM_OF = {};
 ROOM_GROUPS.forEach(g=>g.rooms.forEach(r=>{ ROOM_OF[r]=g.group; }));
 const roomGroup = r => ROOM_OF[r] || r || 'Unassigned';
 
-const WALLPAPER_STYLES = ['Chinoiserie','Floral','Damask','Geometric','Grasscloth & texture','Mural & scenic','Metallic'];
+const WALLPAPER_STYLES = [
+  'Asian','Chinoiserie','Coastal','Contemporary','Cottage / Country','Craftsman',
+  'Damask','Eclectic','Farmhouse','Floral','French Country','Geometric',
+  'Grasscloth & texture','Industrial','Mediterranean','Metallic','Mid-Century Modern',
+  'Modern','Mural & scenic','Rustic','Scandinavian','Southwestern','Traditional',
+  'Transitional','Tropical','Victorian'
+];
 
 /* Paint jobs use a different vocabulary from wallpaper. Compiled from general
    market knowledge, not a verified vendor list — check it against who Parfait
